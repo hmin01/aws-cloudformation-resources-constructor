@@ -1,8 +1,8 @@
 import { Construct } from "constructs";
 import { aws_sqs as sqs } from "aws-cdk-lib";
 // Util
+import { getResource, storeResource } from "../utils/cache";
 import { createId } from "../utils/util";
-import { getResource } from "../utils/cache";
 
 export class Queue {
   private _scope: Construct;
@@ -16,6 +16,8 @@ export class Queue {
    */
   constructor(scope: Construct, config: any) {
     this._scope = scope;
+    // Extract the queue name
+    const queueName: string = this.extractName(config.QueueArn);
     // Set the properties for queue
     const props: sqs.CfnQueueProps = {
       contentBasedDeduplication: config.FifoQueue === "true" ? config.ContentBasedDeduplication : undefined,
@@ -27,12 +29,14 @@ export class Queue {
       kmsMasterKeyId: config.KmsMasterKeyId !== undefined ? getResource("kms", config.KmsMasterKeyId) : undefined,
       maximumMessageSize: config.MaximumMessageSize !== undefined ? Number(config.MaximumMessageSize) : undefined,
       messageRetentionPeriod: config.MessageRetentionPeriod !== undefined ? Number(config.MessageRetentionPeriod) : undefined,
-      queueName: this.extractName(config.QueueArn),
+      queueName: queueName,
       receiveMessageWaitTimeSeconds: config.ReceiveMessageWaitTimeSeconds !== undefined ? Number(config.ReceiveMessageWaitTimeSeconds) : undefined,
       visibilityTimeout: config.VisibilityTimeout !== undefined ? Number(config.VisibilityTimeout) : undefined
     };
     // Create the queue
     this._queue = new sqs.CfnQueue(this._queue, createId(JSON.stringify(props)), props);
+    // Store the resource
+    storeResource("sqs", queueName, this._queue);
   }
 
   /**
