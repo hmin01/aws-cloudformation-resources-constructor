@@ -2,7 +2,7 @@ import { Construct } from "constructs";
 import { aws_sqs as sqs } from "aws-cdk-lib";
 // Util
 import { getResource, storeResource } from "../utils/cache";
-import { createId } from "../utils/util";
+import { createId, extractPrincipal, extractTags } from "../utils/util";
 
 export class Queue {
   private _scope: Construct;
@@ -34,7 +34,7 @@ export class Queue {
       visibilityTimeout: config.VisibilityTimeout !== undefined ? Number(config.VisibilityTimeout) : undefined
     };
     // Create the queue
-    this._queue = new sqs.CfnQueue(this._queue, createId(JSON.stringify(props)), props);
+    this._queue = new sqs.CfnQueue(this._scope, createId(JSON.stringify(props)), props);
     // Store the resource
     storeResource("sqs", queueName, this._queue);
   }
@@ -73,5 +73,46 @@ export class Queue {
    */
   public getUrl(): string {
     return this._queue.ref;
+  }
+
+  /**
+   * Set the policy
+   * @param config configuration for policy
+   */
+  public setPolicy(config: any) {
+    // Set the statement
+    const statement: any[] = config.Statement.map((elem: any): any => {
+      // Extract principal by type
+      const principal: any = elem.Principal !== undefined ? extractPrincipal(elem.Principal) : undefined;
+      // Return
+      return {
+        Effect: elem.Effect,
+        Principal: principal,
+        Action: elem.Action,
+        Resource: this._queue.attrArn
+      };
+    });
+
+    // Create the properties for queue policy
+    const props: sqs.CfnQueuePolicyProps = {
+      policyDocument: {
+        Version: config.Version,
+        Statement: statement.length > 0 ? statement : undefined
+      },
+      queues: [this._queue.ref]
+    }
+    // Set the policy for queue
+    new sqs.CfnQueuePolicy(this._scope, createId(JSON.stringify(props)), props);
+  }
+
+  /**
+   * Set the tags
+   * @param config configuration for tags
+   */
+  public setTags(config: any) {
+    // Create a list of tag
+    const tags = extractTags(config);
+    // Set the tags
+    this._queue.addPropertyOverride("Tags", tags);
   }
 }
