@@ -2,7 +2,7 @@ import { Construct } from "constructs";
 import { aws_sqs as sqs } from "aws-cdk-lib";
 // Util
 import { getResource, storeResource } from "../utils/cache";
-import { createId, extractPrincipal, extractTags } from "../utils/util";
+import { createId, extractDataFromArn, extractPrincipal, extractTags } from "../utils/util";
 
 export class Queue {
   private _scope: Construct;
@@ -16,8 +16,8 @@ export class Queue {
    */
   constructor(scope: Construct, config: any) {
     this._scope = scope;
-    // Extract the queue name
-    const queueName: string = this.extractName(config.QueueArn);
+    // Extract the queue name from arn
+    const queueName: string = extractDataFromArn(config.QueueArn, "resource");
     // Set the properties for queue
     const props: sqs.CfnQueueProps = {
       contentBasedDeduplication: config.FifoQueue === "true" ? config.ContentBasedDeduplication : undefined,
@@ -37,18 +37,6 @@ export class Queue {
     this._queue = new sqs.CfnQueue(this._scope, createId(JSON.stringify(props)), props);
     // Store the resource
     storeResource("sqs", queueName, this._queue);
-  }
-
-  /**
-   * Extract a name from arn for queue
-   * @param arn arn for queue
-   * @returns name for queue
-   */
-  private extractName(arn: string): string {
-    // Split an arn for queue
-    const split: string[] = arn.split(":");
-    // Extract a queue name from arn
-    return split[split.length - 1];
   }
 
   /**

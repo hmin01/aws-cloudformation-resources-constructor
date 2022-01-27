@@ -90,6 +90,23 @@ export class Role {
   public getRef(): string {
     return this._role.ref;
   }
+
+  /**
+   * Set an inline policy
+   * @description https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-policy.html
+   * @param name policy name
+   * @param document policy document
+   */
+  public setInlinePolicy(name: string, document: any): void {
+    // Create the properties for inline policy
+    const props: iam.CfnPolicyProps = {
+      policyDocument: document,
+      policyName: name,
+      roles: [this._role.ref]
+    };
+    // Set an inline policy
+    new iam.CfnPolicy(this._scope, createId(JSON.stringify(props)), props);
+  }
 }
 
 export class Policy {

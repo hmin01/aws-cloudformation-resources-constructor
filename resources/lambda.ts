@@ -2,7 +2,7 @@ import { Construct } from "constructs";
 import { aws_lambda as lambda } from "aws-cdk-lib";
 // Util
 import { getResource, storeResource } from "../utils/cache";
-import { createId, extractTags } from "../utils/util";
+import { createId, extractDataFromArn, extractTags } from "../utils/util";
 
 export class Function {
   private _function: lambda.CfnFunction;
@@ -13,45 +13,40 @@ export class Function {
    * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html
    * @param scope scope context
    * @param config configuration for function
+   * @param storedLocation 
    */
-  constructor(scope: Construct, config: any) {
+  constructor(scope: Construct, config: any, storedLocation: string) {
     this._scope = scope;
 
-    // Set a list of tag
-    const tags = extractTags(config.Tags);
-    // Extract configuration for function
-    const attributes: any = config.Configuration;
-    // Get an arn for kms
-    const originKmsArnSplit: string[] = attributes.KmsKeyArn.split("/");
-    const kmsKey: any = getResource("kms", originKmsArnSplit[originKmsArnSplit.length - 1]);
+    // Extract a bucket name and key
+    const split: string[] = storedLocation.replace(/^s3:\/\//g, "").split("/");
+    const bucketName: string = split[0];
+    const key: string = split.slice(1).join("/");
     // Get an arn for role
-    const originRoleArnSplit: string[] = attributes.Role.split("/");
-    const role: any = getResource("role", originRoleArnSplit[originRoleArnSplit.length - 1]);
-    if (role === undefined) {
-      console.error("Error")
-      process.exit(1);
-    }
-
+    const role: any = config.Role !== undefined ? getResource("role", extractDataFromArn(config.Role, "resource")) : undefined;
+    
     // Set the properties for lambda function
     const props: lambda.CfnFunctionProps = {
+      code: {
+        s3Bucket: bucketName,
+        s3Key: key
+      },
+      role: role !== undefined ? role.getArn() : config.Role,
+      // Optional
       architectures: ["x86_64"],
-      code: {},
-      description: attributes.Description,
-      environment: attributes.Environment !== undefined ? {
-        variables: attributes.Environment.Variables
+      description: config.Description,
+      environment: config.Environment !== undefined ? {
+        variables: config.Environment.Variables
       } : undefined,
-      functionName: attributes.FunctionName,
-      handler: attributes.Handler,
-      kmsKeyArn: kmsKey !== undefined ? kmsKey.getArn() : undefined,
-      memorySize: attributes.MemorySize !== undefined ? Number(attributes.MemorySize) : undefined,
-      packageType: attributes.PackageType,
-      reservedConcurrentExecutions: attributes.ReservedConcurrentExecutions !== undefined ? Number(attributes.ReservedConcurrentExecutions) : undefined,
-      role: role !== undefined ? role.getArn() : undefined,
-      runtime: attributes.Runtime,
-      timeout: attributes.Timeout,
-      tags: tags.length > 0 ? tags : undefined,
-      tracingConfig: attributes.TracingConfig !== undefined ? {
-        mode: attributes.TracingConfig.Mode
+      functionName: config.FunctionName,
+      handler: config.Handler,
+      memorySize: config.MemorySize !== undefined ? Number(config.MemorySize) : undefined,
+      packageType: config.PackageType,
+      reservedConcurrentExecutions: config.ReservedConcurrentExecutions !== undefined ? Number(config.ReservedConcurrentExecutions) : undefined,
+      runtime: config.Runtime,
+      timeout: config.Timeout,
+      tracingConfig: config.TracingConfig !== undefined ? {
+        mode: config.TracingConfig.Mode
       } : undefined
     };
     // Create the function
@@ -116,5 +111,16 @@ export class Function {
    */
   public getRef(): string {
     return this._function.ref;
+  }
+
+  /**
+   * Set the tags
+   * @param config configuration for tags
+   */
+   public setTags(config: any) {
+    // Create a list of tag
+    const tags = extractTags(config);
+    // Set the tags
+    this._function.addPropertyOverride("Tags", tags);
   }
 }

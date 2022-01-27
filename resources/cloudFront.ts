@@ -33,13 +33,13 @@ export class Distribution {
    * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-defaultcachebehavior.html
    * @param config 
    */
-  public setCacheBehavior(config: any) {
+  public setCacheBehavior(config: any): any {
     // Get a cache policy
     const cachePolicy: string|undefined = config.CachePolicyId !== undefined ? getResource("cloudfront-policy", config.CachePolicyId) : undefined;
     // Get a origin request policy
     const originRequestPolicy: string|undefined = config.OriginRequestPolicyId !== undefined ? getResource("cloudfront-originrequestpolicy", config.OriginRequestPolicyId) : undefined;
     // Create the properties for cache behavior
-    const props: cloudfront.CfnDistribution.CacheBehaviorProperty = {
+    return {
       targetOriginId: config.TargetOriginId,
       viewerProtocolPolicy: config.ViewerProtocolPolicy,
       // Optional
