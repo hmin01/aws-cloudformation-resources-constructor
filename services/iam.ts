@@ -1,6 +1,8 @@
 import { Construct } from "constructs";
 // Resources
 import { Policy, Role } from "../resources/iam";
+// Util
+import { extractDataFromArn } from "../utils/util";
 
 /**
  * Create the policies
@@ -8,11 +10,16 @@ import { Policy, Role } from "../resources/iam";
  * @param config configuration for policies
  */
 export function createPolicies(scope: Construct, config: any) {
-  for (const policyId of Object.keys(config)) {
-    // Get a configuration for policy
-    const elem: any = config[policyId];
-    // Create a policy
-    new Policy(scope, elem);
+  for (const policyArn of Object.keys(config)) {
+    // Get an account id from arn
+    const accountId: string = extractDataFromArn(policyArn, "account");
+    // Create policies that are not managed by aws.
+    if (accountId !== "aws") {
+      // Get a configuration for policy
+      const elem: any = config[policyArn];
+      // Create a policy
+      new Policy(scope, elem);
+    }
   }
 }
 

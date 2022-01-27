@@ -22,7 +22,88 @@ export class Distribution {
         enabled: config.Enabled,
         // Optional
         aliases: config.Aliases !== undefined ? config.Aliases.Items !== undefined ? config.Aliases.Item.length > 0 ? config.Aliases.Item : undefined : undefined : undefined,
-
+        cacheBehaviors: config.CacheBehaviors !== undefined && config.CacheBehaviors.Items !== undefined && config.CacheBehaviors.Items.length > 0 ? config.CacheBehaviors.Items.map((elem: any): cloudfront.CfnDistribution.CacheBehaviorProperty => this.setCacheBehavior(elem)) : undefined,
+        comment: config.Comment !== undefined && config.Comment !== "" ? config.Comment : undefined,
+        customErrorResponses: config.CustomErrorResponses !== undefined && config.CustomErrorResponses.Items !== undefined && config.CustomErrorResponses.Items.length > 0 ? config.CustomErrorResponses.Items.map((elem: any): cloudfront.CfnDistribution.CustomErrorResponseProperty => {
+          return {
+            errorCode: config.ErrorCode !== undefined ? Number(config.ErrorCode) : undefined,
+            // Optional
+            errorCachingMinTtl: config.ErrorCachingMinTTL !== undefined ? Number(config.ErrorCachingMinTTL) : undefined,
+            responseCode: config.ResponseCode !== undefined ? Number(config.ResponseCode) : undefined,
+            responsePagePath: config.ResponsePagePath
+          };
+        }) : undefined,
+        defaultCacheBehavior: config.CacheBehaviors !== undefined && config.CacheBehaviors.Items !== undefined && config.CacheBehaviors.Items.length > 0 ? undefined : this.setCacheBehavior(config.DefaultCacheBehavior),
+        httpVersion: config.HttpVersion,
+        ipv6Enabled: config.IsIPV6Enabled,
+        logging: config.Logging !== undefined && config.Logging.Enabled !== undefined && config.Logging.Enabled === true ? {
+          bucket: config.Logging.Bucket,
+          // Optional
+          includeCookies: config.Logging.IncludeCookies,
+          prefix: config.Logging.Prefix
+        } : undefined,
+        originGroups: config.OriginGroups !== undefined && config.OriginGroups.Items !== undefined && config.OriginGroups.Items.length > 0 ? {
+          items: config.OriginGroups.Items.map((elem: any): cloudfront.CfnDistribution.OriginGroupProperty => {
+            return {
+              failoverCriteria: elem.FailoverCriteria !== undefined ? {
+                statusCodes: elem.FailoverCriteria.StatusCodes !== undefined && elem.FailoverCriteria.StatusCodes.Items !== undefined && elem.FailoverCriteria.StatusCodes.Items.length > 0 ? {
+                  items: elem.FailoverCriteria.StatusCodes.Items,
+                  quantity: elem.FailoverCriteria.StatusCodes.Quantity
+                } : undefined,
+              } : undefined,
+              id: elem.Id,
+              members: elem.Members !== undefined && elem.Members.Items !== undefined && elem.Members.Items.length > 0 ? {
+                items: elem.Members.Items.map((elem: any): cloudfront.CfnDistribution.OriginGroupMemberProperty => {
+                  return {
+                    originId: elem.OriginId
+                  };
+                }),
+                quantity: elem.Members.Quantity
+              } : undefined
+            }
+          }),
+          quantity: config.OriginGroups.Quantity
+        } : undefined,
+        origins: config.Origins !== undefined && config.Origins.Items !== undefined && config.Origins.Items.length > 0 ? config.Origins.Item.map((elem: any): cloudfront.CfnDistribution.OriginProperty => {
+          return {
+            domainName: elem.DomainName,
+            id: elem.Id,
+            // Optional
+            connectionAttempts: elem.ConnectionAttempts !== undefined ? Number(elem.ConnectionAttempts) : undefined,
+            connectionTimeout: elem.ConnectionTimeout !== undefined ? Number(elem.ConnectionTimeout) : undefined,
+            customOriginConfig: elem.CustomOriginConfig !== undefined ? {
+              originProtocolPolicy: elem.CustomOriginConfig.OriginProtocolPolicy,
+              // Optional
+              httpPort: elem.CustomOriginConfig.HTTPPort !== undefined ? Number(elem.CustomOriginConfig.HTTPPort) : undefined,
+              httpsPort: elem.CustomOriginConfig.HTTPSPort !== undefined ? Number(elem.CustomOriginConfig.HTTPSPort) : undefined,
+              originKeepaliveTimeout: elem.CustomOriginConfig.OriginKeepaliveTimeout !== undefined ? Number(elem.CustomOriginConfig.OriginKeepaliveTimeout) : undefined,
+              originReadTimeout: elem.CustomOriginConfig.OriginReadTimeout !== undefined ? Number(elem.CustomOriginConfig.OriginReadTimeout) : undefined,
+              originSslProtocols: elem.CustomOriginConfig.OriginSslProtocols !== undefined && elem.CustomOriginConfig.OriginSslProtocols.length > 0 ? elem.CustomOriginConfig.OriginSslProtocols : undefined,
+            } : undefined,
+            originCustomHeaders: elem.CustomHeaders !== undefined && elem.CustomHeaders.Items !== undefined && elem.CustomHeaders.Items.length > 0 ? elem.CustomHeaders.Items.map((elem: any): cloudfront.CfnDistribution.OriginCustomHeaderProperty => {
+              return {
+                headerName: elem.HeaderName,
+                headerValue: elem.HeaderValue
+              };
+            }) : undefined,
+            originPath: elem.OriginPath !== undefined && elem.OriginPath !== "" ? elem.OriginPath : undefined,
+            originShield: elem.OriginShield !== undefined ? {
+              enabled: elem.OriginShield.Enabled,
+              originShieldRegion: elem.OriginShield.OriginShieldRegion
+            } : undefined,
+            s3OriginConfig: elem.S3OriginConfig !== undefined ? {
+              originAccessIdentity: elem.S3OriginConfig.OriginAccessIdentity
+            } : undefined
+          };
+        }) : undefined,
+        priceClass: config.PriceClass,
+        restrictions: config.Restrictions !== undefined ? {
+          geoRestriction: config.Restrictions.GeoRestriction !== undefined ? {
+            restrictionType: config.Restrictions.GeoRestriction.RestrictionType,
+            // Optoinal
+            locations: config.Restrictions.GeoRestriction.Items !== undefined && config.Restrictions.GeoRestriction.Items.length > 0 ? config.Restrictions.GeoRestriction.Items : undefined
+          } : undefined
+        } : undefined,
       }
     };
   }
