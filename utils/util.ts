@@ -66,6 +66,7 @@ export function checkAwsArnPattern(target: string): boolean {
 export function extractDataFromArn(arn: string, type: string): string {
   // Split the arn
   const split: string[] = arn.split(":");
+  const service: string = split[2];
   // Return by output type
   switch (type) {
     case "partition":
@@ -77,7 +78,23 @@ export function extractDataFromArn(arn: string, type: string): string {
     case "account":
       return split[4];
     case "resource":
-      return split[5];
+      if (service === "dynamodb") {
+        const temp: string[] = split[5].split("/");
+        return temp[1];
+      } else if (service === "iam") {
+        const temp: string[] = split[5].split("/");
+        return temp.length > 1 ? temp[temp.length - 1] : split[5];
+      } else if (service === "lambda") {
+        return split[6];
+      } else {
+        return split[5];
+      }
+    case "qualifier":
+      if (service === "lambda") {
+        return split[7] !== undefined ? split[7] : arn;
+      } else {
+        return arn;
+      }
     default:
       return arn;
   }

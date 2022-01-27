@@ -8,6 +8,12 @@ export class Table {
   private _table: dynamodb.CfnTable;
   private _scope: Construct;
 
+  /**
+   * Create the dynamodb table
+   * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
+   * @param scope scope context
+   * @param config configuration for table
+   */
   constructor(scope: Construct, config: any) {
     this._scope = scope;
     // Extract a list of tag
@@ -67,6 +73,38 @@ export class Table {
       tableClass: config.TableClass,
       tableName: config.TableName,
       tags: tags.length > 0 ? tags : undefined,
+      timeToLiveSpecification: config.TimeToLiveSpecification !== undefined && config.TimeToLiveSpecification !== null ? {
+        attributeName: config.TimeToLiveSpecification.AttributeName,
+        enabled: config.TimeToLiveSpecification.Enabled
+      } : undefined,
     };
+    // Create the table
+    this._table = new dynamodb.CfnTable(this._scope, createId(JSON.stringify(props)), props);
+    // Store the resource
+    storeResource("dynamodb", config.TableName, this._table);
+  }
+
+  /**
+   * Get an arn for table
+   * @returns arn for table
+   */
+  public getArn(): string {
+    return this._table.attrArn;
+  }
+
+  /**
+   * Get a name for table
+   * @returns name for table
+   */
+  public getName(): string {
+    return this._table.ref;
+  }
+
+  /**
+   * Get an arn for stream
+   * @returns arn for stream
+   */
+  public getStreamArn(): string {
+    return this._table.attrStreamArn;
   }
 }
