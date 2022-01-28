@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
 import { aws_s3 as s3 } from "aws-cdk-lib";
 // Util
-import { getResource, storeResource } from "../utils/cache";
+import { getResource } from "../utils/cache";
 import { createId, extractTags } from "../utils/util";
 
 export class Bucket {
@@ -24,8 +24,6 @@ export class Bucket {
     };
     // Create the bucket
     this._bucket = new s3.CfnBucket(this._scope, createId(JSON.stringify(props)), props);
-    // Store the resource
-    storeResource("s3", config.Name, this._bucket);
   }
 
   /**

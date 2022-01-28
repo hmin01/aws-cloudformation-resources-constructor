@@ -1,9 +1,5 @@
 import { createHash } from "crypto";
-import { readFileSync } from "fs";
-import { join } from "path";
 import { CfnTag } from "aws-cdk-lib";
-
-const CONFIG_DIR: string = join(__dirname, "../configs");
 
 /**
  * Change the part about AWS arn
@@ -196,25 +192,25 @@ export function extractTags(tags: unknown): CfnTag[] {
   }
 }
 
-/**
- * Load a json data (configuration)
- * @param filename file name
- * @returns loaded data
- */
-export function loadJsonFile(filename: string) {
-  try {
-    // Create file path
-    const filePath: string = join(CONFIG_DIR, `${filename}.json`);
-    // Read a file ata
-    const data = readFileSync(filePath).toString();
-    // Transform to json and return data
-    return JSON.parse(data);
-  } catch (err) {
-    // Print error message
-    if (typeof err === "string" || err instanceof Error) {
-      console.error(`[ERROR] ${err}`);
-    }
-    // Exit
-    process.exit(1);
-  }
-}
+// /**
+//  * Load a json data (configuration)
+//  * @param filename file name
+//  * @returns loaded data
+//  */
+// export function loadJsonFile(filename: string) {
+//   try {
+//     // Create file path
+//     const filePath: string = join(CONFIG_DIR, `${filename}.json`);
+//     // Read a file ata
+//     const data = readFileSync(filePath).toString();
+//     // Transform to json and return data
+//     return JSON.parse(data);
+//   } catch (err) {
+//     // Print error message
+//     if (typeof err === "string" || err instanceof Error) {
+//       console.error(`[ERROR] ${err}`);
+//     }
+//     // Exit
+//     process.exit(1);
+//   }
+// }

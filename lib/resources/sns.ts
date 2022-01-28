@@ -35,8 +35,6 @@ export class Topic {
     };
     // Create the topic
     this._topic = new sns.CfnTopic(this._scope, createId(JSON.stringify(props)), props);
-    // Store the resource
-    storeResource("sns", topicName, this._topic);
   }
 
   /**

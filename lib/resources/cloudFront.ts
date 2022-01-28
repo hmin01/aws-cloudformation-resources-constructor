@@ -26,7 +26,7 @@ export class Distribution {
         comment: config.Comment !== undefined && config.Comment !== "" ? config.Comment : undefined,
         customErrorResponses: config.CustomErrorResponses !== undefined && config.CustomErrorResponses.Items !== undefined && config.CustomErrorResponses.Items.length > 0 ? config.CustomErrorResponses.Items.map((elem: any): cloudfront.CfnDistribution.CustomErrorResponseProperty => {
           return {
-            errorCode: config.ErrorCode !== undefined ? Number(config.ErrorCode) : undefined,
+            errorCode: Number(config.ErrorCode),
             // Optional
             errorCachingMinTtl: config.ErrorCachingMinTTL !== undefined ? Number(config.ErrorCachingMinTTL) : undefined,
             responseCode: config.ResponseCode !== undefined ? Number(config.ResponseCode) : undefined,
@@ -45,21 +45,17 @@ export class Distribution {
         originGroups: config.OriginGroups !== undefined && config.OriginGroups.Items !== undefined && config.OriginGroups.Items.length > 0 ? {
           items: config.OriginGroups.Items.map((elem: any): cloudfront.CfnDistribution.OriginGroupProperty => {
             return {
-              failoverCriteria: elem.FailoverCriteria !== undefined ? {
-                statusCodes: elem.FailoverCriteria.StatusCodes !== undefined && elem.FailoverCriteria.StatusCodes.Items !== undefined && elem.FailoverCriteria.StatusCodes.Items.length > 0 ? {
-                  items: elem.FailoverCriteria.StatusCodes.Items,
-                  quantity: elem.FailoverCriteria.StatusCodes.Quantity
-                } : undefined,
-              } : undefined,
+              failoverCriteria: {
+                statusCodes: {
+                  items: elem.FailoverCriteria.StatusCodes.Items !== undefined && elem.FailoverCriteria.StatusCodes.Items.length > 0 ? elem.FailoverCriteria.StatusCodes.Items : undefined,
+                  quantity: Number(elem.FailoverCriteria.StatusCodes.Quantity)
+                },
+              },
               id: elem.Id,
-              members: elem.Members !== undefined && elem.Members.Items !== undefined && elem.Members.Items.length > 0 ? {
-                items: elem.Members.Items.map((elem: any): cloudfront.CfnDistribution.OriginGroupMemberProperty => {
-                  return {
-                    originId: elem.OriginId
-                  };
-                }),
-                quantity: elem.Members.Quantity
-              } : undefined
+              members: {
+                items: elem.Members.Items.map((elem: any): cloudfront.CfnDistribution.OriginGroupMemberProperty => { return { originId: elem.OriginId }; }),
+                quantity: Number(elem.Members.Quantity)
+              }
             }
           }),
           quantity: config.OriginGroups.Quantity
@@ -97,13 +93,13 @@ export class Distribution {
           };
         }) : undefined,
         priceClass: config.PriceClass,
-        restrictions: config.Restrictions !== undefined ? {
-          geoRestriction: config.Restrictions.GeoRestriction !== undefined ? {
+        restrictions: {
+          geoRestriction: {
             restrictionType: config.Restrictions.GeoRestriction.RestrictionType,
             // Optoinal
             locations: config.Restrictions.GeoRestriction.Items !== undefined && config.Restrictions.GeoRestriction.Items.length > 0 ? config.Restrictions.GeoRestriction.Items : undefined
-          } : undefined
-        } : undefined,
+          }
+        },
         viewerCertificate: config.ViewerCertificate !== undefined && acmCertArn !== undefined ? {
           acmCertificateArn: acmCertArn,
           minimumProtocolVersion: config.MinimumProtocolVersion,
@@ -236,30 +232,30 @@ export class CachePolicy {
     // Create the propertise for cache policy
     const props: cloudfront.CfnCachePolicyProps = {
       cachePolicyConfig: {
-        defaultTtl: config.DefaultTTL !== undefined ? Number(config.DefaultTTL) : undefined,
-        maxTtl: config.MaxTTL !== undefined ? Number(config.MaxTTL) : undefined,
-        minTtl: config.MinTTL !== undefined ? Number(config.MinTTL) : undefined,
+        defaultTtl: Number(config.DefaultTTL),
+        maxTtl: Number(config.MaxTTL),
+        minTtl: Number(config.MinTTL),
         name: config.Name,
-        parametersInCacheKeyAndForwardedToOrigin: config.ParametersInCacheKeyAndForwardedToOrigin ? {
-          cookiesConfig: config.ParametersInCacheKeyAndForwardedToOrigin.CookiesConfig ? {
+        parametersInCacheKeyAndForwardedToOrigin: {
+          cookiesConfig: {
             cookieBehavior: config.ParametersInCacheKeyAndForwardedToOrigin.CookiesConfig.CookieBehavior,
             // Optional
             cookies: config.ParametersInCacheKeyAndForwardedToOrigin.CookiesConfig.Cookies !== undefined && config.ParametersInCacheKeyAndForwardedToOrigin.CookiesConfig.Cookies.length > 0 ? config.ParametersInCacheKeyAndForwardedToOrigin.CookiesConfig.Cookies : undefined,
-          } : undefined,
+          },
           enableAcceptEncodingGzip: config.ParametersInCacheKeyAndForwardedToOrigin.EnableAcceptEncodingGzip,
-          headersConfig: config.ParametersInCacheKeyAndForwardedToOrigin.HeaderConfig !== undefined ? {
+          headersConfig: {
             headerBehavior: config.ParametersInCacheKeyAndForwardedToOrigin.HeaderConfig.HeaderBehavior,
             // Optional
             headers: config.ParametersInCacheKeyAndForwardedToOrigin.HeaderConfig.Headers !== undefined && config.ParametersInCacheKeyAndForwardedToOrigin.HeaderConfig.Headers.length > 0 ? config.ParametersInCacheKeyAndForwardedToOrigin.HeaderConfig.Headers : undefined,
-          } : undefined,
-          queryStringsConfig: config.ParametersInCacheKeyAndForwardedToOrigin.QueryStringsConfig !== undefined ? {
+          },
+          queryStringsConfig: {
             queryStringBehavior: config.ParametersInCacheKeyAndForwardedToOrigin.QueryStringsConfig.QueryStringBehavior,
             // Optional
             queryStrings: config.ParametersInCacheKeyAndForwardedToOrigin.QueryStringsConfig.QueryStrings !== undefined && config.ParametersInCacheKeyAndForwardedToOrigin.QueryStringsConfig.QueryStrings.length > 0  ? config.ParametersInCacheKeyAndForwardedToOrigin.QueryStringsConfig.QueryStrings : undefined,
-          } : undefined,
+          },
           // Optional
           enableAcceptEncodingBrotli: config.ParametersInCacheKeyAndForwardedToOrigin.EnableAcceptEncodingBrotli,
-        } : undefined,
+        },
         // Optional
         comment: config.Comment !== undefined && config.Comment !== "" ? config.Comment : undefined
       }
@@ -295,22 +291,22 @@ export class OriginRequestPolicy {
     // Create the prorperties for origin request policy
     const props: cloudfront.CfnOriginRequestPolicyProps = {
       originRequestPolicyConfig: {
-        cookiesConfig: config.CookiesConfig !== undefined ? {
+        cookiesConfig: {
           cookieBehavior: config.CookiesConfig.CookieBehavior,
           // Optional
           cookies: config.CookiesConfig.Cookies !== undefined && config.CookiesConfig.Cookies.length > 0 ? config.CookiesConfig.Cookies : undefined
-        } : undefined,
-        headersConfig: config.HeadersConfig !== undefined ? {
+        },
+        headersConfig: {
           headerBehavior: config.HeadersConfig.HeaderBehavior,
           // Optional
           headers: config.HeadersConfig.Headers !== undefined && config.HeadersConfig.Headers.length > 0 ? config.HeadersConfig.Headers : undefined
-        } : undefined,
+        },
         name: config.Name,
-        queryStringsConfig: config.QueryStringsConfig !== undefined ? {
+        queryStringsConfig: {
           queryStringBehavior: config.QueryStringsConfig.QueryStringBehavior,
           // Optional
           queryStrings: config.QueryStringsConfig.QueryStrings !== undefined && config.QueryStringsConfig.QueryStrings.length > 0 ? config.QueryStringsConfig.QueryStrings : undefined
-        } : undefined,
+        },
         // Optional
         comment: config.Comment !== undefined && config.Comment !== "" ? config.Comment : undefined,
       }
@@ -341,20 +337,26 @@ export class ResponseHeaderPolicy {
         name: config.Name,
         // Optional
         comment: config.Comment,
-        corsConfig: config.CorsConfig !== undefined ? {
+        corsConfig: {
           accessControlAllowCredentials: config.AccessControlAllowCredentials,
-          accessControlAllowHeaders: config.AccessControlAllowHeaders !== undefined && config.accessControlAllowHeaders.Items !== undefined && config.accessControlAllowHeaders.Items.length > 0 ? { items: config.accessControlAllowHeaders.Items } : undefined,
-          accessControlAllowMethods: config.AccessControlAllowMethods !== undefined && config.AccessControlAllowMethods.Items !== undefined && config.AccessControlAllowMethods.Items.length > 0 ? { items: config.AccessControlAllowMethods.Items } : undefined,
-          accessControlAllowOrigins: config.AccessControlAllowOrigins !== undefined && config.AccessControlAllowOrigins.Items !== undefined && config.AccessControlAllowOrigins.Items.length > 0 ? { items: config.AccessControlAllowOrigins.Items } : undefined,
+          accessControlAllowHeaders: {
+            items: config.accessControlAllowHeaders.Items
+          },
+          accessControlAllowMethods: {
+            items: config.AccessControlAllowMethods.Items
+          },
+          accessControlAllowOrigins: {
+            items: config.AccessControlAllowOrigins.Items
+          },
           originOverride: config.OriginOverride,
           // Optional
           accessControlExposeHeaders: config.AccessControlExposeHeaders !== undefined && config.AccessControlExposeHeaders.Items !== undefined && config.AccessControlExposeHeaders.Items.length > 0 ? { items: config.AccessControlExposeHeaders.Items } : undefined,
           accessControlMaxAgeSec: config.AccessControlMaxAgeSec !== undefined ? Number(config.AccessControlMaxAgeSec) : undefined,
-        } : undefined,
+        },
         customHeadersConfig: config.CustomHeadersConfig !== undefined && config.CustomHeadersConfig.Items !== undefined && config.CustomHeadersConfig.Items.length > 0 ? {
           items: config.CustomHeadersConfig.Items.map((elem: any): cloudfront.CfnResponseHeadersPolicy.CustomHeaderProperty => { return { header: elem.Header, override: elem.Override, value: elem.Value }; })
         } : undefined,
-        securityHeadersConfig: config.SecurityHeadersConfig !== undefined && config.SecurityHeadersConfig.Items !== undefined && config.SecurityHeadersConfig.length > 0 ? {
+        securityHeadersConfig: {
           contentSecurityPolicy: config.SecurityHeadersConfig.ContentSecurityPolicy !== undefined ? {
             contentSecurityPolicy: config.SecurityHeadersConfig.ContentSecurityPolicy.ContentSecurityPolicy,
             override: config.SecurityHeadersConfig.ContentSecurityPolicy.Override
@@ -370,13 +372,13 @@ export class ResponseHeaderPolicy {
             referrerPolicy: config.ReferrerPolicy.ReferrerPolicy,
             override: config.ReferrerPolicy.Override
           } : undefined,
-          strictTransportSecurity: config.StrictTransportSecurity !== undefined ? {
-            accessControlMaxAgeSec: config.StrictTransportSecurity.AccessControlMaxAgeSec !== undefined ? Number(config.StrictTransportSecurity.AccessControlMaxAgeSec) : undefined,
+          strictTransportSecurity: {
+            accessControlMaxAgeSec: Number(config.StrictTransportSecurity.AccessControlMaxAgeSec),
             override: config.StrictTransportSecurity.Override,
             // Optional
             includeSubdomains: config.StrictTransportSecurity.IncludeSubdomains,
             preload: config.StrictTransportSecurity.Preload
-          } : undefined,
+          },
           xssProtection: config.XSSProtection !== undefined ? {
             override: config.XSSProtection.Override,
             protection: config.XSSProtection.Protection,
@@ -384,7 +386,7 @@ export class ResponseHeaderPolicy {
             modeBlock: config.XSSProtection.ModeBlock,
             reportUri: config.XSSProtection.ReportUri
           } : undefined
-        }: undefined,
+        },
       }
     };
     // Create the response headers policy

@@ -55,7 +55,6 @@ export function createLambdaFunctions(scope: Construct, config: any): void {
     }
   }
 }
-
 /**
  * Set the event source mappings
  * @param config configuration for event source mappings

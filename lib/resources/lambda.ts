@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
 import { aws_lambda as lambda } from "aws-cdk-lib";
 // Util
-import { getResource, storeResource } from "../utils/cache";
+import { getResource } from "../utils/cache";
 import { createId, extractDataFromArn, extractTags } from "../utils/util";
 
 export class Function {

@@ -1,8 +1,8 @@
 import { Construct } from "constructs";
 import { aws_iam as iam } from "aws-cdk-lib";
 // Util
-import { createId, extractTags } from "../utils/util";
 import { getResource } from "../utils/cache";
+import { createId, extractTags } from "../utils/util";
 
 export class Role {
   private _role: iam.CfnRole;
