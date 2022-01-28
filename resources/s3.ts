@@ -2,7 +2,7 @@ import { Construct } from "constructs";
 import { aws_s3 as s3 } from "aws-cdk-lib";
 // Util
 import { getResource, storeResource } from "../utils/cache";
-import { createId } from "../utils/util";
+import { createId, extractTags } from "../utils/util";
 
 export class Bucket {
   private _bucket: s3.CfnBucket;
@@ -79,13 +79,12 @@ export class Bucket {
    private getMappingTopicArn(prevArn: string): string {
     const arnSplit: string[] = prevArn.split(":");
     if (arnSplit.length === 6) {
-      const queue: any = getResource("sns", arnSplit[arnSplit.length - 1]);
-      if (queue !== undefined) {
-        return queue.getArn();
-      } else {
-        return prevArn;
+      const topic: any = getResource("sns", arnSplit[arnSplit.length - 1]);
+      if (topic !== undefined) {
+        return topic.getArn();
       }
     }
+    return prevArn;
   }
 
   /**
@@ -99,10 +98,9 @@ export class Bucket {
       const queue: any = getResource("sqs", arnSplit[arnSplit.length - 1]);
       if (queue !== undefined) {
         return queue.getArn();
-      } else {
-        return prevArn;
       }
     }
+    return prevArn;
   }
 
   /**
@@ -262,6 +260,19 @@ export class Bucket {
       };
       // Set the public access block
       this._bucket.addPropertyOverride("PublicAccessBlockConfiguration", props);
+    }
+  }
+
+  /**
+   * Set the tags
+   * @param config configuration for tags
+   */
+  public setTags(config: any) {
+    // Create a list of tag
+    const tags = extractTags(config);
+    // Set the tags
+    if (tags.length > 0) {
+      this._bucket.addPropertyOverride("Tags", tags);
     }
   }
 

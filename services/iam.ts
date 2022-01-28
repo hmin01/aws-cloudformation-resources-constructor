@@ -2,6 +2,7 @@ import { Construct } from "constructs";
 // Resources
 import { Policy, Role } from "../resources/iam";
 // Util
+import { storeResource } from "../utils/cache";
 import { extractDataFromArn } from "../utils/util";
 
 /**
@@ -18,7 +19,9 @@ export function createPolicies(scope: Construct, config: any) {
       // Get a configuration for policy
       const elem: any = config[policyArn];
       // Create a policy
-      new Policy(scope, elem);
+      const policy: Policy = new Policy(scope, elem);
+      // Store the resource
+      storeResource("policy", elem.PolicyName, policy);
     }
   }
 }
@@ -34,6 +37,8 @@ export function createRoles(scope: Construct, config: any) {
     const elem: any = config[roleId];
     // Create a role
     const role = new Role(scope, elem.Role);
+    // Store the resource
+    storeResource("role", elem.Role.RoleName, role);
 
     // Associate the managed policies
     role.associateManagedPolicies(elem.AttachedPolicies);

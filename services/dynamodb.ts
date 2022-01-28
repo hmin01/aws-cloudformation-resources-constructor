@@ -1,6 +1,8 @@
 import { Construct } from "constructs";
 // Resources
 import { Table } from "../resources/dynamodb";
+// Util
+import { storeResource } from "../utils/cache";
 
 /**
  * Create the dynamodb tables
@@ -8,10 +10,12 @@ import { Table } from "../resources/dynamodb";
  * @param config configuration for tables
  */
 export function createTables(scope: Construct, config: any) {
-  for (const tableName of config) {
+  for (const tableName of Object.keys(config)) {
     // Get a configuration for table
     const elem: any = config[tableName];
     // Create a table
-    new Table(scope, elem);
+    const table: Table = new Table(scope, elem);
+    // Store the resource
+    storeResource("dynamodb", tableName, table);
   }
 }

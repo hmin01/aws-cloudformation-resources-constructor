@@ -62,4 +62,17 @@ export class Topic {
   public getRef(): string {
     return this._topic.ref;
   }
+
+  /**
+   * Set the tags
+   * @param config configuration for tags
+   */
+  public setTags(config: any) {
+    // Create a list of tag
+    const tags = extractTags(config);
+    // Set the tags
+    if (tags.length > 0) {
+      this._topic.addPropertyOverride("Tags", tags);
+    }
+  }
 }

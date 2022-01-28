@@ -2,7 +2,7 @@ import { Construct } from "constructs";
 import { aws_iam as iam } from "aws-cdk-lib";
 // Util
 import { createId, extractTags } from "../utils/util";
-import { getResource, storeResource } from "../utils/cache";
+import { getResource } from "../utils/cache";
 
 export class Role {
   private _role: iam.CfnRole;
@@ -29,8 +29,6 @@ export class Role {
     };
     // Create the role based on properties
     this._role = new iam.CfnRole(this._scope, createId(JSON.stringify(props)), props);
-    // Store the resource
-    storeResource("role", config.RoleName, this._role);
   }
 
   /**
@@ -38,7 +36,12 @@ export class Role {
    * @param policyArn arn for policy
    */
   public attachManagePolicy(policyArn: string) {
-    this._role.managedPolicyArns.push(policyArn);
+    const managedPolicyArns: string[]|undefined = this._role.managedPolicyArns;
+    if (typeof managedPolicyArns !== "undefined") {
+      managedPolicyArns.push(policyArn);
+      // Set the managed policy arns
+      this._role.addPropertyOverride("ManagedPolicyArns", managedPolicyArns);
+    }
   }
 
   /**
@@ -107,6 +110,19 @@ export class Role {
     // Set an inline policy
     new iam.CfnPolicy(this._scope, createId(JSON.stringify(props)), props);
   }
+
+  /**
+   * Set the tags
+   * @param config configuration for tags
+   */
+  public setTags(config: any) {
+    // Create a list of tag
+    const tags = extractTags(config);
+    // Set the tags
+    if (tags.length > 0) {
+      this._role.addPropertyOverride("Tags", tags);
+    }
+  }
 }
 
 export class Policy {
@@ -130,8 +146,6 @@ export class Policy {
     };
     // Create the managed policy based on properties
     this._policy = new iam.CfnManagedPolicy(this._scope, createId(JSON.stringify(props)), props);
-    // Store the resource
-    storeResource("policy", config.PolicyName, this._policy);
   }
 
   /**

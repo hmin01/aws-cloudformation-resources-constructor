@@ -1,5 +1,9 @@
 import { createHash } from "crypto";
+import { readFileSync } from "fs";
+import { join } from "path";
 import { CfnTag } from "aws-cdk-lib";
+
+const CONFIG_DIR: string = join(__dirname, "../configs");
 
 /**
  * Change the part about AWS arn
@@ -41,7 +45,7 @@ export function changePartaboutArn(arn: string, type: string, content: string): 
  * @returns created id
  */
 export function createId(content: string): string {
-  return createHash("sha256").update(content).digest("hex");
+  return `TOV${createHash("sha256").update(content).digest("hex")}`;
 }
 
 /**
@@ -106,59 +110,64 @@ export function extractDataFromArn(arn: string, type: string): string {
  * @returns extracted and modified principal
  */
 export function extractPrincipal(principalConfig: any): any {
-  // Set the default pattern for arn and accountId
-  const accountIdPattern = new RegExp("^[0-9]{12}$");
-  // Extract the principal
   const result: any = {};
-  for (const key of Object.keys(principalConfig)) {
-    if (key === "AWS") {
-      if (Object.prototype.toString.call(principalConfig[key]) === "Array") {
-        // Set result
-        result[key] = [];
-        // Extract
-        for (const elem of principalConfig[key]) {
-          if (checkAwsArnPattern(elem)) {
-            const account: string = extractDataFromArn(elem, "account");
-            if (account === process.env.ORIGIN_ACCOUNT) {
-              result[key].push(changePartaboutArn(elem, "account", process.env.ACCOUNT));
+  if (process.env !== undefined && process.env.ACCOUNT !== undefined && process.env.ORIGIN_ACCOUT) {
+    // Set the default pattern for arn and accountId
+    const accountIdPattern = new RegExp("^[0-9]{12}$");
+    // Extract the principal
+    for (const key of Object.keys(principalConfig)) {
+      if (key === "AWS") {
+        if (Object.prototype.toString.call(principalConfig[key]) === "Array") {
+          // Set result
+          result[key] = [];
+          // Extract
+          for (const elem of principalConfig[key]) {
+            if (checkAwsArnPattern(elem)) {
+              const account: string = extractDataFromArn(elem, "account");
+              if (account === process.env.ORIGIN_ACCOUNT) {
+                result[key].push(changePartaboutArn(elem, "account", process.env.ACCOUNT));
+              } else {
+                result[key].push(elem);
+              }
             } else {
-              result[key].push(elem);
-            }
-          } else {
-            if (accountIdPattern.test(elem)) {
-              if (elem === process.env.ORIGIN_ACCOUNT) {
-                result[key] = process.env.ACCOUNT;
+              if (accountIdPattern.test(elem)) {
+                if (elem === process.env.ORIGIN_ACCOUNT) {
+                  result[key] = process.env.ACCOUNT;
+                } else {
+                  result[key] = elem;
+                }
               } else {
                 result[key] = elem;
               }
+            }
+          }
+        } else {
+          if (checkAwsArnPattern(principalConfig[key])) {
+            const account: string = extractDataFromArn(principalConfig[key], "account");
+            if (account === process.env.ORIGIN_ACCOUNT) {
+              result[key] = changePartaboutArn(principalConfig[key], "account", process.env.ACCOUNT);
             } else {
-              result[key] = elem;
+              result[key] === principalConfig[key];
+            }
+          } else {
+            if (accountIdPattern.test(principalConfig[key])) {
+              if (principalConfig[key] === process.env.ORIGIN_ACCOUNT) {
+                result[key] = process.env.ACCOUNT;
+              } else {
+                result[key] = principalConfig[key];
+              }
+            } else {
+              result[key] = principalConfig[key];
             }
           }
         }
       } else {
-        if (checkAwsArnPattern(principalConfig[key])) {
-          const account: string = extractDataFromArn(principalConfig[key], "account");
-          if (account === process.env.ORIGIN_ACCOUNT) {
-            result[key] = changePartaboutArn(principalConfig[key], "account", process.env.ACCOUNT);
-          } else {
-            result[key] === principalConfig[key];
-          }
-        } else {
-          if (accountIdPattern.test(principalConfig[key])) {
-            if (principalConfig[key] === process.env.ORIGIN_ACCOUNT) {
-              result[key] = process.env.ACCOUNT;
-            } else {
-              result[key] = principalConfig[key];
-            }
-          } else {
-            result[key] = principalConfig[key];
-          }
-        }
+        result[key] = principalConfig[key];
       }
-    } else {
-      result[key] = principalConfig[key];
     }
+  } else {
+    console.error("[ERROR] Environmental variables are not set");
+    process.exit(1);
   }
   // Return
   return result;
@@ -184,5 +193,28 @@ export function extractTags(tags: unknown): CfnTag[] {
     });
   } else {
     return [];
+  }
+}
+
+/**
+ * Load a json data (configuration)
+ * @param filename file name
+ * @returns loaded data
+ */
+export function loadJsonFile(filename: string) {
+  try {
+    // Create file path
+    const filePath: string = join(CONFIG_DIR, `${filename}.json`);
+    // Read a file ata
+    const data = readFileSync(filePath).toString();
+    // Transform to json and return data
+    return JSON.parse(data);
+  } catch (err) {
+    // Print error message
+    if (typeof err === "string" || err instanceof Error) {
+      console.error(`[ERROR] ${err}`);
+    }
+    // Exit
+    process.exit(1);
   }
 }

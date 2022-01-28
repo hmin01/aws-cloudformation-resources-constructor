@@ -2,7 +2,7 @@ import { Construct } from "constructs";
 import { aws_cloudfront as cloudfront } from "aws-cdk-lib";
 // Util
 import { getResource, storeResource } from "../utils/cache";
-import { createId, extractDataFromArn } from "../utils/util";
+import { createId, extractDataFromArn, extractTags } from "../utils/util";
 
 export class Distribution {
   private _distribution: cloudfront.CfnDistribution;
@@ -14,7 +14,7 @@ export class Distribution {
    * @param scope scope context
    * @param config configuration for distribution
    */
-  constructor(scope: Construct, config: any) {
+  constructor(scope: Construct, config: any, acmCertArn: string) {
     this._scope = scope;
     // Create the properties for distribution
     const props: cloudfront.CfnDistributionProps = {
@@ -22,7 +22,7 @@ export class Distribution {
         enabled: config.Enabled,
         // Optional
         aliases: config.Aliases !== undefined ? config.Aliases.Items !== undefined ? config.Aliases.Item.length > 0 ? config.Aliases.Item : undefined : undefined : undefined,
-        cacheBehaviors: config.CacheBehaviors !== undefined && config.CacheBehaviors.Items !== undefined && config.CacheBehaviors.Items.length > 0 ? config.CacheBehaviors.Items.map((elem: any): cloudfront.CfnDistribution.CacheBehaviorProperty => this.setCacheBehavior(elem)) : undefined,
+        cacheBehaviors: config.CacheBehaviors !== undefined && config.CacheBehaviors.Items !== undefined && config.CacheBehaviors.Items.length > 0 ? config.CacheBehaviors.Items.map((elem: any): cloudfront.CfnDistribution.CacheBehaviorProperty => this.createCacheBehaviorFormat(elem)) : undefined,
         comment: config.Comment !== undefined && config.Comment !== "" ? config.Comment : undefined,
         customErrorResponses: config.CustomErrorResponses !== undefined && config.CustomErrorResponses.Items !== undefined && config.CustomErrorResponses.Items.length > 0 ? config.CustomErrorResponses.Items.map((elem: any): cloudfront.CfnDistribution.CustomErrorResponseProperty => {
           return {
@@ -33,7 +33,7 @@ export class Distribution {
             responsePagePath: config.ResponsePagePath
           };
         }) : undefined,
-        defaultCacheBehavior: config.CacheBehaviors !== undefined && config.CacheBehaviors.Items !== undefined && config.CacheBehaviors.Items.length > 0 ? undefined : this.setCacheBehavior(config.DefaultCacheBehavior),
+        defaultCacheBehavior: config.CacheBehaviors !== undefined && config.CacheBehaviors.Items !== undefined && config.CacheBehaviors.Items.length > 0 ? undefined : this.createCacheBehaviorFormat(config.DefaultCacheBehavior),
         httpVersion: config.HttpVersion,
         ipv6Enabled: config.IsIPV6Enabled,
         logging: config.Logging !== undefined && config.Logging.Enabled !== undefined && config.Logging.Enabled === true ? {
@@ -104,19 +104,28 @@ export class Distribution {
             locations: config.Restrictions.GeoRestriction.Items !== undefined && config.Restrictions.GeoRestriction.Items.length > 0 ? config.Restrictions.GeoRestriction.Items : undefined
           } : undefined
         } : undefined,
+        viewerCertificate: config.ViewerCertificate !== undefined && acmCertArn !== undefined ? {
+          acmCertificateArn: acmCertArn,
+          minimumProtocolVersion: config.MinimumProtocolVersion,
+          sslSupportMethod: config.SSLSupportMethod
+        } : undefined,
+        webAclId: config.WebACLId !== undefined && config.WebACLId !== "" ? config.WebACLId : undefined
       }
     };
+    // Create the distribution
+    this._distribution = new cloudfront.CfnDistribution(this._scope, createId(JSON.stringify(props)), props);
   }
 
   /**
-   * 
+   * Create the format for cache behavior
    * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-cachebehavior.html
    * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-defaultcachebehavior.html
-   * @param config 
+   * @param config configuration for cache behavior
+   * @returns format for cache behavior
    */
-  public setCacheBehavior(config: any): any {
+  public createCacheBehaviorFormat(config: any): any {
     // Get a cache policy
-    const cachePolicy: string|undefined = config.CachePolicyId !== undefined ? getResource("cloudfront-policy", config.CachePolicyId) : undefined;
+    const cachePolicy: string|undefined = config.CachePolicyId !== undefined ? getResource("cloudfront-cachepolicy", config.CachePolicyId) : undefined;
     // Get a origin request policy
     const originRequestPolicy: string|undefined = config.OriginRequestPolicyId !== undefined ? getResource("cloudfront-originrequestpolicy", config.OriginRequestPolicyId) : undefined;
     // Create the properties for cache behavior
@@ -157,6 +166,19 @@ export class Distribution {
       minTtl: config.MinTTL !== undefined ? Number(config.MinTTL) : undefined,
       originRequestPolicyId: originRequestPolicy !== undefined ? originRequestPolicy : config.OriginRequestPolicyId,
     };
+  }
+
+  /**
+   * Set the tags
+   * @param config configuration for tags
+   */
+  public setTags(config: any) {
+    // Create a list of tag
+    const tags = extractTags(config);
+    // Set the tags
+    if (tags.length > 0) {
+      this._distribution.addPropertyOverride("Tags", tags);
+    }
   }
 }
 
@@ -205,11 +227,11 @@ export class CachePolicy {
   /**
    * Create the cache policy for cloudfront
    * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-cloudfront-cachepolicy.html
-   * @param id previous resource id
    * @param scope scope context
+   * @param prevId previous resource id
    * @param config configuration for cache policy
    */
-  constructor(scope: Construct, id: string, config: any) {
+  constructor(scope: Construct, prevId: string, config: any) {
     this._scope = scope;
     // Create the propertise for cache policy
     const props: cloudfront.CfnCachePolicyProps = {
@@ -245,7 +267,7 @@ export class CachePolicy {
     // Create the cache policy
     this._policy = new cloudfront.CfnCachePolicy(this._scope, createId(JSON.stringify(props)), props);
     // Store the resource
-    storeResource("cloudfront-policy", config.Id, this._policy.ref);
+    storeResource("cloudfront-cachepolicy", prevId, this._policy.ref);
   }
 
   /**
@@ -265,10 +287,10 @@ export class OriginRequestPolicy {
    * Create the origin request policy for cloudfront
    * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-cloudfront-originrequestpolicy.html
    * @param scope scope context
-   * @param id previous resource id
+   * @param prevId previous resource id
    * @param config configuration for orgin request policy
    */
-  constructor(scope: Construct, id: string, config: any) {
+  constructor(scope: Construct, prevId: string, config: any) {
     this._scope = scope;
     // Create the prorperties for origin request policy
     const props: cloudfront.CfnOriginRequestPolicyProps = {
@@ -296,7 +318,7 @@ export class OriginRequestPolicy {
     // Create the origin request policy
     this._policy = new cloudfront.CfnOriginRequestPolicy(this._scope, createId(JSON.stringify(props)), props);
     // Store the resource
-    storeResource("cloudfront-originrequestpolicy", id, this._policy.ref);
+    storeResource("cloudfront-originrequestpolicy", prevId, this._policy.ref);
   }
 }
 
@@ -308,10 +330,10 @@ export class ResponseHeaderPolicy {
    * Create the response header policy for cloudfront
    * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-cloudfront-responseheaderspolicy.html
    * @param scope scope context
-   * @param id previous resource id
+   * @param prevId previous resource id
    * @param config configuration for response header policy
    */
-  constructor(scope: Construct, id: string, config: any) {
+  constructor(scope: Construct, prevId: string, config: any) {
     this._scope = scope;
     // Create the properties for response header policy
     const props: cloudfront.CfnResponseHeadersPolicyProps = {
@@ -367,5 +389,7 @@ export class ResponseHeaderPolicy {
     };
     // Create the response headers policy
     this._policy = new cloudfront.CfnResponseHeadersPolicy(this._scope, createId(JSON.stringify(props)), props);
+    // Store the resource
+    storeResource("cloudfront-responseheaderspolicy", prevId, this._policy.ref);
   }
 }

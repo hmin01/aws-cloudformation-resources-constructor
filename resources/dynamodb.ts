@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
 import { aws_dynamodb as dynamodb } from "aws-cdk-lib";
 // Util
-import { getResource, storeResource } from "../utils/cache";
+import { getResource } from "../utils/cache";
 import { createId, extractTags } from "../utils/util";
 
 export class Table {
@@ -28,31 +28,31 @@ export class Table {
         return {
           indexName: elem.IndexName,
           keySchema: elem.KeySchema !== undefined ? elem.KeySchema.map((item: any): dynamodb.CfnTable.KeySchemaProperty => { return { attributeName: item.AttributeName, keyType: item.KeyType }; }) : undefined,
-          projection: elem.Projection !== undefined ? {
+          projection: {
             nonKeyAttributes: elem.Projection.NonKeyAttributes,
             projectionType: elem.Projection.ProjectionType
-          } : undefined,
+          },
           // Optional
           contributorInsightsSpecification: elem.ContributorInsightsSpecification !== undefined ? {
             enabled: elem.ContributorInsightsSpecification.Enabled
           } : undefined,
           provisionedThroughput: elem.ProvisionedThroughput !== undefined ? {
-            readCapacityUnits: elem.ProvisionedThroughput.ReadCapacityUnits !== undefined ? Number(elem.ProvisionedThroughput.ReadCapacityUnits) : undefined,
-            writeCapacityUnits: elem.ProvisionedThroughput.WriteCapacityUnits !== undefined ? Number(elem.ProvisionedThroughput.WriteCapacityUnits) : undefined
+            readCapacityUnits: Number(elem.ProvisionedThroughput.ReadCapacityUnits),
+            writeCapacityUnits: Number(elem.ProvisionedThroughput.WriteCapacityUnits)
           } : undefined
         };
       }) : undefined,
       kinesisStreamSpecification: config.KinesisStreamSpecification !== undefined && config.KinesisStreamSpecification !== null ? {
-        streamArn: getResource("kinesis", config.KinesisStreamSpecification.StreamArn)
+        streamArn: getResource("kinesis", config.KinesisStreamSpecification.StreamArn).getArn()
       } : undefined,
       localSecondaryIndexes: config.LocalSecondaryIndexes !== undefined && config.LocalSecondaryIndexes !== null ? config.LocalSecondaryIndexes.map((elem: any): dynamodb.CfnTable.LocalSecondaryIndexProperty => {
         return {
           indexName: elem.IndexName,
-          keySchema: elem.KeySchema !== undefined ? elem.KeySchema.map((item: any): dynamodb.CfnTable.KeySchemaProperty => { return { attributeName: item.AttributeName, keyType: item.KeyType }; }) : undefined,
-          projection: elem.Projection !== undefined ? {
+          keySchema: elem.KeySchema.map((item: any): dynamodb.CfnTable.KeySchemaProperty => { return { attributeName: item.AttributeName, keyType: item.KeyType }; }),
+          projection: {
             nonKeyAttributes: elem.Projection.NonKeyAttributes,
             projectionType: elem.Projection.ProjectionType
-          } : undefined,
+          },
         };
       }) : undefined,
       pointInTimeRecoverySpecification: config.PointInTimeRecoverySpecification !== undefined && config.PointInTimeRecoverySpecification !== null ? {
@@ -63,7 +63,7 @@ export class Table {
         writeCapacityUnits: config.ProvisionedThroughput.WriteCapacityUnits
       } : undefined,
       sseSpecification: config.SSESpecification !== undefined && config.SSESpecification !== null ? {
-        kmsMasterKeyId: getResource("kms", config.SSESpecification.KmsMasterKeyId),
+        kmsMasterKeyId: getResource("kms", config.SSESpecification.KmsMasterKeyId).getId(),
         sseEnabled: config.SSESpecification.SSEEnabled,
         sseType: config.SSESpecification.SSEType
       } : undefined,
@@ -80,8 +80,6 @@ export class Table {
     };
     // Create the table
     this._table = new dynamodb.CfnTable(this._scope, createId(JSON.stringify(props)), props);
-    // Store the resource
-    storeResource("dynamodb", config.TableName, this._table);
   }
 
   /**
@@ -106,5 +104,18 @@ export class Table {
    */
   public getStreamArn(): string {
     return this._table.attrStreamArn;
+  }
+
+  /**
+   * Set the tags
+   * @param config configuration for tags
+   */
+  public setTags(config: any) {
+    // Create a list of tag
+    const tags = extractTags(config);
+    // Set the tags
+    if (tags.length > 0) {
+      this._table.addPropertyOverride("Tags", tags);
+    }
   }
 }

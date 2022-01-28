@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
 import { aws_sqs as sqs } from "aws-cdk-lib";
 // Util
-import { getResource, storeResource } from "../utils/cache";
+import { getResource } from "../utils/cache";
 import { createId, extractDataFromArn, extractPrincipal, extractTags } from "../utils/util";
 
 export class Queue {
@@ -20,13 +20,13 @@ export class Queue {
     const queueName: string = extractDataFromArn(config.QueueArn, "resource");
     // Set the properties for queue
     const props: sqs.CfnQueueProps = {
-      contentBasedDeduplication: config.FifoQueue === "true" ? config.ContentBasedDeduplication : undefined,
+      contentBasedDeduplication: config.FifoQueue === "true" && config.ContentBasedDeduplication !== undefined ? JSON.parse(config.ContentBasedDeduplication) : undefined,
       deduplicationScope: config.FifoQueue === "true" ? config.DeduplicationScope : undefined,
       delaySeconds: config.DelaySeconds !== undefined ? Number(config.DelaySeconds) : undefined,
       fifoQueue: config.FifoQueue === "true" ? true : undefined,
       fifoThroughputLimit: config.FifoQueue === "true" ? config.FifoThroughputLimit : undefined,
       kmsDataKeyReusePeriodSeconds: config.KmsDataKeyReusePeriodSeconds !== undefined ? Number(config.KmsDataKeyReusePeriodSeconds) : undefined,
-      kmsMasterKeyId: config.KmsMasterKeyId !== undefined ? getResource("kms", config.KmsMasterKeyId) : undefined,
+      kmsMasterKeyId: config.KmsMasterKeyId !== undefined ? getResource("kms", config.KmsMasterKeyId).getId() : undefined,
       maximumMessageSize: config.MaximumMessageSize !== undefined ? Number(config.MaximumMessageSize) : undefined,
       messageRetentionPeriod: config.MessageRetentionPeriod !== undefined ? Number(config.MessageRetentionPeriod) : undefined,
       queueName: queueName,
@@ -35,8 +35,6 @@ export class Queue {
     };
     // Create the queue
     this._queue = new sqs.CfnQueue(this._scope, createId(JSON.stringify(props)), props);
-    // Store the resource
-    storeResource("sqs", queueName, this._queue);
   }
 
   /**
@@ -101,6 +99,8 @@ export class Queue {
     // Create a list of tag
     const tags = extractTags(config);
     // Set the tags
-    this._queue.addPropertyOverride("Tags", tags);
+    if (tags.length > 0) {
+      this._queue.addPropertyOverride("Tags", tags);
+    }
   }
 }
