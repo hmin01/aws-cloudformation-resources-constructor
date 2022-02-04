@@ -49,9 +49,9 @@ export function createLambdaFunctions(scope: Construct, config: any): void {
     // If there's a recent version
     if (version !== null) {
       // Create a version
-      lambdaFunction.createVersion(version)
+      const functionVersion: string = lambdaFunction.createVersion(version)
       // Create an alias
-      lambdaFunction.createAlias(alias);
+      lambdaFunction.createAlias(alias, functionVersion);
     }
   }
 }

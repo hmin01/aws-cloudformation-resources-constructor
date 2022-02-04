@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RestApi = void 0;
 const aws_cdk_lib_1 = require("aws-cdk-lib");
 // Util
-const cache_1 = require("../utils/cache");
 const util_1 = require("../utils/util");
 class RestApi {
     /**
@@ -28,8 +27,6 @@ class RestApi {
         };
         // Create the rest api
         this._restApi = new aws_cdk_lib_1.aws_apigateway.CfnRestApi(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
-        // Store the resource
-        (0, cache_1.storeResource)("apigateway", config.name, this._restApi);
     }
     /**
      * Create the authorizer
@@ -37,6 +34,18 @@ class RestApi {
      * @param config configuration for authorizer
      */
     createAuthorizer(config) {
+        // Get the providerArns
+        const providerArns = config.providerARNs !== undefined ? config.providerARNs.map((elem) => {
+            const account = (0, util_1.extractDataFromArn)(elem, "account");
+            const region = (0, util_1.extractDataFromArn)(elem, "region");
+            if (account === process.env.ACCOUNT && region === process.env.REGION) {
+                return elem;
+            }
+            else {
+                let tempArn = (0, util_1.changePartaboutArn)(elem, "account", process.env.ACCOUNT);
+                return (0, util_1.changePartaboutArn)(tempArn, "region", process.env.REGION);
+            }
+        }) : undefined;
         // Create the properties for authorizer
         const props = {
             authorizerCredentials: config.authorizerCredentials,
@@ -46,6 +55,7 @@ class RestApi {
             identitySource: config.identitySource,
             identityValidationExpression: config.identityValidationExpression,
             name: config.name,
+            providerArns: providerArns,
             restApiId: this._restApi.ref,
             type: config.type
         };
@@ -86,6 +96,9 @@ class RestApi {
             // Set the properties for resource method [Ref. https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-method.html]
             const props = {
                 apiKeyRequired: methodOptions.apiKeyRequired,
+                authorizationScopes: methodOptions.authorizationScopes,
+                authorizationType: methodOptions.authorizationType,
+                authorizerId: this._mapping.authorizer[methodOptions.authorizerId],
                 httpMethod: methodOptions.httpMethod,
                 methodResponses: methodResponses.length > 0 ? methodResponses : undefined,
                 resourceId: resourceId,
@@ -134,7 +147,7 @@ class RestApi {
             statusCode: config.statusCode
         };
         // Create the gateway response
-        const gatewayResponse = new aws_cdk_lib_1.aws_apigateway.CfnGatewayResponse(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
+        new aws_cdk_lib_1.aws_apigateway.CfnGatewayResponse(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
     }
     /**
      * Create the resource in rest api

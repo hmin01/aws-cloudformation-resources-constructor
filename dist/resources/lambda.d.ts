@@ -14,14 +14,16 @@ export declare class Function {
      * Create the alias for lambda function
      * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-alias.html
      * @param config configuration for function alias
+     * @param functionVersion function version
      */
-    createAlias(config: any): void;
+    createAlias(config: any, functionVersion: string): void;
     /**
      * Create the version for lambda function
      * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-version.html
      * @param config configuration for function version
+     * @returns created function version
      */
-    createVersion(config: any): void;
+    createVersion(config: any): string;
     /**
      * Get an arn for function
      * @returns arn for function

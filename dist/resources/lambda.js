@@ -52,13 +52,14 @@ class Function {
      * Create the alias for lambda function
      * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-alias.html
      * @param config configuration for function alias
+     * @param functionVersion function version
      */
-    createAlias(config) {
+    createAlias(config, functionVersion) {
         // Set the properties for lambda function alias
         const props = {
             description: config.Description,
             functionName: this._function.ref,
-            functionVersion: config.FunctionVersion,
+            functionVersion: functionVersion,
             name: config.Name,
             provisionedConcurrencyConfig: config.ProvisionedConcurrencyConfig
         };
@@ -69,6 +70,7 @@ class Function {
      * Create the version for lambda function
      * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-version.html
      * @param config configuration for function version
+     * @returns created function version
      */
     createVersion(config) {
         // Set the properties for lambda function version
@@ -78,7 +80,9 @@ class Function {
             provisionedConcurrencyConfig: config.ProvisionedConcurrencyConfig
         };
         // Create the version
-        new aws_cdk_lib_1.aws_lambda.CfnVersion(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
+        const version = new aws_cdk_lib_1.aws_lambda.CfnVersion(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
+        // Return
+        return version.attrVersion;
     }
     /**
      * Get an arn for function
@@ -109,26 +113,26 @@ class Function {
     setEventSourceMapping(config) {
         // Extract a event source arn
         let eventSourceArn;
-        let extractedArn = undefined;
+        let extractedResource = undefined;
         // Extract a service type and resoure id from arn
         const serviceType = (0, util_1.extractDataFromArn)(config.EventSourceArn, "service");
-        const resourceId = (0, util_1.extractDataFromArn)(config.EventSourceArn, "resource");
+        let resourceId = (0, util_1.extractDataFromArn)(config.EventSourceArn, "resource");
         switch (serviceType) {
             case "dynamodb":
-                extractedArn = (0, cache_1.getResource)("dynamodb", resourceId);
+                extractedResource = (0, cache_1.getResource)("dynamodb", resourceId);
                 break;
             case "kinesis":
-                extractedArn = (0, cache_1.getResource)("kinesis", resourceId);
+                extractedResource = (0, cache_1.getResource)("kinesis", resourceId);
                 break;
             case "sqs":
-                extractedArn = (0, cache_1.getResource)("sqs", resourceId);
+                extractedResource = (0, cache_1.getResource)("sqs", resourceId);
                 break;
             default:
-                extractedArn = (0, cache_1.getResource)("msk", resourceId);
+                extractedResource = (0, cache_1.getResource)("msk", resourceId);
                 break;
         }
         // Set a event source arn
-        eventSourceArn = extractedArn !== undefined ? extractedArn : config.EventSourceArn;
+        eventSourceArn = extractedResource !== undefined ? extractedResource.getArn() : config.EventSourceArn;
         // Create the properties for event source mapping
         const props = {
             functionName: this._function.ref,

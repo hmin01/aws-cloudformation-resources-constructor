@@ -6,26 +6,53 @@ import { Construct } from "constructs";
  * @returns loaded data
  */
 export declare function loadJsonFile(filePath: string): any;
+/** For Amazon APIGateway */
+/**
+ * Create the rest api
+ * @param scope scope context
+ * @param config configuration for rest api
+ */
+export declare function createRestApi(scope: Construct, config: any): void;
+/** For Amazon CloudFront */
+/**
+ * Create the policies for cloudFront
+ * @param scope scope context
+ * @param config configuration for each policies
+ */
+export declare function createCloudFrontPolicies(scope: Construct, config: any): void;
+/**
+ * Create the distributions
+ * @param scope scope context
+ * @param config configuration for distributions
+ */
+export declare function createCloudFrontDistributions(scope: Construct, config: any): void;
+/** For Amazon Cognito */
+/**
+ * Create the cognito user pool
+ * @param scope scope context
+ * @param config configuration for user pool
+ */
+export declare function createCognitoUserPool(scope: Construct, config: any): void;
 /** For Amazon DynamoDB */
 /**
  * Create the dynamodb tables
  * @param scope scope context
  * @param config configuration for tables
  */
-export declare function createTables(scope: Construct, config: any): void;
+export declare function createDynamoDBTables(scope: Construct, config: any): void;
 /** For Amazon IAM */
 /**
  * Create the policies
  * @param scope scope context
  * @param config configuration for policies
  */
-export declare function createPolicies(scope: Construct, config: any): void;
+export declare function createIAMPolicies(scope: Construct, config: any): void;
 /**
  * Create the roles
  * @param scope scope context
  * @param config configuration for roles
  */
-export declare function createRoles(scope: Construct, config: any): void;
+export declare function createIAMRoles(scope: Construct, config: any): void;
 /** For AWS Lambda */
 /**
  * Create the lambda functions
@@ -37,18 +64,18 @@ export declare function createLambdaFunctions(scope: Construct, config: any): vo
  * Set the event source mappings
  * @param config configuration for event source mappings
  */
-export declare function setEventSourceMappings(config: any): void;
+export declare function setLambdaEventSourceMappings(config: any): void;
 /** For Amazon SNS */
 /**
  * Create the topics
  * @param scope scope context
  * @param config configuration for topics
  */
-export declare function createTopics(scope: Construct, config: any): void;
+export declare function createSNSTopics(scope: Construct, config: any): void;
 /** For Amazonz SQS */
 /**
  * Create the queues
  * @param scope scope context
  * @param config configuration for queues
  */
-export declare function createQueues(scope: Construct, config: any): void;
+export declare function createSQSQueues(scope: Construct, config: any): void;

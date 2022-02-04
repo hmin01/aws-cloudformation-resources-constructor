@@ -67,8 +67,13 @@ export declare class OriginRequestPolicy {
      * @param config configuration for orgin request policy
      */
     constructor(scope: Construct, prevId: string, config: any);
+    /**
+     * Get an id for response headers policy
+     * @returns id for response headers policy
+     */
+    getId(): string;
 }
-export declare class ResponseHeaderPolicy {
+export declare class ResponseHeadersPolicy {
     private _policy;
     private _scope;
     /**
@@ -79,4 +84,9 @@ export declare class ResponseHeaderPolicy {
      * @param config configuration for response header policy
      */
     constructor(scope: Construct, prevId: string, config: any);
+    /**
+     * Get an id for response headers policy
+     * @returns id for response headers policy
+     */
+    getId(): string;
 }

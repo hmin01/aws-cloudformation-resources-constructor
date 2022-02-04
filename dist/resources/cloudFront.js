@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ResponseHeaderPolicy = exports.OriginRequestPolicy = exports.CachePolicy = exports.Function = exports.Distribution = void 0;
+exports.ResponseHeadersPolicy = exports.OriginRequestPolicy = exports.CachePolicy = exports.Function = exports.Distribution = void 0;
 const aws_cdk_lib_1 = require("aws-cdk-lib");
 // Util
 const cache_1 = require("../utils/cache");
@@ -196,8 +196,6 @@ class Function {
         };
         // Create the function
         this._function = new aws_cdk_lib_1.aws_cloudfront.CfnFunction(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
-        // Store the resource
-        (0, cache_1.storeResource)("cloudfront-function", config.FunctionArn, this._function.ref);
     }
     /**
      * Get an arn for function
@@ -251,8 +249,6 @@ class CachePolicy {
         };
         // Create the cache policy
         this._policy = new aws_cdk_lib_1.aws_cloudfront.CfnCachePolicy(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
-        // Store the resource
-        (0, cache_1.storeResource)("cloudfront-cachepolicy", prevId, this._policy.ref);
     }
     /**
      * Get id for cache policy
@@ -298,12 +294,17 @@ class OriginRequestPolicy {
         };
         // Create the origin request policy
         this._policy = new aws_cdk_lib_1.aws_cloudfront.CfnOriginRequestPolicy(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
-        // Store the resource
-        (0, cache_1.storeResource)("cloudfront-originrequestpolicy", prevId, this._policy.ref);
+    }
+    /**
+     * Get an id for response headers policy
+     * @returns id for response headers policy
+     */
+    getId() {
+        return this._policy.ref;
     }
 }
 exports.OriginRequestPolicy = OriginRequestPolicy;
-class ResponseHeaderPolicy {
+class ResponseHeadersPolicy {
     /**
      * Create the response header policy for cloudfront
      * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-cloudfront-responseheaderspolicy.html
@@ -373,8 +374,13 @@ class ResponseHeaderPolicy {
         };
         // Create the response headers policy
         this._policy = new aws_cdk_lib_1.aws_cloudfront.CfnResponseHeadersPolicy(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
-        // Store the resource
-        (0, cache_1.storeResource)("cloudfront-responseheaderspolicy", prevId, this._policy.ref);
+    }
+    /**
+     * Get an id for response headers policy
+     * @returns id for response headers policy
+     */
+    getId() {
+        return this._policy.ref;
     }
 }
-exports.ResponseHeaderPolicy = ResponseHeaderPolicy;
+exports.ResponseHeadersPolicy = ResponseHeadersPolicy;

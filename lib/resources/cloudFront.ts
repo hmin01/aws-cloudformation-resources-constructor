@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
 import { aws_cloudfront as cloudfront } from "aws-cdk-lib";
 // Util
-import { getResource, storeResource } from "../utils/cache";
+import { getResource } from "../utils/cache";
 import { createId, extractDataFromArn, extractTags } from "../utils/util";
 
 export class Distribution {
@@ -203,8 +203,6 @@ export class Function {
     };
     // Create the function
     this._function = new cloudfront.CfnFunction(this._scope, createId(JSON.stringify(props)), props);
-    // Store the resource
-    storeResource("cloudfront-function", config.FunctionArn, this._function.ref);
   }
 
   /**
@@ -262,8 +260,6 @@ export class CachePolicy {
     };
     // Create the cache policy
     this._policy = new cloudfront.CfnCachePolicy(this._scope, createId(JSON.stringify(props)), props);
-    // Store the resource
-    storeResource("cloudfront-cachepolicy", prevId, this._policy.ref);
   }
 
   /**
@@ -313,12 +309,18 @@ export class OriginRequestPolicy {
     };
     // Create the origin request policy
     this._policy = new cloudfront.CfnOriginRequestPolicy(this._scope, createId(JSON.stringify(props)), props);
-    // Store the resource
-    storeResource("cloudfront-originrequestpolicy", prevId, this._policy.ref);
+  }
+
+  /**
+   * Get an id for response headers policy
+   * @returns id for response headers policy
+   */
+  public getId(): string {
+    return this._policy.ref;
   }
 }
 
-export class ResponseHeaderPolicy {
+export class ResponseHeadersPolicy {
   private _policy: cloudfront.CfnResponseHeadersPolicy;
   private _scope: Construct;
 
@@ -391,7 +393,13 @@ export class ResponseHeaderPolicy {
     };
     // Create the response headers policy
     this._policy = new cloudfront.CfnResponseHeadersPolicy(this._scope, createId(JSON.stringify(props)), props);
-    // Store the resource
-    storeResource("cloudfront-responseheaderspolicy", prevId, this._policy.ref);
+  }
+
+  /**
+   * Get an id for response headers policy
+   * @returns id for response headers policy
+   */
+  public getId(): string {
+    return this._policy.ref;
   }
 }

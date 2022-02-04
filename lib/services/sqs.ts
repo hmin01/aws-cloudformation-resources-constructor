@@ -11,11 +11,12 @@ import { extractDataFromArn } from "../utils/util";
  * @param config configuration for queues
  */
 export function createQueues(scope: Construct, config: any) {
-  for (const queueArn of Object.keys(config)) {
-    // Extract a name from arn
-    const queueName: string = extractDataFromArn(queueArn, "resource");
+  for (const queueUrl of Object.keys(config)) {
+    // Extract a name from url
+    const split: string[] = queueUrl.split("/");
+    const queueName: string = split[split.length - 1];
     // Get a configuration for queue
-    const elem: any = config[queueArn];
+    const elem: any = config[queueUrl];
     // Create a queue
     const queue: Queue = new Queue(scope, elem.Attributes);
     // Store the resource

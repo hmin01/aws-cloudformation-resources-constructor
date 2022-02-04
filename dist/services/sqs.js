@@ -5,18 +5,18 @@ exports.createQueues = void 0;
 const sqs_1 = require("../resources/sqs");
 // Util
 const cache_1 = require("../utils/cache");
-const util_1 = require("../utils/util");
 /**
  * Create the queues
  * @param scope scope context
  * @param config configuration for queues
  */
 function createQueues(scope, config) {
-    for (const queueArn of Object.keys(config)) {
-        // Extract a name from arn
-        const queueName = (0, util_1.extractDataFromArn)(queueArn, "resource");
+    for (const queueUrl of Object.keys(config)) {
+        // Extract a name from url
+        const split = queueUrl.split("/");
+        const queueName = split[split.length - 1];
         // Get a configuration for queue
-        const elem = config[queueArn];
+        const elem = config[queueUrl];
         // Create a queue
         const queue = new sqs_1.Queue(scope, elem.Attributes);
         // Store the resource

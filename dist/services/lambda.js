@@ -50,9 +50,9 @@ function createLambdaFunctions(scope, config) {
         // If there's a recent version
         if (version !== null) {
             // Create a version
-            lambdaFunction.createVersion(version);
+            const functionVersion = lambdaFunction.createVersion(version);
             // Create an alias
-            lambdaFunction.createAlias(alias);
+            lambdaFunction.createAlias(alias, functionVersion);
         }
     }
 }
