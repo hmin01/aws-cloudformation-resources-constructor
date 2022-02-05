@@ -23,7 +23,7 @@ export class Function {
     const bucketName: string = split[0];
     const key: string = split.slice(1).join("/");
     // Get an arn for role
-    const role: any = config.Role !== undefined ? getResource("role", extractDataFromArn(config.Role, "resource")) : undefined;
+    const role: any = config.Role !== undefined ? getResource("role", extractDataFromArn(config.Role, "resource")) !== undefined ? getResource("role", extractDataFromArn(config.Role, "resource")) : config.Role : undefined;
 
     // Set the properties for lambda function
     const props: lambda.CfnFunctionProps = {
