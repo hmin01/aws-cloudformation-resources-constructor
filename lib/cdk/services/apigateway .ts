@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
 import { aws_apigateway as apigateway } from "aws-cdk-lib";
 // Util
-import { changePartaboutArn, createId, extractTags, extractDataFromArn } from "../utils/util";
+import { changePartaboutArn, createId, extractTags, extractDataFromArn } from "../../utils/util";
 
 export class RestApi {
   private _mapping: any;

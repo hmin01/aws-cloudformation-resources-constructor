@@ -21,5 +21,9 @@ export function storeResource(type: string, key: string, resource: any): void {
  * @returns resource object
  */
 export function getResource(type: string, key: string): any {
-  return RESOURCE[type][key];
+  if (RESOURCE[type] !== undefined) {
+    return RESOURCE[type][key];
+  } else {
+    return undefined;
+  }
 }

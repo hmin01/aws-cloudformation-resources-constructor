@@ -1,8 +1,8 @@
 import { Construct } from "constructs";
 import { aws_sqs as sqs } from "aws-cdk-lib";
 // Util
-import { getResource } from "../utils/cache";
-import { createId, extractDataFromArn, extractPrincipal, extractTags } from "../utils/util";
+import { getResource } from "../../utils/cache";
+import { createId, extractDataFromArn, extractPrincipal, extractTags } from "../../utils/util";
 
 export class Queue {
   private _scope: Construct;

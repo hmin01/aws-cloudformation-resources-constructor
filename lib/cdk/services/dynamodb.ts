@@ -1,8 +1,8 @@
 import { Construct } from "constructs";
 import { aws_dynamodb as dynamodb } from "aws-cdk-lib";
 // Util
-import { getResource } from "../utils/cache";
-import { createId, extractTags } from "../utils/util";
+import { getResource } from "../../utils/cache";
+import { createId, extractTags } from "../../utils/util";
 
 export class Table {
   private _table: dynamodb.CfnTable;

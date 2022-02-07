@@ -1,8 +1,8 @@
 import { Construct } from "constructs";
 import { aws_sns as sns } from "aws-cdk-lib";
 // Util
-import { getResource, storeResource } from "../utils/cache";
-import { createId, extractDataFromArn, extractTags } from "../utils/util";
+import { getResource, storeResource } from "../../utils/cache";
+import { createId, extractDataFromArn, extractTags } from "../../utils/util";
 
 export class Topic {
   private _topic: sns.CfnTopic;

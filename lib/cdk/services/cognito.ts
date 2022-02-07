@@ -1,8 +1,8 @@
 import { Construct } from "constructs";
 import { aws_cognito as cognito } from "aws-cdk-lib";
 // Util
-import { createId, extractDataFromArn } from "../utils/util";
-import { getResource } from "../utils/cache";
+import { createId, extractDataFromArn } from "../../utils/util";
+import { getResource } from "../../utils/cache";
 
 export class UserPool {
   private _scope: Construct;

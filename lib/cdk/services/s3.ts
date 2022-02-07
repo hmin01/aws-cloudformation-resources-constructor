@@ -1,8 +1,8 @@
 import { Construct } from "constructs";
 import { aws_s3 as s3 } from "aws-cdk-lib";
 // Util
-import { getResource } from "../utils/cache";
-import { createId, extractTags } from "../utils/util";
+import { getResource } from "../../utils/cache";
+import { createId, extractTags } from "../../utils/util";
 
 export class Bucket {
   private _bucket: s3.CfnBucket;

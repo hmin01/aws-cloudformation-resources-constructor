@@ -2,8 +2,8 @@ import { Construct } from "constructs";
 import { aws_lambda as lambda } from "aws-cdk-lib";
 import { custom_resources as cr } from "aws-cdk-lib";
 // Util
-import { getResource } from "../utils/cache";
-import { createId, extractDataFromArn, extractTags } from "../utils/util";
+import { getResource } from "../../utils/cache";
+import { createId, extractDataFromArn, extractTags } from "../../utils/util";
 
 export class Function {
   private _function: lambda.CfnFunction;

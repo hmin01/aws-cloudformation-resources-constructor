@@ -1,8 +1,8 @@
 import { Construct } from "constructs";
 import { aws_cloudfront as cloudfront } from "aws-cdk-lib";
 // Util
-import { getResource } from "../utils/cache";
-import { createId, extractDataFromArn, extractTags } from "../utils/util";
+import { getResource } from "../../utils/cache";
+import { createId, extractDataFromArn, extractTags } from "../../utils/util";
 
 export class Distribution {
   private _distribution: cloudfront.CfnDistribution;
