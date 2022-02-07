@@ -1,5 +1,6 @@
 import { Construct } from "constructs";
 import { aws_lambda as lambda } from "aws-cdk-lib";
+import { custom_resources as cr } from "aws-cdk-lib";
 // Util
 import { getResource } from "../utils/cache";
 import { createId, extractDataFromArn, extractTags } from "../utils/util";
@@ -19,17 +20,19 @@ export class Function {
     this._scope = scope;
 
     // Extract a bucket name and key
-    const split: string[] = storedLocation.replace(/^s3:\/\//g, "").split("/");
-    const bucketName: string = split[0];
-    const key: string = split.slice(1).join("/");
+    const s3: any = this.extractStoredLocation(storedLocation);
+    if (s3 === undefined) {
+      console.error("[ERROR] Lambda code must be stored in s3 bucket");
+      process.exit(1);
+    }
     // Get an arn for role
     const role: any = config.Role !== undefined ? getResource("role", extractDataFromArn(config.Role, "resource")) !== undefined ? getResource("role", extractDataFromArn(config.Role, "resource")) : config.Role : undefined;
 
     // Set the properties for lambda function
     const props: lambda.CfnFunctionProps = {
       code: {
-        s3Bucket: bucketName,
-        s3Key: key
+        s3Bucket: s3.bucketName,
+        s3Key: s3.key
       },
       role: role !== undefined ? role.getArn() : config.Role,
       // Optional
@@ -89,6 +92,25 @@ export class Function {
     const version = new lambda.CfnVersion(this._scope, createId(JSON.stringify(props)), props);
     // Return
     return version.attrVersion;
+  }
+
+  /**
+   * Extract the stored location for lambda code
+   * @param location location path (for s3 uri)
+   * @returns s3 bucket name and key or undefined
+   */
+  private extractStoredLocation(location: string): any {
+    const regex: RegExp = new RegExp("^s3://");
+    if (regex.test(location)) {
+      // Extract a bucket name and key
+      const split: string[] = location.replace(/^s3:\/\//g, "").split("/");
+      const bucketName: string = split[0];
+      const key: string = split.slice(1).join("/");
+      // Return
+      return { bucketName, key };
+    } else {
+      return undefined;
+    }
   }
 
   /**

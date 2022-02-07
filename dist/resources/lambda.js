@@ -20,7 +20,7 @@ class Function {
         const bucketName = split[0];
         const key = split.slice(1).join("/");
         // Get an arn for role
-        const role = config.Role !== undefined ? (0, cache_1.getResource)("role", (0, util_1.extractDataFromArn)(config.Role, "resource")) : undefined;
+        const role = config.Role !== undefined ? (0, cache_1.getResource)("role", (0, util_1.extractDataFromArn)(config.Role, "resource")) !== undefined ? (0, cache_1.getResource)("role", (0, util_1.extractDataFromArn)(config.Role, "resource")) : config.Role : undefined;
         // Set the properties for lambda function
         const props = {
             code: {
