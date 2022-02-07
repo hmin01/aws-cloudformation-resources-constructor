@@ -102,12 +102,12 @@ export function extractDataFromArn(arn: string, type: string): string {
       }
     case "qualifier":
       if (service === "lambda") {
-        return split[7] !== undefined ? split[7] : arn;
+        return split[7] !== undefined ? split[7] : "";
       } else {
-        return arn;
+        return "";
       }
     default:
-      return arn;
+      return "";
   }
 }
 
