@@ -30,8 +30,8 @@ export async function getSqsQueueArn(queueName: string, accountId?: string): Pro
   // Result
   const queueUrl: string|undefined = resForUrl.QueueUrl;
   if (queueUrl === undefined) {
-    console.error(`[ERROR] Failed to get url for sqs queue (for ${queueName})`);
-    process.exit(1);
+    console.error(`[WARNING] Not found sqs queue (for ${queueName})`);
+    return "";
   }
 
   // Create the input to get arn for sqs queue
@@ -47,8 +47,8 @@ export async function getSqsQueueArn(queueName: string, accountId?: string): Pro
   if (resForArn.Attributes !== undefined && resForArn.Attributes.QueueArn !== undefined) {
     return resForArn.Attributes.QueueArn;
   } else {
-    console.error(`[ERROR] Failed to get arn for sqs queue (for ${queueName})`);
-    process.exit(1);
+    console.error(`[WARNING] Not found sqs queue (for ${queueName})`);
+    return "";
   }
 }
 

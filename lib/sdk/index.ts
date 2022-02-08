@@ -1,4 +1,5 @@
 // Services (SDK)
+import * as SDKAPIGateway from "./services/apigateway";
 import * as SDKDynomoDB from "./services/dynamodb";
 import * as SDKLambda from "./services/lambda";
 import * as SDKSqs from "./services/sqs";
@@ -7,7 +8,8 @@ import * as SDKSqs from "./services/sqs";
 /**
  * Destroy the sdk clients
  */
- export function destroySdkClients() {
+export function destroySdkClients() {
+  SDKAPIGateway.destroyAPIGatewayClient();
   SDKDynomoDB.destroyDyanmoDBClient();
   SDKLambda.destroyLambdaClient();
   SDKSqs.destroySqsClient();
@@ -16,9 +18,28 @@ import * as SDKSqs from "./services/sqs";
  * Init the sdk clients
  */
 export function initSdkClients() {
+  SDKAPIGateway.initAPIGatewayClient();
   SDKDynomoDB.initDynamoDBClient();
   SDKLambda.initLambdaClient();
   SDKSqs.initSqsClient();
+}
+
+/** For APIGateway */
+/**
+ * Set the method integrations
+ * @param name api name
+ * @param config configuration for api
+ */
+export async function setAPIGatewayMethodIntegrations(name: string, config: any[]): Promise<void> {
+  for (const elem of config) {
+    if (elem.resourceMethods !== undefined) {
+      for (const method of Object.keys(elem.resourceMethods)) {
+        if (elem.resourceMethods[method].methodIntegration !== undefined) {
+          await SDKAPIGateway.putMethodIntegration(name, elem.path, method, elem.resourceMethods[method].methodIntegration);
+        }
+      }
+    } 
+  }
 }
 
 /** For Lambda */

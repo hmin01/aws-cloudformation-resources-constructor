@@ -29,8 +29,8 @@ export async function getDynamoDBTableArn(tableName: string): Promise<string> {
   if (response.Table !== undefined && response.Table.TableArn !== undefined) {
     return response.Table.TableArn;
   } else {
-    console.error(`[ERROR] Failed to get arn for dynamodb table (for ${tableName})`);
-    process.exit(1);
+    console.error(`[WARNING] Not found dynamodb table (for ${tableName})`);
+    return "";
   }
 }
 

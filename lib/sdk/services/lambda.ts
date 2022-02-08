@@ -86,8 +86,8 @@ export async function getLambdaFunctionArn(functionName: string, qualifier?: str
   if (response !== undefined && response.FunctionArn !== undefined) {
     return response.FunctionArn;
   } else {
-    console.error(`[ERROR] Failed to get arn for lambda function (for ${functionName})`);
-    process.exit(1);
+    console.error(`[WARNING] Not found lambda function (for ${functionName})`);
+    return "";
   }
 }
 
@@ -181,6 +181,11 @@ export async function setEventSourceMapping(config: any): Promise<void> {
     // Extract a qualifier from arn and get arn for lambda
     const qualifier: string = extractDataFromArn(config.FunctionArn, "qualifier");
     const functionArn: string = await getLambdaFunctionArn(functionName, qualifier !== "" ? qualifier : undefined);
+    // Catch error
+    if (eventSourceArn === "" || functionArn === "") {
+      console.error(`[ERROR] Failed to create event source mapping`);
+      process.exit(1);
+    }
 
     // Create the input for list event source mapping
     const inputForList: lambda.ListEventSourceMappingsCommandInput = {
