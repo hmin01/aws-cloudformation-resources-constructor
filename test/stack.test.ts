@@ -2,10 +2,10 @@ import { Stack, StackProps } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { join } from "path";
 // Services
-import * as srv from "../lib/index";
+import { cdk, util } from "../lib/index";
 
 // Load a input data
-const rawConfig: any = srv.loadJsonFile(join(__dirname, "./testInput.json"));
+const rawConfig: any = util.loadJsonFile(join(__dirname, "./testInput.json"));
 
 /** For APIGateway */
 export class APIGatewayStack extends Stack {
@@ -16,7 +16,7 @@ export class APIGatewayStack extends Stack {
     const config: any = rawConfig.ApiGateWay !== undefined && rawConfig.ApiGateWay.RestApis !== undefined && rawConfig.ApiGateWay.RestApis.length > 0 ? rawConfig.ApiGateWay.RestApis : undefined;
     // Test
     if (config !== undefined) {
-      srv.createRestApi(this, config);
+      cdk.createRestApi(this, config);
     } else {
       console.info("Not found the configuration for APIGateway")
     }
@@ -32,8 +32,8 @@ export class CloudFrontStack extends Stack {
     const config: any = rawConfig.CloudFront !== undefined && Object.keys(rawConfig.CloudFront).length > 0 ? rawConfig.CloudFront : undefined;
     // Test
     if (config !== undefined) {
-      srv.createCloudFrontPolicies(this, config.Policies);
-      srv.createCloudFrontDistributions(this, config.Distributions);
+      cdk.createCloudFrontPolicies(this, config.Policies);
+      cdk.createCloudFrontDistributions(this, config.Distributions);
     } else {
       console.info("Not found the configuration for CloudFront")
     }
@@ -49,7 +49,7 @@ export class CognitoStack extends Stack {
     const config: any = rawConfig.CognitoUserPool !== undefined && Object.keys(rawConfig.CognitoUserPool).length > 0 ? rawConfig.CognitoUserPool : undefined;
     // Test
     if (config !== undefined) {
-      srv.createCognitoUserPool(this, config);
+      cdk.createCognitoUserPool(this, config);
     } else {
       console.info("Not found the configuration for Cognito")
     }
@@ -65,7 +65,7 @@ export class DynamoDBStack extends Stack {
     const config: any = rawConfig.DynamoDB !== undefined && Object.keys(rawConfig.DynamoDB).length > 0 ? rawConfig.DynamoDB : undefined;
     // Test
     if (config !== undefined) {
-      srv.createDynamoDBTables(this, config);
+      cdk.createDynamoDBTables(this, config);
     } else {
       console.info("Not found the configuration for DynamoDB");
     }
@@ -82,8 +82,8 @@ export class IAMStack extends Stack {
     const rolesConfig: any = rawConfig.Lambda !== undefined && rawConfig.Lambda.IAMRoles !== undefined && Object.keys(rawConfig.Lambda.IAMRoles).length > 0 ? rawConfig.Lambda.IAMRoles : undefined;
     // Test
     if (policiesConfig !== undefined) {
-      srv.createIAMPolicies(this, policiesConfig);
-      srv.createIAMRoles(this, rolesConfig);
+      cdk.createIAMPolicies(this, policiesConfig);
+      cdk.createIAMRoles(this, rolesConfig);
     } else {
       console.info("Not found the configuration for IAM");
     }
@@ -99,7 +99,7 @@ export class LambdaStack extends Stack {
     const config: any = rawConfig.Lambda !== undefined && rawConfig.Lambda.LambdaFunctions !== undefined && Object.keys(rawConfig.Lambda.LambdaFunctions).length > 0 ? rawConfig.Lambda.LambdaFunctions : undefined;
     // Test
     if (config !== undefined) {
-      srv.createLambdaFunctions(this, config);
+      cdk.createLambdaFunctions(this, config);
     } else {
       console.info("Not found the configuration for Lambda");
     }
@@ -115,7 +115,7 @@ export class SNSStack extends Stack {
     const config: any = rawConfig.SNS !== undefined && Object.keys(rawConfig.SNS).length > 0 ? rawConfig.SNS : undefined;
     // Test
     if (config !== undefined) {
-      srv.createSNSTopics(this, config);
+      cdk.createSNSTopics(this, config);
     } else {
       console.info("Not found the configuration for SNS");
     }
@@ -131,7 +131,7 @@ export class SQSStack extends Stack {
     const config: any = rawConfig.SQS !== undefined && Object.keys(rawConfig.SQS).length > 0 ? rawConfig.SQS : undefined;
     // Test
     if (config !== undefined) {
-      srv.createSQSQueues(this, config);
+      cdk.createSQSQueues(this, config);
     } else {
       console.info("Not found the configuration for SQS");
     }
