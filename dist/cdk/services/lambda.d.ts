@@ -25,6 +25,12 @@ export declare class Function {
      */
     createVersion(config: any): string;
     /**
+     * Extract the stored location for lambda code
+     * @param location location path (for s3 uri)
+     * @returns s3 bucket name and key or undefined
+     */
+    private extractStoredLocation;
+    /**
      * Get an arn for function
      * @returns arn for function
      */

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RestApi = void 0;
 const aws_cdk_lib_1 = require("aws-cdk-lib");
 // Util
-const util_1 = require("../utils/util");
+const util_1 = require("../../utils/util");
 class RestApi {
     /**
      * Create the rest api

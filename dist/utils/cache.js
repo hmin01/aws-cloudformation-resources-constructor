@@ -23,6 +23,11 @@ exports.storeResource = storeResource;
  * @returns resource object
  */
 function getResource(type, key) {
-    return RESOURCE[type][key];
+    if (RESOURCE[type] !== undefined) {
+        return RESOURCE[type][key];
+    }
+    else {
+        return undefined;
+    }
 }
 exports.getResource = getResource;

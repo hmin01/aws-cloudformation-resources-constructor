@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.extractTags = exports.extractPrincipal = exports.extractDataFromArn = exports.checkAwsArnPattern = exports.createId = exports.changePartaboutArn = void 0;
+exports.loadJsonFile = exports.extractTags = exports.extractPrincipal = exports.extractDataFromArn = exports.delay = exports.checkAwsArnPattern = exports.createId = exports.changePartaboutArn = void 0;
 const crypto_1 = require("crypto");
+const fs_1 = require("fs");
 /**
  * Change the part about AWS arn
  * @param arn arn for resource
@@ -58,6 +59,15 @@ function checkAwsArnPattern(target) {
 }
 exports.checkAwsArnPattern = checkAwsArnPattern;
 /**
+ * Delay process
+ * @param ms delay time
+ * @returns none
+ */
+async function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+exports.delay = delay;
+/**
  * Extract the data from arn
  * @description https://docs.aws.amazon.com/ko_kr/general/latest/gr/aws-arns-and-namespaces.html
  * @param arn arn for resource
@@ -95,13 +105,13 @@ function extractDataFromArn(arn, type) {
             }
         case "qualifier":
             if (service === "lambda") {
-                return split[7] !== undefined ? split[7] : arn;
+                return split[7] !== undefined ? split[7] : "";
             }
             else {
-                return arn;
+                return "";
             }
         default:
-            return arn;
+            return "";
     }
 }
 exports.extractDataFromArn = extractDataFromArn;
@@ -210,25 +220,25 @@ function extractTags(tags) {
     }
 }
 exports.extractTags = extractTags;
-// /**
-//  * Load a json data (configuration)
-//  * @param filename file name
-//  * @returns loaded data
-//  */
-// export function loadJsonFile(filename: string) {
-//   try {
-//     // Create file path
-//     const filePath: string = join(CONFIG_DIR, `${filename}.json`);
-//     // Read a file ata
-//     const data = readFileSync(filePath).toString();
-//     // Transform to json and return data
-//     return JSON.parse(data);
-//   } catch (err) {
-//     // Print error message
-//     if (typeof err === "string" || err instanceof Error) {
-//       console.error(`[ERROR] ${err}`);
-//     }
-//     // Exit
-//     process.exit(1);
-//   }
-// }
+/**
+ * Load a json data (configuration)
+ * @param filePath file path
+ * @returns loaded data
+ */
+function loadJsonFile(filePath) {
+    try {
+        // Read a file ata
+        const data = (0, fs_1.readFileSync)(filePath).toString();
+        // Transform to json and return data
+        return JSON.parse(data);
+    }
+    catch (err) {
+        // Print error message
+        if (typeof err === "string" || err instanceof Error) {
+            console.error(`[ERROR] ${err}`);
+        }
+        // Exit
+        process.exit(1);
+    }
+}
+exports.loadJsonFile = loadJsonFile;

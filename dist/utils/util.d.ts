@@ -20,6 +20,12 @@ export declare function createId(content: string): string;
  */
 export declare function checkAwsArnPattern(target: string): boolean;
 /**
+ * Delay process
+ * @param ms delay time
+ * @returns none
+ */
+export declare function delay(ms: number): Promise<unknown>;
+/**
  * Extract the data from arn
  * @description https://docs.aws.amazon.com/ko_kr/general/latest/gr/aws-arns-and-namespaces.html
  * @param arn arn for resource
@@ -39,3 +45,9 @@ export declare function extractPrincipal(principalConfig: any): any;
  * @returns a list of tag
  */
 export declare function extractTags(tags: unknown): CfnTag[];
+/**
+ * Load a json data (configuration)
+ * @param filePath file path
+ * @returns loaded data
+ */
+export declare function loadJsonFile(filePath: string): any;

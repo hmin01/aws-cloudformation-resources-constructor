@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Function = void 0;
 const aws_cdk_lib_1 = require("aws-cdk-lib");
 // Util
-const cache_1 = require("../utils/cache");
-const util_1 = require("../utils/util");
+const cache_1 = require("../../utils/cache");
+const util_1 = require("../../utils/util");
 class Function {
     /**
      * Create the lambda function
@@ -16,16 +16,18 @@ class Function {
     constructor(scope, config, storedLocation) {
         this._scope = scope;
         // Extract a bucket name and key
-        const split = storedLocation.replace(/^s3:\/\//g, "").split("/");
-        const bucketName = split[0];
-        const key = split.slice(1).join("/");
+        const s3 = this.extractStoredLocation(storedLocation);
+        if (s3 === undefined) {
+            console.error("[ERROR] Lambda code must be stored in s3 bucket");
+            process.exit(1);
+        }
         // Get an arn for role
         const role = config.Role !== undefined ? (0, cache_1.getResource)("role", (0, util_1.extractDataFromArn)(config.Role, "resource")) !== undefined ? (0, cache_1.getResource)("role", (0, util_1.extractDataFromArn)(config.Role, "resource")) : config.Role : undefined;
         // Set the properties for lambda function
         const props = {
             code: {
-                s3Bucket: bucketName,
-                s3Key: key
+                s3Bucket: s3.bucketName,
+                s3Key: s3.key
             },
             role: role !== undefined ? role.getArn() : config.Role,
             // Optional
@@ -83,6 +85,25 @@ class Function {
         const version = new aws_cdk_lib_1.aws_lambda.CfnVersion(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
         // Return
         return version.attrVersion;
+    }
+    /**
+     * Extract the stored location for lambda code
+     * @param location location path (for s3 uri)
+     * @returns s3 bucket name and key or undefined
+     */
+    extractStoredLocation(location) {
+        const regex = new RegExp("^s3://");
+        if (regex.test(location)) {
+            // Extract a bucket name and key
+            const split = location.replace(/^s3:\/\//g, "").split("/");
+            const bucketName = split[0];
+            const key = split.slice(1).join("/");
+            // Return
+            return { bucketName, key };
+        }
+        else {
+            return undefined;
+        }
     }
     /**
      * Get an arn for function

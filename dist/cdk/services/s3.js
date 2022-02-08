@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Bucket = void 0;
 const aws_cdk_lib_1 = require("aws-cdk-lib");
 // Util
-const cache_1 = require("../utils/cache");
-const util_1 = require("../utils/util");
+const cache_1 = require("../../utils/cache");
+const util_1 = require("../../utils/util");
 class Bucket {
     /**
      * Create the s3 bucket
