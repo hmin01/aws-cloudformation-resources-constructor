@@ -46,7 +46,7 @@ class Role {
      */
     associateManagedPolicies(policies) {
         // Create a list of associated managed policy arn
-        const managedPolicyArns = policies.map((elem) => (0, cache_1.getResource)("policy", elem.PolicyName) !== undefined ? (0, cache_1.getResource)("policy", elem.PolicyName).getArn() : elem.PolicyName);
+        const managedPolicyArns = policies.map((elem) => (0, cache_1.getResource)("policy", elem.PolicyName) !== undefined ? (0, cache_1.getResource)("policy", elem.PolicyName).getArn() : elem.PolicyArn);
         // Associate the managed policies
         this._role.addPropertyOverride("ManagedPolicyArns", managedPolicyArns);
     }
