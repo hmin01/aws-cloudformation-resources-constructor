@@ -19,10 +19,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loadJsonFile = exports.cdk = exports.sdk = void 0;
+exports.util = exports.cdk = exports.sdk = void 0;
 const sdkLib = __importStar(require("./sdk/index"));
 const cdkLib = __importStar(require("./cdk/index"));
-const util_1 = require("./utils/util");
+const utilLib = __importStar(require("./utils/util"));
 exports.sdk = sdkLib;
 exports.cdk = cdkLib;
-exports.loadJsonFile = util_1.loadJsonFile;
+exports.util = utilLib;
