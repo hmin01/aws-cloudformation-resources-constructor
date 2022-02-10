@@ -3,7 +3,7 @@ import { App } from "aws-cdk-lib";
 import * as stack from "./stack.test";
 
 describe("Construct test", () => {
-  const t = "test3";
+  const t = "test4";
   // Create the app for test
   const app: App = new App();
 
