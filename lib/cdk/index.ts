@@ -13,6 +13,28 @@ import { Queue } from "./services/sqs";
 import { getResource, storeResource } from "../utils/cache";
 import { extractDataFromArn } from "../utils/util";
 
+/** For Util */
+/**
+ * Load a json data (configuration)
+ * @param filePath file path
+ * @returns loaded data
+ */
+ export function loadJsonFile(filePath: string) {
+  try {
+    // Read a file ata
+    const data = readFileSync(filePath).toString();
+    // Transform to json and return data
+    return JSON.parse(data);
+  } catch (err) {
+    // Print error message
+    if (typeof err === "string" || err instanceof Error) {
+      console.error(`[ERROR] ${err}`);
+    }
+    // Exit
+    process.exit(1);
+  }
+}
+
 /** For Amazon APIGateway */
 /**
  * Create the rest api
@@ -108,7 +130,7 @@ export function createCloudFrontDistributions(scope: Construct, config: any) {
     // Get a configuration for distribution
     const elem: any = config[distributionId];
     // Create a distribution
-    const distribution: Distribution = new Distribution(scope, elem.DistributionConfig, "arn:aws:acm:us-east-1:395824177941:certificate/fd729d07-657c-4b43-b17a-1035e5489f56");
+    const distribution: Distribution = new Distribution(scope, elem.DistributionConfig, "arn:aws:acm:ap-northeast-1:395824177941:certificate/67febc61-f11c-4eeb-9832-f99750fa7955");
     // Store the resource
     storeResource("cloudfront-distribution", distributionId, distribution);
   }
@@ -129,14 +151,15 @@ export function createCognitoUserPool(scope: Construct, config: any) {
     // Store the resource
     storeResource("userpool", userPoolId, userPool);
 
-    // Configurate the email
-    userPool.configurateEmail(elem);
-    // Configurate the schema
-    userPool.configurateSchema(elem.SchemaAttributes);
-
-    // Add the user pool clients
-    for (const client of elem.UserPoolClients) {
-      userPool.addClient(client);
+    // Create the domain (default)
+    if (elem.Domain) {
+      userPool.createDefaultDomain(elem.Domain);
+    }
+    // Create the user pool resource servers
+    if (elem.ResourceServers) {
+      for (const server of elem.ResourceServers) {
+        userPool.createResourceServer(server);
+      }
     }
   }
 }

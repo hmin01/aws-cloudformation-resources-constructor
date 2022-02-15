@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@aws-sdk/client-api-gateway": "^3.49.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.51.0",
     "@aws-sdk/client-dynamodb": "^3.49.0",
     "@aws-sdk/client-lambda": "^3.49.0",
     "@aws-sdk/client-sqs": "^3.49.0",

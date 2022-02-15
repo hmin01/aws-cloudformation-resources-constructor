@@ -2,7 +2,7 @@ import { Construct } from "constructs";
 import { aws_cloudfront as cloudfront } from "aws-cdk-lib";
 // Util
 import { getResource } from "../../utils/cache";
-import { createId, extractDataFromArn, extractTags } from "../../utils/util";
+import { createId, extractTags } from "../../utils/util";
 
 export class Distribution {
   private _distribution: cloudfront.CfnDistribution;
@@ -21,28 +21,28 @@ export class Distribution {
       distributionConfig: {
         enabled: config.Enabled,
         // Optional
-        aliases: config.Aliases !== undefined ? config.Aliases.Items !== undefined ? config.Aliases.Item.length > 0 ? config.Aliases.Item : undefined : undefined : undefined,
-        cacheBehaviors: config.CacheBehaviors !== undefined && config.CacheBehaviors.Items !== undefined && config.CacheBehaviors.Items.length > 0 ? config.CacheBehaviors.Items.map((elem: any): cloudfront.CfnDistribution.CacheBehaviorProperty => this.createCacheBehaviorFormat(elem)) : undefined,
-        comment: config.Comment !== undefined && config.Comment !== "" ? config.Comment : undefined,
-        customErrorResponses: config.CustomErrorResponses !== undefined && config.CustomErrorResponses.Items !== undefined && config.CustomErrorResponses.Items.length > 0 ? config.CustomErrorResponses.Items.map((elem: any): cloudfront.CfnDistribution.CustomErrorResponseProperty => {
+        aliases: config.Aliases ? config.Aliases.Items ? config.Aliases.Items.length > 0 ? config.Aliases.Items : undefined : undefined : undefined,
+        cacheBehaviors: config.CacheBehaviors && config.CacheBehaviors.Items && config.CacheBehaviors.Items.length > 0 ? config.CacheBehaviors.Items.map((elem: any): cloudfront.CfnDistribution.CacheBehaviorProperty => this.createCacheBehaviorFormat(elem)) : undefined,
+        comment: config.Comment && config.Comment !== "" ? config.Comment : undefined,
+        customErrorResponses: config.CustomErrorResponses && config.CustomErrorResponses.Items && config.CustomErrorResponses.Items.length > 0 ? config.CustomErrorResponses.Items.map((elem: any): cloudfront.CfnDistribution.CustomErrorResponseProperty => {
           return {
-            errorCode: Number(config.ErrorCode),
+            errorCode: Number(elem.ErrorCode),
             // Optional
-            errorCachingMinTtl: config.ErrorCachingMinTTL !== undefined ? Number(config.ErrorCachingMinTTL) : undefined,
-            responseCode: config.ResponseCode !== undefined ? Number(config.ResponseCode) : undefined,
-            responsePagePath: config.ResponsePagePath
+            errorCachingMinTtl: elem.ErrorCachingMinTTL ? Number(elem.ErrorCachingMinTTL) : undefined,
+            responseCode: elem.ResponseCode ? Number(elem.ResponseCode) : undefined,
+            responsePagePath: elem.ResponsePagePath
           };
         }) : undefined,
-        defaultCacheBehavior: config.CacheBehaviors !== undefined && config.CacheBehaviors.Items !== undefined && config.CacheBehaviors.Items.length > 0 ? undefined : this.createCacheBehaviorFormat(config.DefaultCacheBehavior),
+        defaultCacheBehavior: config.CacheBehaviors && config.CacheBehaviors.Items !== undefined && config.CacheBehaviors.Items.length > 0 ? undefined : this.createCacheBehaviorFormat(config.DefaultCacheBehavior),
         httpVersion: config.HttpVersion,
         ipv6Enabled: config.IsIPV6Enabled,
-        logging: config.Logging !== undefined && config.Logging.Enabled !== undefined && config.Logging.Enabled === true ? {
+        logging: config.Logging && config.Logging.Enabled && config.Logging.Enabled === true ? {
           bucket: config.Logging.Bucket,
           // Optional
           includeCookies: config.Logging.IncludeCookies,
           prefix: config.Logging.Prefix
         } : undefined,
-        originGroups: config.OriginGroups !== undefined && config.OriginGroups.Items !== undefined && config.OriginGroups.Items.length > 0 ? {
+        originGroups: config.OriginGroups && config.OriginGroups.Items !== undefined && config.OriginGroups.Items.length > 0 ? {
           items: config.OriginGroups.Items.map((elem: any): cloudfront.CfnDistribution.OriginGroupProperty => {
             return {
               failoverCriteria: {
@@ -60,21 +60,21 @@ export class Distribution {
           }),
           quantity: config.OriginGroups.Quantity
         } : undefined,
-        origins: config.Origins !== undefined && config.Origins.Items !== undefined && config.Origins.Items.length > 0 ? config.Origins.Item.map((elem: any): cloudfront.CfnDistribution.OriginProperty => {
+        origins: config.Origins && config.Origins.Items !== undefined && config.Origins.Items.length > 0 ? config.Origins.Items.map((elem: any): cloudfront.CfnDistribution.OriginProperty => {
           return {
             domainName: elem.DomainName,
             id: elem.Id,
             // Optional
-            connectionAttempts: elem.ConnectionAttempts !== undefined ? Number(elem.ConnectionAttempts) : undefined,
-            connectionTimeout: elem.ConnectionTimeout !== undefined ? Number(elem.ConnectionTimeout) : undefined,
-            customOriginConfig: elem.CustomOriginConfig !== undefined ? {
+            connectionAttempts: elem.ConnectionAttempts ? Number(elem.ConnectionAttempts) : undefined,
+            connectionTimeout: elem.ConnectionTimeout ? Number(elem.ConnectionTimeout) : undefined,
+            customOriginConfig: elem.CustomOriginConfig ? {
               originProtocolPolicy: elem.CustomOriginConfig.OriginProtocolPolicy,
               // Optional
-              httpPort: elem.CustomOriginConfig.HTTPPort !== undefined ? Number(elem.CustomOriginConfig.HTTPPort) : undefined,
-              httpsPort: elem.CustomOriginConfig.HTTPSPort !== undefined ? Number(elem.CustomOriginConfig.HTTPSPort) : undefined,
-              originKeepaliveTimeout: elem.CustomOriginConfig.OriginKeepaliveTimeout !== undefined ? Number(elem.CustomOriginConfig.OriginKeepaliveTimeout) : undefined,
-              originReadTimeout: elem.CustomOriginConfig.OriginReadTimeout !== undefined ? Number(elem.CustomOriginConfig.OriginReadTimeout) : undefined,
-              originSslProtocols: elem.CustomOriginConfig.OriginSslProtocols !== undefined && elem.CustomOriginConfig.OriginSslProtocols.length > 0 ? elem.CustomOriginConfig.OriginSslProtocols : undefined,
+              httpPort: elem.CustomOriginConfig.HTTPPort ? Number(elem.CustomOriginConfig.HTTPPort) : undefined,
+              httpsPort: elem.CustomOriginConfig.HTTPSPort ? Number(elem.CustomOriginConfig.HTTPSPort) : undefined,
+              originKeepaliveTimeout: elem.CustomOriginConfig.OriginKeepaliveTimeout ? Number(elem.CustomOriginConfig.OriginKeepaliveTimeout) : undefined,
+              originReadTimeout: elem.CustomOriginConfig.OriginReadTimeout ? Number(elem.CustomOriginConfig.OriginReadTimeout) : undefined,
+              originSslProtocols: elem.CustomOriginConfig.OriginSslProtocols && elem.CustomOriginConfig.OriginSslProtocols.length > 0 ? elem.CustomOriginConfig.OriginSslProtocols : undefined,
             } : undefined,
             originCustomHeaders: elem.CustomHeaders !== undefined && elem.CustomHeaders.Items !== undefined && elem.CustomHeaders.Items.length > 0 ? elem.CustomHeaders.Items.map((elem: any): cloudfront.CfnDistribution.OriginCustomHeaderProperty => {
               return {
@@ -82,13 +82,13 @@ export class Distribution {
                 headerValue: elem.HeaderValue
               };
             }) : undefined,
-            originPath: elem.OriginPath !== undefined && elem.OriginPath !== "" ? elem.OriginPath : undefined,
-            originShield: elem.OriginShield !== undefined ? {
+            originPath: elem.OriginPath && elem.OriginPath !== "" ? elem.OriginPath : undefined,
+            originShield: elem.OriginShield ? {
               enabled: elem.OriginShield.Enabled,
               originShieldRegion: elem.OriginShield.OriginShieldRegion
             } : undefined,
-            s3OriginConfig: elem.S3OriginConfig !== undefined ? {
-              originAccessIdentity: elem.S3OriginConfig.OriginAccessIdentity
+            s3OriginConfig: elem.S3OriginConfig ? {
+              originAccessIdentity: getResource("cloudfront-oai", elem.DomainName) ? getResource("cloudfront-oai", elem.DomainName).getId() : elem.S3OriginConfig.OriginAccessIdentity
             } : undefined
           };
         }) : undefined,
@@ -97,17 +97,19 @@ export class Distribution {
           geoRestriction: {
             restrictionType: config.Restrictions.GeoRestriction.RestrictionType,
             // Optoinal
-            locations: config.Restrictions.GeoRestriction.Items !== undefined && config.Restrictions.GeoRestriction.Items.length > 0 ? config.Restrictions.GeoRestriction.Items : undefined
+            locations: config.Restrictions.GeoRestriction.Items && config.Restrictions.GeoRestriction.Items.length > 0 ? config.Restrictions.GeoRestriction.Items : undefined
           }
         },
-        viewerCertificate: config.ViewerCertificate !== undefined && acmCertArn !== undefined ? {
+        viewerCertificate: config.ViewerCertificate && acmCertArn ? {
           acmCertificateArn: acmCertArn,
-          minimumProtocolVersion: config.MinimumProtocolVersion,
-          sslSupportMethod: config.SSLSupportMethod
+          minimumProtocolVersion: config.ViewerCertificate.MinimumProtocolVersion,
+          sslSupportMethod: config.ViewerCertificate.SSLSupportMethod
         } : undefined,
-        webAclId: config.WebACLId !== undefined && config.WebACLId !== "" ? config.WebACLId : undefined
+        webAclId: config.WebACLId && config.WebACLId !== "" ? config.WebACLId : undefined
       }
     };
+    console.log(props.distributionConfig);
+    
     // Create the distribution
     this._distribution = new cloudfront.CfnDistribution(this._scope, createId(JSON.stringify(props)), props);
   }
@@ -121,45 +123,39 @@ export class Distribution {
    */
   public createCacheBehaviorFormat(config: any): any {
     // Get a cache policy
-    const cachePolicy: string|undefined = config.CachePolicyId !== undefined ? getResource("cloudfront-cachepolicy", config.CachePolicyId) : undefined;
+    const cachePolicy: string|undefined = config.CachePolicyId ? getResource("cloudfront-cachepolicy", config.CachePolicyId) ? getResource("cloudfront-cachepolicy", config.CachePolicyId).getId() : undefined : undefined;
     // Get a origin request policy
-    const originRequestPolicy: string|undefined = config.OriginRequestPolicyId !== undefined ? getResource("cloudfront-originrequestpolicy", config.OriginRequestPolicyId) : undefined;
+    const originRequestPolicy: string|undefined = config.OriginRequestPolicyId ? getResource("cloudfront-originrequestpolicy", config.OriginRequestPolicyId) ? getResource("cloudfront-originrequestpolicy", config.OriginRequestPolicyId).getId() : undefined : undefined;
     // Create the properties for cache behavior
     return {
       targetOriginId: config.TargetOriginId,
       viewerProtocolPolicy: config.ViewerProtocolPolicy,
       // Optional
-      allowedMethods: config.AllowedMethods !== undefined && config.AllowedMethods.Item !== undefined && config.AllowedMethods.Item.length > 0 ? config.AllowedMethods.Items : undefined,
-      cachedMethods: config.AllowedMethods !== undefined && config.AllowedMethods.CachedMethods !== undefined && config.AllowedMethods.CachedMethods.length > 0 ? config.AllowedMethods.CachedMethods : undefined,
-      cachePolicyId: cachePolicy !== undefined ? cachePolicy : config.CachePolicyId,
+      allowedMethods: config.AllowedMethods && config.AllowedMethods.Items && config.AllowedMethods.Items.length > 0 ? config.AllowedMethods.Items : undefined,
+      cachedMethods: config.AllowedMethods && config.AllowedMethods.CachedMethods && config.AllowedMethods.CachedMethods.Items && config.AllowedMethods.CachedMethods.Items.length > 0 ? config.AllowedMethods.CachedMethods.Items : undefined,
+      cachePolicyId: cachePolicy ? cachePolicy : config.CachePolicyId,
       compress: config.Compress,
       defaultTtl: config.DefaultTTL,
-      fieldLevelEncryptionId: config.FieldLevelEncryptionId !== undefined && config.FieldLevelEncryptionId !== "" ? config.FieldLevelEncryptionId : undefined,
-      forwardedValues: config.ForwardedValues !== undefined ? {
+      fieldLevelEncryptionId: config.FieldLevelEncryptionId && config.FieldLevelEncryptionId !== "" ? config.FieldLevelEncryptionId : undefined,
+      forwardedValues: config.ForwardedValues ? {
         queryString: config.ForwardedValues.QueryString,
         // Optional
-        cookies: config.ForwardedValues.Cookies !== undefined ? {
+        cookies: config.ForwardedValues.Cookies ? {
           forward: config.ForwardedValues.Cookies.Forward,
           // Optional
-          whitelistedNames: config.ForwardedValues.Cookies.WhitelistedNames !== undefined && config.ForwardedValues.Cookies.WhitelistedNames.length > 0 ? config.ForwardedValues.Cookies.WhitelistedNames : undefined,
+          whitelistedNames: config.ForwardedValues.Cookies.WhitelistedNames && config.ForwardedValues.Cookies.WhitelistedNames.length > 0 ? config.ForwardedValues.Cookies.WhitelistedNames : undefined,
         } : undefined,
-        headers: config.ForwardedValues.Headers !== undefined && config.ForwardedValues.Headers.length > 0 ? config.ForwardedValues.Headers : undefined,
-        queryStringCacheKeys: config.ForwardedValues.QueryStringCacheKeys !== undefined && config.ForwardedValues.QueryStringCacheKeys.length > 0 ? config.ForwardedValues.QueryStringCacheKeys : undefined
+        headers: config.ForwardedValues.Headers && config.ForwardedValues.Headers.length > 0 ? config.ForwardedValues.Headers : undefined,
+        queryStringCacheKeys: config.ForwardedValues.QueryStringCacheKeys && config.ForwardedValues.QueryStringCacheKeys.length > 0 ? config.ForwardedValues.QueryStringCacheKeys : undefined
       } : undefined,
-      functionAssociations: config.FunctionAssociations !== undefined && config.FunctionAssociations.Item !== undefined && config.FunctionAssociations.Item.length > 0 ? config.FunctionAssociations.Item.map((elem: any): cloudfront.CfnDistribution.FunctionAssociationProperty => {
+      functionAssociations: config.FunctionAssociations && config.FunctionAssociations.Items !== undefined && config.FunctionAssociations.Items.length > 0 ? config.FunctionAssociations.Items.map((elem: any): cloudfront.CfnDistribution.FunctionAssociationProperty => {
         return {
           eventType: elem.EventType,
-          functionArn: elem.FunctionArn !== undefined ? getResource("cloudfront-function", elem.FunctionArn) : undefined,
+          functionArn: elem.FunctionArn ? getResource("cloudfront-function", elem.FunctionArn) ? getResource("cloudfront-function", elem.FunctionArn).getArn() : undefined : undefined,
         };
       }) : undefined,
-      lambdaFunctionAssociations: config.LambdaFunctionAssociations !== undefined && config.LambdaFunctionAssociations.Item !== undefined && config.LambdaFunctionAssociations.Item.length > 0 ? config.LambdaFunctionAssociations.Item.map((elem: any): cloudfront.CfnDistribution.LambdaFunctionAssociationProperty => {
-        return {
-          eventType: elem.EventType,
-          lambdaFunctionArn: elem.LambdaFunctionArn ? getResource("lambda", extractDataFromArn(elem.LambdaFunctionArn, "resource")) : undefined,
-        }
-      }) : undefined,
-      maxTtl: config.MaxTTL !== undefined ? Number(config.MaxTTL) : undefined,
-      minTtl: config.MinTTL !== undefined ? Number(config.MinTTL) : undefined,
+      maxTtl: config.MaxTTL ? Number(config.MaxTTL) : undefined,
+      minTtl: config.MinTTL ? Number(config.MinTTL) : undefined,
       originRequestPolicyId: originRequestPolicy !== undefined ? originRequestPolicy : config.OriginRequestPolicyId,
     };
   }
@@ -269,6 +265,36 @@ export class CachePolicy {
   public getId(): string {
     return this._policy.ref;
   }  
+}
+
+export class OriginAccessIdentity {
+  private _oai: cloudfront.CfnCloudFrontOriginAccessIdentity;
+  private _scope: Construct;
+
+  /**
+   * Create the origin access identiry for cloudFront
+   * @param scope scope context
+   * @param comment comment
+   */
+  constructor(scope: Construct, comment: string) {
+    this._scope = scope;
+    // Create the properties for origin access identity for cloudFront
+    const props: cloudfront.CfnCloudFrontOriginAccessIdentityProps = {
+      cloudFrontOriginAccessIdentityConfig: {
+        comment: comment
+      }
+    };
+    // Create the origin access identity
+    this._oai = new cloudfront.CfnCloudFrontOriginAccessIdentity(this._scope, createId(JSON.stringify(props)), props);
+  }
+
+  /**
+   * Get an id for origin access identiry
+   * @returns id for origin access identity
+   */
+  public getId(): string {
+    return this._oai.ref;
+  }
 }
 
 export class OriginRequestPolicy {

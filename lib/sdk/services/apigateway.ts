@@ -127,30 +127,34 @@ export async function getResourceId(apiId: string, path: string): Promise<string
  * @returns rest api id
  */
 export async function getRestApiId(name: string): Promise<string> {
-  // Create the input to get rest apis
-  const input: apigateway.GetRestApisCommandInput = {
-    limit: 500,
-  };
-  // Create the command to get rest apis
-  const command: apigateway.GetRestApisCommand = new apigateway.GetRestApisCommand(input);
-  // Send the command to get rest apis
-  const response: apigateway.GetRestApisCommandOutput = await client.send(command);
-  // Result
-  if (response.items === undefined || response.items.length === 0) {
-    console.error(`[ERROR] Failed to get rest apis`);
-    process.exit(1);
-  }
-
-  // Find resource id
-  for (const elem of response.items) {
-    if (elem.name === name && elem.id) {
-      return elem.id;
+  try {
+    // Create the input to get rest apis
+    const input: apigateway.GetRestApisCommandInput = {
+      limit: 500,
+    };
+    // Create the command to get rest apis
+    const command: apigateway.GetRestApisCommand = new apigateway.GetRestApisCommand(input);
+    // Send the command to get rest apis
+    const response: apigateway.GetRestApisCommandOutput = await client.send(command);
+    // Result
+    if (response.items === undefined || response.items.length === 0) {
+      console.error(`[ERROR] Failed to get rest apis`);
+      process.exit(1);
     }
+
+    // Find resource id
+    for (const elem of response.items) {
+      if (elem.name === name && elem.id) {
+        return elem.id;
+      }
+    }
+    // Return
+    console.warn(`[WARNING] Not found rest api id (for ${name})`);
+    return "";
+  } catch (err) {
+    console.warn(`[WARNING] Not found rest api id (for ${name})`);
+    return "";
   }
-  // Print warning message
-  console.warn(`[WARNING] Not found rest api id (for ${name})`);
-  // Return
-  return "";
 }
 
 /**
