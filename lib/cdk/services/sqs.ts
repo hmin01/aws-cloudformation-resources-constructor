@@ -1,7 +1,6 @@
 import { Construct } from "constructs";
 import { aws_sqs as sqs } from "aws-cdk-lib";
 // Util
-import { getResource } from "../../utils/cache";
 import { createId, extractDataFromArn, extractPrincipal, extractTags } from "../../utils/util";
 
 export class Queue {
@@ -10,9 +9,9 @@ export class Queue {
 
   /**
    * Create the sqs queue
-   * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-properties-sqs-queues.html
+   * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queue.html
    * @param scope scope context
-   * @param config configuration for queue
+   * @param config configuration for sqs queue
    */
   constructor(scope: Construct, config: any) {
     this._scope = scope;
@@ -20,18 +19,16 @@ export class Queue {
     const queueName: string = extractDataFromArn(config.QueueArn, "resource");
     // Set the properties for queue
     const props: sqs.CfnQueueProps = {
-      contentBasedDeduplication: config.FifoQueue === "true" && config.ContentBasedDeduplication !== undefined ? JSON.parse(config.ContentBasedDeduplication) : undefined,
+      contentBasedDeduplication: config.FifoQueue === "true" && config.ContentBasedDeduplication ? JSON.parse(config.ContentBasedDeduplication) : undefined,
       deduplicationScope: config.FifoQueue === "true" ? config.DeduplicationScope : undefined,
-      delaySeconds: config.DelaySeconds !== undefined ? Number(config.DelaySeconds) : undefined,
+      delaySeconds: config.DelaySeconds ? Number(config.DelaySeconds) : undefined,
       fifoQueue: config.FifoQueue === "true" ? true : undefined,
       fifoThroughputLimit: config.FifoQueue === "true" ? config.FifoThroughputLimit : undefined,
-      kmsDataKeyReusePeriodSeconds: config.KmsDataKeyReusePeriodSeconds !== undefined ? Number(config.KmsDataKeyReusePeriodSeconds) : undefined,
-      kmsMasterKeyId: config.KmsMasterKeyId !== undefined ? getResource("kms", config.KmsMasterKeyId).getId() : undefined,
-      maximumMessageSize: config.MaximumMessageSize !== undefined ? Number(config.MaximumMessageSize) : undefined,
-      messageRetentionPeriod: config.MessageRetentionPeriod !== undefined ? Number(config.MessageRetentionPeriod) : undefined,
+      maximumMessageSize: config.MaximumMessageSize ? Number(config.MaximumMessageSize) : undefined,
+      messageRetentionPeriod: config.MessageRetentionPeriod ? Number(config.MessageRetentionPeriod) : undefined,
       queueName: queueName,
-      receiveMessageWaitTimeSeconds: config.ReceiveMessageWaitTimeSeconds !== undefined ? Number(config.ReceiveMessageWaitTimeSeconds) : undefined,
-      visibilityTimeout: config.VisibilityTimeout !== undefined ? Number(config.VisibilityTimeout) : undefined
+      receiveMessageWaitTimeSeconds: config.ReceiveMessageWaitTimeSeconds ? Number(config.ReceiveMessageWaitTimeSeconds) : undefined,
+      visibilityTimeout: config.VisibilityTimeout ? Number(config.VisibilityTimeout) : undefined
     };
     // Create the queue
     this._queue = new sqs.CfnQueue(this._scope, createId(JSON.stringify(props)), props);
@@ -63,6 +60,7 @@ export class Queue {
 
   /**
    * Set the policy
+   * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queuepolicy.html
    * @param config configuration for policy
    */
   public setPolicy(config: any) {

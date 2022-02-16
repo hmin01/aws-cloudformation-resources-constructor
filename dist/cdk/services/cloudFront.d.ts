@@ -56,6 +56,21 @@ export declare class CachePolicy {
      */
     getId(): string;
 }
+export declare class OriginAccessIdentity {
+    private _oai;
+    private _scope;
+    /**
+     * Create the origin access identiry for cloudFront
+     * @param scope scope context
+     * @param comment comment
+     */
+    constructor(scope: Construct, comment: string);
+    /**
+     * Get an id for origin access identiry
+     * @returns id for origin access identity
+     */
+    getId(): string;
+}
 export declare class OriginRequestPolicy {
     private _policy;
     private _scope;

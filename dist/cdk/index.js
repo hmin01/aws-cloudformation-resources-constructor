@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createSQSQueues = exports.createSNSTopics = exports.createLambdaFunctions = exports.createIAMRoles = exports.createIAMPolicies = exports.createDynamoDBTables = exports.createCognitoUserPool = exports.createCloudFrontDistributions = exports.createCloudFrontPolicies = exports.createRestApi = void 0;
+exports.createSQSQueues = exports.createSNSTopics = exports.createLambdaFunctions = exports.createIAMRoles = exports.createIAMPolicies = exports.createDynamoDBTables = exports.createCognitoUserPool = exports.createCloudFrontOAI = exports.createCloudFrontDistributions = exports.createCloudFrontPolicies = exports.createRestApi = exports.loadJsonFile = void 0;
+const fs_1 = require("fs");
 // Resources (CDK)
 const apigateway_1 = require("./services/apigateway ");
 const cloudFront_1 = require("./services/cloudFront");
@@ -13,6 +14,29 @@ const sqs_1 = require("./services/sqs");
 // Util
 const cache_1 = require("../utils/cache");
 const util_1 = require("../utils/util");
+/** For Util */
+/**
+ * Load a json data (configuration)
+ * @param filePath file path
+ * @returns loaded data
+ */
+function loadJsonFile(filePath) {
+    try {
+        // Read a file ata
+        const data = (0, fs_1.readFileSync)(filePath).toString();
+        // Transform to json and return data
+        return JSON.parse(data);
+    }
+    catch (err) {
+        // Print error message
+        if (typeof err === "string" || err instanceof Error) {
+            console.error(`[ERROR] ${err}`);
+        }
+        // Exit
+        process.exit(1);
+    }
+}
+exports.loadJsonFile = loadJsonFile;
 /** For Amazon APIGateway */
 /**
  * Create the rest api
@@ -105,12 +129,24 @@ function createCloudFrontDistributions(scope, config) {
         // Get a configuration for distribution
         const elem = config[distributionId];
         // Create a distribution
-        const distribution = new cloudFront_1.Distribution(scope, elem.DistributionConfig, "arn:aws:acm:us-east-1:395824177941:certificate/fd729d07-657c-4b43-b17a-1035e5489f56");
+        const distribution = new cloudFront_1.Distribution(scope, elem.DistributionConfig, "arn:aws:acm:ap-northeast-1:395824177941:certificate/67febc61-f11c-4eeb-9832-f99750fa7955");
         // Store the resource
         (0, cache_1.storeResource)("cloudfront-distribution", distributionId, distribution);
     }
 }
 exports.createCloudFrontDistributions = createCloudFrontDistributions;
+/**
+ * Create the origin access identity
+ * @param scope scope context
+ * @param config configuration for origin access identity
+ */
+function createCloudFrontOAI(scope, config) {
+    // Create a origin access identiry
+    const oai = new cloudFront_1.OriginAccessIdentity(scope, config);
+    // Store the resource
+    (0, cache_1.storeResource)("cloudfront-oai", config, oai);
+}
+exports.createCloudFrontOAI = createCloudFrontOAI;
 /** For Amazon Cognito */
 /**
  * Create the cognito user pool
@@ -125,13 +161,15 @@ function createCognitoUserPool(scope, config) {
         const userPool = new cognito_1.UserPool(scope, elem);
         // Store the resource
         (0, cache_1.storeResource)("userpool", userPoolId, userPool);
-        // Configurate the email
-        userPool.configurateEmail(elem);
-        // Configurate the schema
-        userPool.configurateSchema(elem.SchemaAttributes);
-        // Add the user pool clients
-        for (const client of elem.UserPoolClients) {
-            userPool.addClient(client);
+        // Create the domain (default)
+        if (elem.Domain) {
+            userPool.createDefaultDomain(elem.Domain);
+        }
+        // Create the user pool resource servers
+        if (elem.ResourceServers) {
+            for (const server of elem.ResourceServers) {
+                userPool.createResourceServer(server);
+            }
         }
     }
 }
@@ -237,15 +275,15 @@ exports.createLambdaFunctions = createLambdaFunctions;
 function createSNSTopics(scope, config) {
     for (const topicArn of Object.keys(config)) {
         // Extract a name from arn
-        const topicName = (0, util_1.extractDataFromArn)(topicArn, "resource");
+        // const topicName: string = extractDataFromArn(topicArn, "resource");
         // Get a configuration for topic
         const elem = config[topicArn];
         // Create a topic
         const topic = new sns_1.Topic(scope, elem.Attributes);
         // Store the resource
-        (0, cache_1.storeResource)("sns", topicName, topic);
+        // storeResource("sns", topicName, topic);
         // Set the tags
-        if (elem.Tags !== undefined && elem.Tags !== null && Object.keys(elem.Tags).length > 0) {
+        if (elem.Tags && elem.Tags !== null && Object.keys(elem.Tags).length > 0) {
             topic.setTags(elem.Tags);
         }
     }
@@ -260,20 +298,20 @@ exports.createSNSTopics = createSNSTopics;
 function createSQSQueues(scope, config) {
     for (const queueUrl of Object.keys(config)) {
         // Extract a name from url
-        const split = queueUrl.split("/");
-        const queueName = split[split.length - 1];
+        // const split: string[] = queueUrl.split("/");
+        // const queueName: string = split[split.length - 1];
         // Get a configuration for queue
         const elem = config[queueUrl];
         // Create a queue
         const queue = new sqs_1.Queue(scope, elem.Attributes);
         // Store the resource
-        (0, cache_1.storeResource)("sqs", queueName, queue);
+        // storeResource("sqs", queueName, queue);
         // Set the tags
-        if (elem.Tags !== undefined && elem.Tags !== null && Object.keys(elem.Tags).length > 0) {
+        if (elem.Tags && elem.Tags !== null && Object.keys(elem.Tags).length > 0) {
             queue.setTags(elem.Tags);
         }
         // Set a policy
-        if (elem.PolicyObject !== undefined && elem.PolicyObject !== null && Object.keys(elem.PolicyOjbect).length > 0) {
+        if (elem.PolicyObject && elem.PolicyObject !== null && Object.keys(elem.PolicyOjbect).length > 0) {
             queue.setPolicy(elem.PolicyOjbect);
         }
     }

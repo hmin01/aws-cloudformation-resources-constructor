@@ -6,7 +6,7 @@ export declare class Bucket {
      * Create the s3 bucket
      * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-s3-bucket.html
      * @param scope scope context
-     * @param config configuration for bucket
+     * @param config configuration for s3 bucket
      */
     constructor(scope: Construct, config: any);
     /**

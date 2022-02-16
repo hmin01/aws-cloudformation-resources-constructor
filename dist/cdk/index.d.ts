@@ -1,4 +1,11 @@
 import { Construct } from "constructs";
+/** For Util */
+/**
+ * Load a json data (configuration)
+ * @param filePath file path
+ * @returns loaded data
+ */
+export declare function loadJsonFile(filePath: string): any;
 /** For Amazon APIGateway */
 /**
  * Create the rest api
@@ -19,6 +26,12 @@ export declare function createCloudFrontPolicies(scope: Construct, config: any):
  * @param config configuration for distributions
  */
 export declare function createCloudFrontDistributions(scope: Construct, config: any): void;
+/**
+ * Create the origin access identity
+ * @param scope scope context
+ * @param config configuration for origin access identity
+ */
+export declare function createCloudFrontOAI(scope: Construct, config: any): void;
 /** For Amazon Cognito */
 /**
  * Create the cognito user pool

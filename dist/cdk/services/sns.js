@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Topic = void 0;
 const aws_cdk_lib_1 = require("aws-cdk-lib");
 // Util
-const cache_1 = require("../../utils/cache");
 const util_1 = require("../../utils/util");
 class Topic {
     /**
@@ -14,21 +13,13 @@ class Topic {
      */
     constructor(scope, config) {
         this._scope = scope;
-        // Set a list of tag
-        const tags = (0, util_1.extractTags)(config.Tags);
-        // Extract configuration for function
-        const attributes = config.Attributes;
         // Extract a topic name from arn
-        const topicName = (0, util_1.extractDataFromArn)(attributes.TopicArn, "resource");
-        // Get an arn for kms
-        const kmsKey = (0, cache_1.getResource)("kms", attributes.KmsMasterKeyId);
+        const topicName = (0, util_1.extractDataFromArn)(config.TopicArn, "resource");
         // Set the properties for topic
         const props = {
-            contentBasedDeduplication: attributes.FifoTopic !== undefined ? attributes.ContentBasedDeduplication : undefined,
-            displayName: attributes.DisplayName,
-            fifoTopic: attributes.FifoTopic !== undefined ? attributes.FifoTopic : undefined,
-            kmsMasterKeyId: kmsKey !== undefined ? kmsKey.getId() : undefined,
-            tags: tags.length > 0 ? tags : undefined,
+            contentBasedDeduplication: config.FifoTopic ? config.ContentBasedDeduplication : undefined,
+            displayName: config.DisplayName,
+            fifoTopic: config.FifoTopic ? JSON.parse(config.FifoTopic) : undefined,
             topicName: topicName
         };
         // Create the topic

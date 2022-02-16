@@ -38,35 +38,41 @@ exports.destroySqsClient = destroySqsClient;
  * @returns arn for sqs queue
  */
 async function getSqsQueueArn(queueName, accountId) {
-    // Create the input to get url for sqs queue
-    const inputForUrl = {
-        QueueName: queueName,
-        QueueOwnerAWSAccountId: accountId
-    };
-    // Create the command to get url for sqs queue
-    const cmdForUrl = new sqs.GetQueueUrlCommand(inputForUrl);
-    // Send the command to get url for sqs queue
-    const resForUrl = await client.send(cmdForUrl);
-    // Result
-    const queueUrl = resForUrl.QueueUrl;
-    if (queueUrl === undefined) {
-        console.error(`[WARNING] Not found sqs queue (for ${queueName})`);
-        return "";
+    try {
+        // Create the input to get url for sqs queue
+        const inputForUrl = {
+            QueueName: queueName,
+            QueueOwnerAWSAccountId: accountId
+        };
+        // Create the command to get url for sqs queue
+        const cmdForUrl = new sqs.GetQueueUrlCommand(inputForUrl);
+        // Send the command to get url for sqs queue
+        const resForUrl = await client.send(cmdForUrl);
+        // Result
+        const queueUrl = resForUrl.QueueUrl;
+        if (queueUrl === undefined) {
+            console.error(`[WARNING] Not found sqs queue (for ${queueName})`);
+            return "";
+        }
+        // Create the input to get arn for sqs queue
+        const inputForArn = {
+            AttributeNames: ["QueueArn"],
+            QueueUrl: queueUrl
+        };
+        // Create the command to get arn for sqs queue
+        const cmdForArn = new sqs.GetQueueAttributesCommand(inputForArn);
+        // Send command to get arn for sqs queue
+        const resForArn = await client.send(cmdForArn);
+        // Result
+        if (resForArn.Attributes !== undefined && resForArn.Attributes.QueueArn !== undefined) {
+            return resForArn.Attributes.QueueArn;
+        }
+        else {
+            console.error(`[WARNING] Not found sqs queue (for ${queueName})`);
+            return "";
+        }
     }
-    // Create the input to get arn for sqs queue
-    const inputForArn = {
-        AttributeNames: ["QueueArn"],
-        QueueUrl: queueUrl
-    };
-    // Create the command to get arn for sqs queue
-    const cmdForArn = new sqs.GetQueueAttributesCommand(inputForArn);
-    // Send command to get arn for sqs queue
-    const resForArn = await client.send(cmdForArn);
-    // Result
-    if (resForArn.Attributes !== undefined && resForArn.Attributes.QueueArn !== undefined) {
-        return resForArn.Attributes.QueueArn;
-    }
-    else {
+    catch (err) {
         console.error(`[WARNING] Not found sqs queue (for ${queueName})`);
         return "";
     }

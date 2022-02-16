@@ -2,7 +2,7 @@ import { Construct } from "constructs";
 import { readFileSync } from "fs";
 // Resources (CDK)
 import { RestApi } from "./services/apigateway ";
-import { CachePolicy, Distribution, OriginRequestPolicy, ResponseHeadersPolicy } from "./services/cloudFront";
+import { CachePolicy, Distribution, OriginAccessIdentity, OriginRequestPolicy, ResponseHeadersPolicy } from "./services/cloudFront";
 import { UserPool } from "./services/cognito";
 import { Table } from "./services/dynamodb";
 import { Policy, Role } from "./services/iam";
@@ -10,7 +10,7 @@ import { Function } from "./services/lambda";
 import { Topic } from "./services/sns";
 import { Queue } from "./services/sqs";
 // Util
-import { getResource, storeResource } from "../utils/cache";
+import { storeResource } from "../utils/cache";
 import { extractDataFromArn } from "../utils/util";
 
 /** For Util */
@@ -134,6 +134,17 @@ export function createCloudFrontDistributions(scope: Construct, config: any) {
     // Store the resource
     storeResource("cloudfront-distribution", distributionId, distribution);
   }
+}
+/**
+ * Create the origin access identity
+ * @param scope scope context
+ * @param config configuration for origin access identity
+ */
+export function createCloudFrontOAI(scope: Construct, config: any) {
+  // Create a origin access identiry
+  const oai: OriginAccessIdentity = new OriginAccessIdentity(scope, config);
+  // Store the resource
+  storeResource("cloudfront-oai", config, oai);
 }
 
 /** For Amazon Cognito */
@@ -266,16 +277,16 @@ export function createIAMRoles(scope: Construct, config: any) {
  export function createSNSTopics(scope: Construct, config: any) {
   for (const topicArn of Object.keys(config)) {
     // Extract a name from arn
-    const topicName: string = extractDataFromArn(topicArn, "resource");
+    // const topicName: string = extractDataFromArn(topicArn, "resource");
     // Get a configuration for topic
     const elem: any = config[topicArn];
     // Create a topic
     const topic: Topic = new Topic(scope, elem.Attributes);
     // Store the resource
-    storeResource("sns", topicName, topic);
+    // storeResource("sns", topicName, topic);
 
     // Set the tags
-    if (elem.Tags !== undefined && elem.Tags !== null && Object.keys(elem.Tags).length > 0) {
+    if (elem.Tags && elem.Tags !== null && Object.keys(elem.Tags).length > 0) {
       topic.setTags(elem.Tags);
     }
   }
@@ -290,21 +301,21 @@ export function createIAMRoles(scope: Construct, config: any) {
  export function createSQSQueues(scope: Construct, config: any) {
   for (const queueUrl of Object.keys(config)) {
     // Extract a name from url
-    const split: string[] = queueUrl.split("/");
-    const queueName: string = split[split.length - 1];
+    // const split: string[] = queueUrl.split("/");
+    // const queueName: string = split[split.length - 1];
     // Get a configuration for queue
     const elem: any = config[queueUrl];
     // Create a queue
     const queue: Queue = new Queue(scope, elem.Attributes);
     // Store the resource
-    storeResource("sqs", queueName, queue);
+    // storeResource("sqs", queueName, queue);
 
     // Set the tags
-    if (elem.Tags !== undefined && elem.Tags !== null && Object.keys(elem.Tags).length > 0) {
+    if (elem.Tags && elem.Tags !== null && Object.keys(elem.Tags).length > 0) {
       queue.setTags(elem.Tags);
     }
     // Set a policy
-    if (elem.PolicyObject !== undefined && elem.PolicyObject !== null && Object.keys(elem.PolicyOjbect).length > 0) {
+    if (elem.PolicyObject && elem.PolicyObject !== null && Object.keys(elem.PolicyOjbect).length > 0) {
       queue.setPolicy(elem.PolicyOjbect);
     }
   }

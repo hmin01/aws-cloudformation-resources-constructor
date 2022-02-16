@@ -4,9 +4,9 @@ export declare class Queue {
     private _queue;
     /**
      * Create the sqs queue
-     * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-properties-sqs-queues.html
+     * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queue.html
      * @param scope scope context
-     * @param config configuration for queue
+     * @param config configuration for sqs queue
      */
     constructor(scope: Construct, config: any);
     /**
@@ -26,6 +26,7 @@ export declare class Queue {
     getUrl(): string;
     /**
      * Set the policy
+     * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queuepolicy.html
      * @param config configuration for policy
      */
     setPolicy(config: any): void;

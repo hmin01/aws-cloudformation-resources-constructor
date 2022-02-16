@@ -22,23 +22,23 @@ class Function {
             process.exit(1);
         }
         // Get an arn for role
-        const role = config.Role !== undefined ? (0, cache_1.getResource)("role", (0, util_1.extractDataFromArn)(config.Role, "resource")) !== undefined ? (0, cache_1.getResource)("role", (0, util_1.extractDataFromArn)(config.Role, "resource")) : config.Role : undefined;
+        const role = config.Role ? (0, cache_1.getResource)("role", (0, util_1.extractDataFromArn)(config.Role, "resource")) ? (0, cache_1.getResource)("role", (0, util_1.extractDataFromArn)(config.Role, "resource")) : config.Role : undefined;
         // Set the properties for lambda function
         const props = {
             code: {
                 s3Bucket: s3.bucketName,
                 s3Key: s3.key
             },
-            role: role !== undefined ? role.getArn() : config.Role,
+            role: role ? role.getArn() : config.Role,
             // Optional
             architectures: ["x86_64"],
             description: config.Description,
-            environment: config.Environment !== undefined ? {
+            environment: config.Environment ? {
                 variables: config.Environment.Variables
             } : undefined,
             functionName: config.FunctionName,
             handler: config.Handler,
-            memorySize: config.MemorySize !== undefined ? Number(config.MemorySize) : undefined,
+            memorySize: config.MemorySize ? Number(config.MemorySize) : undefined,
             packageType: config.PackageType,
             reservedConcurrentExecutions: config.ReservedConcurrentExecutions !== undefined ? Number(config.ReservedConcurrentExecutions) : undefined,
             runtime: config.Runtime,
