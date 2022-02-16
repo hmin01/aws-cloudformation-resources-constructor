@@ -75,45 +75,35 @@ export class RestApi {
    * @param configs configuration for method
    */
   public createMethod(path: string, config: any): void {
-    const resourceId = this._mapping.resource[path];
     for (const methodType of Object.keys(config)) {
-      const methodOptions = config[methodType];
-      // Set the request models in method
+      // Extract the configuration for resource method
+      const methodOption = config[methodType];
+      // Create the request models from configuration
       const requestModels: any = {};
-      if (methodOptions.requestModels !== undefined) {
-        Object.entries(methodOptions.requestModels).forEach((elem: any) => requestModels[elem.key]=elem.value);
+      if (methodOption.requestModels !== undefined) {
+        for (const contentType of Object.keys(methodOption.requestModels)) {
+          const modelName: string = methodOption.requestModels[contentType];
+          if (this._mapping.model[modelName] !== undefined) {
+            requestModels[contentType] = this._mapping.model[modelName];
+          }
+        }
       }
-      // Set the method responses
-      const methodResponses: apigateway.CfnMethod.MethodResponseProperty[] = methodOptions.methodResponses !== undefined ? Object.keys(methodOptions.methodResponses).map((key: string): apigateway.CfnMethod.MethodResponseProperty => {
-        const value: any = methodOptions.methodResponses[key];
-        // Set the request models in method responses
-        const requestModels: any = {};
-        if (value.requestModels !== undefined) {
-          Object.entries(value.requestModels).forEach((elem: any) => requestModels[elem.key]=elem.value);
-        }
-        // Return
-        return {
-          statusCode: value.statusCode,
-          responseParameters: value.responseParameters,
-          responseModels: Object.keys(requestModels).length > 0 ? requestModels : undefined,
-        }
-      }) : [];
-      // Set the properties for resource method [Ref. https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-method.html]
+      // Create the properties for resource method
       const props: apigateway.CfnMethodProps = {
-        apiKeyRequired: methodOptions.apiKeyRequired,
-        authorizationScopes: methodOptions.authorizationScopes,
-        authorizationType: methodOptions.authorizationType,
-        authorizerId: this._mapping.authorizer[methodOptions.authorizerId],
-        httpMethod: methodOptions.httpMethod,
-        methodResponses: methodResponses.length > 0 ? methodResponses : undefined,
-        resourceId: resourceId,
+        httpMethod: methodOption.httpMethod,
+        resourceId: this._mapping.resource[path],
         restApiId: this._restApi.ref,
+        // Optional
+        apiKeyRequired: methodOption.apiKeyRequired,
+        authorizationScopes: methodOption.authorizationScopes,
+        authorizationType: methodOption.authorizationType,
+        authorizerId: methodOption.authorizerId !== undefined ? this._mapping.authorizer[methodOption.authorizerId] : undefined,
         requestModels: Object.keys(requestModels).length > 0 ? requestModels : undefined,
-        requestParameters: methodOptions.requestParameters !== undefined ? Object.keys(methodOptions.requestParameters).length > 0 ? methodOptions.requestParameters : undefined : undefined,
-        requestValidatorId: methodOptions.requestValidatorId !== undefined ? this._mapping.requestValidator[methodOptions.requestValidatorId] : undefined
+        requestParameters: methodOption.requestParameters,
+        requestValidatorId: methodOption.requestValidatorId !== undefined ? this._mapping.requestValidator[methodOption.requestValidatorId] : undefined
       };
       // Create the resource method
-      this._mapping.method[`${path}:${methodOptions.httpMethod}`] = new apigateway.CfnMethod(this._scope, createId(JSON.stringify(props)), props);
+      this._mapping.method[`${path}:${methodOption.httpMethod}`] = new apigateway.CfnMethod(this._scope, createId(JSON.stringify(props)), props);
     }
   }
 

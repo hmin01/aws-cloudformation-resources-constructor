@@ -17,18 +17,23 @@ export function destroyDyanmoDBClient(): void {
  * @returns arn for dynamodb table
  */
 export async function getDynamoDBTableArn(tableName: string): Promise<string> {
-  // Create the input to get arn for dynamodb table
-  const input: dynamodb.DescribeTableCommandInput = {
-    TableName: tableName
-  };
-  // Create the command to get arn for dynamodb table
-  const command: dynamodb.DescribeTableCommand = new dynamodb.DescribeTableCommand(input);
-  // Send the command to get url for dynamodb table
-  const response: dynamodb.DescribeTableCommandOutput = await client.send(command);
-  // Result
-  if (response.Table !== undefined && response.Table.TableArn !== undefined) {
-    return response.Table.TableArn;
-  } else {
+  try {
+    // Create the input to get arn for dynamodb table
+    const input: dynamodb.DescribeTableCommandInput = {
+      TableName: tableName
+    };
+    // Create the command to get arn for dynamodb table
+    const command: dynamodb.DescribeTableCommand = new dynamodb.DescribeTableCommand(input);
+    // Send the command to get url for dynamodb table
+    const response: dynamodb.DescribeTableCommandOutput = await client.send(command);
+    // Result
+    if (response.Table && response.Table.TableArn) {
+      return response.Table.TableArn;
+    } else {
+      console.error(`[WARNING] Not found dynamodb table (for ${tableName})`);
+      return "";
+    }
+  } catch (err) {
     console.error(`[WARNING] Not found dynamodb table (for ${tableName})`);
     return "";
   }

@@ -1,6 +1,5 @@
 import { createHash } from "crypto";
 import { readFileSync } from "fs";
-// CDK library
 import { CfnTag } from "aws-cdk-lib";
 
 /**
