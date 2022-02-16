@@ -3,6 +3,8 @@ import { aws_cognito as cognito } from "aws-cdk-lib";
 // Util
 import { createId } from "../../utils/util";
 
+const defaultSchema: any = { sub: true, name: true, given_name: true, family_name: true, middle_name: true, nickname: true, preferred_username: true, profile: true, picture: true, website: true, email: true, email_verified: true, gender: true, birthdate: true, zoneinfo: true, locale: true, phone_number: true, phone_number_verified: true, address: true, updated_at: true };
+
 export class UserPool {
   private _scope: Construct;
   private _userPool: cognito.CfnUserPool;
@@ -15,6 +17,29 @@ export class UserPool {
    */
   constructor(scope: Construct, config: any) {
     this._scope = scope;
+    // Extract the schema
+    const schema: any[] = [];
+    if (config.SchemaAttributes) {
+      for (const elem of config.SchemaAttributes) {
+        if (!defaultSchema(elem.Name)) {
+          schema.push({
+            attributeDataType: elem.AttributeDataType,
+            developerOnlyAttribute: elem.DeveloperOnlyAttribute,
+            mutable: elem.Mutable,
+            required: elem.Required,
+            name: elem.Name,
+            numberAttributeConstraints: elem.NumberAttributeConstraints !== undefined ? {
+              maxValue: elem.NumberAttributeConstraints.MaxValue,
+              minValue: elem.NumberAttributeConstraints.MinValue
+            } : undefined,
+            stringAttributeConstraints: elem.StringAttributeConstraints !== undefined ? {
+              maxLength: elem.StringAttributeConstraints.MaxLength,
+              minLength: elem.StringAttributeConstraints.MinLength
+            } : undefined
+          });
+        }
+      }
+    }
     // Create the properties for cognito user pool
     const props: cognito.CfnUserPoolProps = {
       accountRecoverySetting: config.AccountRecoverySetting !== undefined ? {
@@ -46,23 +71,7 @@ export class UserPool {
           temporaryPasswordValidityDays: config.Policies.PasswordPolicy.TemporaryPasswordValidityDays !== undefined ? Number(config.Policies.PasswordPolicy.TemporaryPasswordValidityDays) : undefined
         }
       } : undefined,
-      schema: config.SchemaAttributes !== undefined && config.SchemaAttributes.length > 0 ? config.SchemaAttributes.map((elem: any): cognito.CfnUserPool.SchemaAttributeProperty => {
-        return {
-          attributeDataType: elem.AttributeDataType,
-          developerOnlyAttribute: elem.DeveloperOnlyAttribute,
-          mutable: elem.Mutable,
-          required: elem.Required,
-          name: elem.Name,
-          numberAttributeConstraints: elem.NumberAttributeConstraints !== undefined ? {
-            maxValue: elem.NumberAttributeConstraints.MaxValue,
-            minValue: elem.NumberAttributeConstraints.MinValue
-          } : undefined,
-          stringAttributeConstraints: elem.StringAttributeConstraints !== undefined ? {
-            maxLength: elem.StringAttributeConstraints.MaxLength,
-            minLength: elem.StringAttributeConstraints.MinLength
-          } : undefined
-        };
-      }) : undefined,
+      schema: schema.length > 0 ? schema : undefined,
       usernameAttributes: config.UsernameAttributes,
       usernameConfiguration: config.UsernameConfiguration !== undefined ? {
         caseSensitive: config.UsernameConfiguration.CaseSensitive
