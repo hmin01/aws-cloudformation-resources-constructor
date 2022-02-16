@@ -4,6 +4,7 @@ exports.UserPool = void 0;
 const aws_cdk_lib_1 = require("aws-cdk-lib");
 // Util
 const util_1 = require("../../utils/util");
+const defaultSchema = { sub: true, name: true, given_name: true, family_name: true, middle_name: true, nickname: true, preferred_username: true, profile: true, picture: true, website: true, email: true, email_verified: true, gender: true, birthdate: true, zoneinfo: true, locale: true, phone_number: true, phone_number_verified: true, address: true, updated_at: true };
 class UserPool {
     /**
      * Create the cognito user pool
@@ -13,6 +14,29 @@ class UserPool {
      */
     constructor(scope, config) {
         this._scope = scope;
+        // Extract the schema
+        const schema = [];
+        if (config.SchemaAttributes) {
+            for (const elem of config.SchemaAttributes) {
+                if (!defaultSchema(elem.Name)) {
+                    schema.push({
+                        attributeDataType: elem.AttributeDataType,
+                        developerOnlyAttribute: elem.DeveloperOnlyAttribute,
+                        mutable: elem.Mutable,
+                        required: elem.Required,
+                        name: elem.Name,
+                        numberAttributeConstraints: elem.NumberAttributeConstraints !== undefined ? {
+                            maxValue: elem.NumberAttributeConstraints.MaxValue,
+                            minValue: elem.NumberAttributeConstraints.MinValue
+                        } : undefined,
+                        stringAttributeConstraints: elem.StringAttributeConstraints !== undefined ? {
+                            maxLength: elem.StringAttributeConstraints.MaxLength,
+                            minLength: elem.StringAttributeConstraints.MinLength
+                        } : undefined
+                    });
+                }
+            }
+        }
         // Create the properties for cognito user pool
         const props = {
             accountRecoverySetting: config.AccountRecoverySetting !== undefined ? {
@@ -44,23 +68,7 @@ class UserPool {
                     temporaryPasswordValidityDays: config.Policies.PasswordPolicy.TemporaryPasswordValidityDays !== undefined ? Number(config.Policies.PasswordPolicy.TemporaryPasswordValidityDays) : undefined
                 }
             } : undefined,
-            schema: config.SchemaAttributes !== undefined && config.SchemaAttributes.length > 0 ? config.SchemaAttributes.map((elem) => {
-                return {
-                    attributeDataType: elem.AttributeDataType,
-                    developerOnlyAttribute: elem.DeveloperOnlyAttribute,
-                    mutable: elem.Mutable,
-                    required: elem.Required,
-                    name: elem.Name,
-                    numberAttributeConstraints: elem.NumberAttributeConstraints !== undefined ? {
-                        maxValue: elem.NumberAttributeConstraints.MaxValue,
-                        minValue: elem.NumberAttributeConstraints.MinValue
-                    } : undefined,
-                    stringAttributeConstraints: elem.StringAttributeConstraints !== undefined ? {
-                        maxLength: elem.StringAttributeConstraints.MaxLength,
-                        minLength: elem.StringAttributeConstraints.MinLength
-                    } : undefined
-                };
-            }) : undefined,
+            schema: schema.length > 0 ? schema : undefined,
             usernameAttributes: config.UsernameAttributes,
             usernameConfiguration: config.UsernameConfiguration !== undefined ? {
                 caseSensitive: config.UsernameConfiguration.CaseSensitive
