@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ResponseHeadersPolicy = exports.OriginRequestPolicy = exports.CachePolicy = exports.Function = exports.Distribution = void 0;
+exports.ResponseHeadersPolicy = exports.OriginRequestPolicy = exports.OriginAccessIdentity = exports.CachePolicy = exports.Function = exports.Distribution = void 0;
 const aws_cdk_lib_1 = require("aws-cdk-lib");
 // Util
 const cache_1 = require("../../utils/cache");
@@ -19,28 +19,28 @@ class Distribution {
             distributionConfig: {
                 enabled: config.Enabled,
                 // Optional
-                aliases: config.Aliases !== undefined ? config.Aliases.Items !== undefined ? config.Aliases.Item.length > 0 ? config.Aliases.Item : undefined : undefined : undefined,
-                cacheBehaviors: config.CacheBehaviors !== undefined && config.CacheBehaviors.Items !== undefined && config.CacheBehaviors.Items.length > 0 ? config.CacheBehaviors.Items.map((elem) => this.createCacheBehaviorFormat(elem)) : undefined,
-                comment: config.Comment !== undefined && config.Comment !== "" ? config.Comment : undefined,
-                customErrorResponses: config.CustomErrorResponses !== undefined && config.CustomErrorResponses.Items !== undefined && config.CustomErrorResponses.Items.length > 0 ? config.CustomErrorResponses.Items.map((elem) => {
+                aliases: config.Aliases ? config.Aliases.Items ? config.Aliases.Items.length > 0 ? config.Aliases.Items : undefined : undefined : undefined,
+                cacheBehaviors: config.CacheBehaviors && config.CacheBehaviors.Items && config.CacheBehaviors.Items.length > 0 ? config.CacheBehaviors.Items.map((elem) => this.createCacheBehaviorFormat(elem)) : undefined,
+                comment: config.Comment && config.Comment !== "" ? config.Comment : undefined,
+                customErrorResponses: config.CustomErrorResponses && config.CustomErrorResponses.Items && config.CustomErrorResponses.Items.length > 0 ? config.CustomErrorResponses.Items.map((elem) => {
                     return {
-                        errorCode: Number(config.ErrorCode),
+                        errorCode: Number(elem.ErrorCode),
                         // Optional
-                        errorCachingMinTtl: config.ErrorCachingMinTTL !== undefined ? Number(config.ErrorCachingMinTTL) : undefined,
-                        responseCode: config.ResponseCode !== undefined ? Number(config.ResponseCode) : undefined,
-                        responsePagePath: config.ResponsePagePath
+                        errorCachingMinTtl: elem.ErrorCachingMinTTL ? Number(elem.ErrorCachingMinTTL) : undefined,
+                        responseCode: elem.ResponseCode ? Number(elem.ResponseCode) : undefined,
+                        responsePagePath: elem.ResponsePagePath
                     };
                 }) : undefined,
-                defaultCacheBehavior: config.CacheBehaviors !== undefined && config.CacheBehaviors.Items !== undefined && config.CacheBehaviors.Items.length > 0 ? undefined : this.createCacheBehaviorFormat(config.DefaultCacheBehavior),
+                defaultCacheBehavior: config.CacheBehaviors && config.CacheBehaviors.Items !== undefined && config.CacheBehaviors.Items.length > 0 ? undefined : this.createCacheBehaviorFormat(config.DefaultCacheBehavior),
                 httpVersion: config.HttpVersion,
                 ipv6Enabled: config.IsIPV6Enabled,
-                logging: config.Logging !== undefined && config.Logging.Enabled !== undefined && config.Logging.Enabled === true ? {
+                logging: config.Logging && config.Logging.Enabled && config.Logging.Enabled === true ? {
                     bucket: config.Logging.Bucket,
                     // Optional
                     includeCookies: config.Logging.IncludeCookies,
                     prefix: config.Logging.Prefix
                 } : undefined,
-                originGroups: config.OriginGroups !== undefined && config.OriginGroups.Items !== undefined && config.OriginGroups.Items.length > 0 ? {
+                originGroups: config.OriginGroups && config.OriginGroups.Items !== undefined && config.OriginGroups.Items.length > 0 ? {
                     items: config.OriginGroups.Items.map((elem) => {
                         return {
                             failoverCriteria: {
@@ -58,21 +58,21 @@ class Distribution {
                     }),
                     quantity: config.OriginGroups.Quantity
                 } : undefined,
-                origins: config.Origins !== undefined && config.Origins.Items !== undefined && config.Origins.Items.length > 0 ? config.Origins.Item.map((elem) => {
+                origins: config.Origins && config.Origins.Items !== undefined && config.Origins.Items.length > 0 ? config.Origins.Items.map((elem) => {
                     return {
                         domainName: elem.DomainName,
                         id: elem.Id,
                         // Optional
-                        connectionAttempts: elem.ConnectionAttempts !== undefined ? Number(elem.ConnectionAttempts) : undefined,
-                        connectionTimeout: elem.ConnectionTimeout !== undefined ? Number(elem.ConnectionTimeout) : undefined,
-                        customOriginConfig: elem.CustomOriginConfig !== undefined ? {
+                        connectionAttempts: elem.ConnectionAttempts ? Number(elem.ConnectionAttempts) : undefined,
+                        connectionTimeout: elem.ConnectionTimeout ? Number(elem.ConnectionTimeout) : undefined,
+                        customOriginConfig: elem.CustomOriginConfig ? {
                             originProtocolPolicy: elem.CustomOriginConfig.OriginProtocolPolicy,
                             // Optional
-                            httpPort: elem.CustomOriginConfig.HTTPPort !== undefined ? Number(elem.CustomOriginConfig.HTTPPort) : undefined,
-                            httpsPort: elem.CustomOriginConfig.HTTPSPort !== undefined ? Number(elem.CustomOriginConfig.HTTPSPort) : undefined,
-                            originKeepaliveTimeout: elem.CustomOriginConfig.OriginKeepaliveTimeout !== undefined ? Number(elem.CustomOriginConfig.OriginKeepaliveTimeout) : undefined,
-                            originReadTimeout: elem.CustomOriginConfig.OriginReadTimeout !== undefined ? Number(elem.CustomOriginConfig.OriginReadTimeout) : undefined,
-                            originSslProtocols: elem.CustomOriginConfig.OriginSslProtocols !== undefined && elem.CustomOriginConfig.OriginSslProtocols.length > 0 ? elem.CustomOriginConfig.OriginSslProtocols : undefined,
+                            httpPort: elem.CustomOriginConfig.HTTPPort ? Number(elem.CustomOriginConfig.HTTPPort) : undefined,
+                            httpsPort: elem.CustomOriginConfig.HTTPSPort ? Number(elem.CustomOriginConfig.HTTPSPort) : undefined,
+                            originKeepaliveTimeout: elem.CustomOriginConfig.OriginKeepaliveTimeout ? Number(elem.CustomOriginConfig.OriginKeepaliveTimeout) : undefined,
+                            originReadTimeout: elem.CustomOriginConfig.OriginReadTimeout ? Number(elem.CustomOriginConfig.OriginReadTimeout) : undefined,
+                            originSslProtocols: elem.CustomOriginConfig.OriginSslProtocols && elem.CustomOriginConfig.OriginSslProtocols.length > 0 ? elem.CustomOriginConfig.OriginSslProtocols : undefined,
                         } : undefined,
                         originCustomHeaders: elem.CustomHeaders !== undefined && elem.CustomHeaders.Items !== undefined && elem.CustomHeaders.Items.length > 0 ? elem.CustomHeaders.Items.map((elem) => {
                             return {
@@ -80,13 +80,13 @@ class Distribution {
                                 headerValue: elem.HeaderValue
                             };
                         }) : undefined,
-                        originPath: elem.OriginPath !== undefined && elem.OriginPath !== "" ? elem.OriginPath : undefined,
-                        originShield: elem.OriginShield !== undefined ? {
+                        originPath: elem.OriginPath && elem.OriginPath !== "" ? elem.OriginPath : undefined,
+                        originShield: elem.OriginShield ? {
                             enabled: elem.OriginShield.Enabled,
                             originShieldRegion: elem.OriginShield.OriginShieldRegion
                         } : undefined,
-                        s3OriginConfig: elem.S3OriginConfig !== undefined ? {
-                            originAccessIdentity: elem.S3OriginConfig.OriginAccessIdentity
+                        s3OriginConfig: elem.S3OriginConfig ? {
+                            originAccessIdentity: (0, cache_1.getResource)("cloudfront-oai", elem.DomainName) ? (0, cache_1.getResource)("cloudfront-oai", elem.DomainName).getId() : elem.S3OriginConfig.OriginAccessIdentity
                         } : undefined
                     };
                 }) : undefined,
@@ -95,17 +95,18 @@ class Distribution {
                     geoRestriction: {
                         restrictionType: config.Restrictions.GeoRestriction.RestrictionType,
                         // Optoinal
-                        locations: config.Restrictions.GeoRestriction.Items !== undefined && config.Restrictions.GeoRestriction.Items.length > 0 ? config.Restrictions.GeoRestriction.Items : undefined
+                        locations: config.Restrictions.GeoRestriction.Items && config.Restrictions.GeoRestriction.Items.length > 0 ? config.Restrictions.GeoRestriction.Items : undefined
                     }
                 },
-                viewerCertificate: config.ViewerCertificate !== undefined && acmCertArn !== undefined ? {
+                viewerCertificate: config.ViewerCertificate && acmCertArn ? {
                     acmCertificateArn: acmCertArn,
-                    minimumProtocolVersion: config.MinimumProtocolVersion,
-                    sslSupportMethod: config.SSLSupportMethod
+                    minimumProtocolVersion: config.ViewerCertificate.MinimumProtocolVersion,
+                    sslSupportMethod: config.ViewerCertificate.SSLSupportMethod
                 } : undefined,
-                webAclId: config.WebACLId !== undefined && config.WebACLId !== "" ? config.WebACLId : undefined
+                webAclId: config.WebACLId && config.WebACLId !== "" ? config.WebACLId : undefined
             }
         };
+        console.log(props.distributionConfig);
         // Create the distribution
         this._distribution = new aws_cdk_lib_1.aws_cloudfront.CfnDistribution(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
     }
@@ -118,45 +119,39 @@ class Distribution {
      */
     createCacheBehaviorFormat(config) {
         // Get a cache policy
-        const cachePolicy = config.CachePolicyId !== undefined ? (0, cache_1.getResource)("cloudfront-cachepolicy", config.CachePolicyId) : undefined;
+        const cachePolicy = config.CachePolicyId ? (0, cache_1.getResource)("cloudfront-cachepolicy", config.CachePolicyId) ? (0, cache_1.getResource)("cloudfront-cachepolicy", config.CachePolicyId).getId() : undefined : undefined;
         // Get a origin request policy
-        const originRequestPolicy = config.OriginRequestPolicyId !== undefined ? (0, cache_1.getResource)("cloudfront-originrequestpolicy", config.OriginRequestPolicyId) : undefined;
+        const originRequestPolicy = config.OriginRequestPolicyId ? (0, cache_1.getResource)("cloudfront-originrequestpolicy", config.OriginRequestPolicyId) ? (0, cache_1.getResource)("cloudfront-originrequestpolicy", config.OriginRequestPolicyId).getId() : undefined : undefined;
         // Create the properties for cache behavior
         return {
             targetOriginId: config.TargetOriginId,
             viewerProtocolPolicy: config.ViewerProtocolPolicy,
             // Optional
-            allowedMethods: config.AllowedMethods !== undefined && config.AllowedMethods.Item !== undefined && config.AllowedMethods.Item.length > 0 ? config.AllowedMethods.Items : undefined,
-            cachedMethods: config.AllowedMethods !== undefined && config.AllowedMethods.CachedMethods !== undefined && config.AllowedMethods.CachedMethods.length > 0 ? config.AllowedMethods.CachedMethods : undefined,
-            cachePolicyId: cachePolicy !== undefined ? cachePolicy : config.CachePolicyId,
+            allowedMethods: config.AllowedMethods && config.AllowedMethods.Items && config.AllowedMethods.Items.length > 0 ? config.AllowedMethods.Items : undefined,
+            cachedMethods: config.AllowedMethods && config.AllowedMethods.CachedMethods && config.AllowedMethods.CachedMethods.Items && config.AllowedMethods.CachedMethods.Items.length > 0 ? config.AllowedMethods.CachedMethods.Items : undefined,
+            cachePolicyId: cachePolicy ? cachePolicy : config.CachePolicyId,
             compress: config.Compress,
             defaultTtl: config.DefaultTTL,
-            fieldLevelEncryptionId: config.FieldLevelEncryptionId !== undefined && config.FieldLevelEncryptionId !== "" ? config.FieldLevelEncryptionId : undefined,
-            forwardedValues: config.ForwardedValues !== undefined ? {
+            fieldLevelEncryptionId: config.FieldLevelEncryptionId && config.FieldLevelEncryptionId !== "" ? config.FieldLevelEncryptionId : undefined,
+            forwardedValues: config.ForwardedValues ? {
                 queryString: config.ForwardedValues.QueryString,
                 // Optional
-                cookies: config.ForwardedValues.Cookies !== undefined ? {
+                cookies: config.ForwardedValues.Cookies ? {
                     forward: config.ForwardedValues.Cookies.Forward,
                     // Optional
-                    whitelistedNames: config.ForwardedValues.Cookies.WhitelistedNames !== undefined && config.ForwardedValues.Cookies.WhitelistedNames.length > 0 ? config.ForwardedValues.Cookies.WhitelistedNames : undefined,
+                    whitelistedNames: config.ForwardedValues.Cookies.WhitelistedNames && config.ForwardedValues.Cookies.WhitelistedNames.length > 0 ? config.ForwardedValues.Cookies.WhitelistedNames : undefined,
                 } : undefined,
-                headers: config.ForwardedValues.Headers !== undefined && config.ForwardedValues.Headers.length > 0 ? config.ForwardedValues.Headers : undefined,
-                queryStringCacheKeys: config.ForwardedValues.QueryStringCacheKeys !== undefined && config.ForwardedValues.QueryStringCacheKeys.length > 0 ? config.ForwardedValues.QueryStringCacheKeys : undefined
+                headers: config.ForwardedValues.Headers && config.ForwardedValues.Headers.length > 0 ? config.ForwardedValues.Headers : undefined,
+                queryStringCacheKeys: config.ForwardedValues.QueryStringCacheKeys && config.ForwardedValues.QueryStringCacheKeys.length > 0 ? config.ForwardedValues.QueryStringCacheKeys : undefined
             } : undefined,
-            functionAssociations: config.FunctionAssociations !== undefined && config.FunctionAssociations.Item !== undefined && config.FunctionAssociations.Item.length > 0 ? config.FunctionAssociations.Item.map((elem) => {
+            functionAssociations: config.FunctionAssociations && config.FunctionAssociations.Items !== undefined && config.FunctionAssociations.Items.length > 0 ? config.FunctionAssociations.Items.map((elem) => {
                 return {
                     eventType: elem.EventType,
-                    functionArn: elem.FunctionArn !== undefined ? (0, cache_1.getResource)("cloudfront-function", elem.FunctionArn) : undefined,
+                    functionArn: elem.FunctionArn ? (0, cache_1.getResource)("cloudfront-function", elem.FunctionArn) ? (0, cache_1.getResource)("cloudfront-function", elem.FunctionArn).getArn() : undefined : undefined,
                 };
             }) : undefined,
-            lambdaFunctionAssociations: config.LambdaFunctionAssociations !== undefined && config.LambdaFunctionAssociations.Item !== undefined && config.LambdaFunctionAssociations.Item.length > 0 ? config.LambdaFunctionAssociations.Item.map((elem) => {
-                return {
-                    eventType: elem.EventType,
-                    lambdaFunctionArn: elem.LambdaFunctionArn ? (0, cache_1.getResource)("lambda", (0, util_1.extractDataFromArn)(elem.LambdaFunctionArn, "resource")) : undefined,
-                };
-            }) : undefined,
-            maxTtl: config.MaxTTL !== undefined ? Number(config.MaxTTL) : undefined,
-            minTtl: config.MinTTL !== undefined ? Number(config.MinTTL) : undefined,
+            maxTtl: config.MaxTTL ? Number(config.MaxTTL) : undefined,
+            minTtl: config.MinTTL ? Number(config.MinTTL) : undefined,
             originRequestPolicyId: originRequestPolicy !== undefined ? originRequestPolicy : config.OriginRequestPolicyId,
         };
     }
@@ -259,6 +254,32 @@ class CachePolicy {
     }
 }
 exports.CachePolicy = CachePolicy;
+class OriginAccessIdentity {
+    /**
+     * Create the origin access identiry for cloudFront
+     * @param scope scope context
+     * @param comment comment
+     */
+    constructor(scope, comment) {
+        this._scope = scope;
+        // Create the properties for origin access identity for cloudFront
+        const props = {
+            cloudFrontOriginAccessIdentityConfig: {
+                comment: comment
+            }
+        };
+        // Create the origin access identity
+        this._oai = new aws_cdk_lib_1.aws_cloudfront.CfnCloudFrontOriginAccessIdentity(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
+    }
+    /**
+     * Get an id for origin access identiry
+     * @returns id for origin access identity
+     */
+    getId() {
+        return this._oai.ref;
+    }
+}
+exports.OriginAccessIdentity = OriginAccessIdentity;
 class OriginRequestPolicy {
     /**
      * Create the origin request policy for cloudfront

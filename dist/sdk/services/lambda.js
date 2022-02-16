@@ -94,20 +94,26 @@ function extractStoredLocation(location) {
  * @param qualifier version or alias for lambda function
  */
 async function getLambdaFunctionArn(functionName, qualifier) {
-    // Create the input to get arn for lambda function
-    const input = {
-        FunctionName: functionName,
-        Qualifier: qualifier
-    };
-    // Create the command to get arn for lambda function
-    const command = new lambda.GetFunctionConfigurationCommand(input);
-    // Send the command to get arn for lambda function
-    const response = await client.send(command);
-    // Result
-    if (response !== undefined && response.FunctionArn !== undefined) {
-        return response.FunctionArn;
+    try {
+        // Create the input to get arn for lambda function
+        const input = {
+            FunctionName: functionName,
+            Qualifier: qualifier
+        };
+        // Create the command to get arn for lambda function
+        const command = new lambda.GetFunctionConfigurationCommand(input);
+        // Send the command to get arn for lambda function
+        const response = await client.send(command);
+        // Result
+        if (response && response.FunctionArn) {
+            return response.FunctionArn;
+        }
+        else {
+            console.error(`[WARNING] Not found lambda function (for ${functionName})`);
+            return "";
+        }
     }
-    else {
+    catch (err) {
         console.error(`[WARNING] Not found lambda function (for ${functionName})`);
         return "";
     }

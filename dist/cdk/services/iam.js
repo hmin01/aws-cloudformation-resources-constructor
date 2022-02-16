@@ -10,20 +10,18 @@ class Role {
      * Create the iam role
      * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-iam-role.html
      * @param scope scope context
-     * @param config configuration for role
+     * @param config configuration for iam role
      */
     constructor(scope, config) {
         this._scope = scope;
-        // Extract a list of tag
-        const tags = (0, util_1.extractTags)(config.Tags);
         // Set the properties for role
         const props = {
             assumeRolePolicyDocument: config.AssumeRolePolicyDocument,
+            // Optional
             description: config.Description,
             maxSessionDuration: Number(config.MaxSessionDuration),
             path: config.Path,
             roleName: config.RoleName,
-            tags: tags.length > 0 ? tags : undefined
         };
         // Create the role based on properties
         this._role = new aws_cdk_lib_1.aws_iam.CfnRole(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
@@ -114,16 +112,17 @@ class Policy {
      * Create the iam policy
      * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-iam-managedpolicy.html
      * @param scope scope context
-     * @param config configuration for managed policy
+     * @param config configuration for iam managed policy
      */
     constructor(scope, config) {
         this._scope = scope;
         // Set the properties for managed policy
         const props = {
+            policyDocument: config.Document,
+            // Optional
             description: config.Description,
             managedPolicyName: config.PolicyName,
-            path: config.Path,
-            policyDocument: config.Document
+            path: config.Path
         };
         // Create the managed policy based on properties
         this._policy = new aws_cdk_lib_1.aws_iam.CfnManagedPolicy(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);

@@ -13,7 +13,26 @@ export declare function initSdkClients(): void;
  * @param name api name
  * @param config configuration for api
  */
-export declare function setAPIGatewayMethodIntegrations(name: string, config: any[]): Promise<void>;
+export declare function setAPIGatewayMethods(name: string, config: any[]): Promise<void>;
+/**
+ * Deploy the API Gateway stage (contain deployment)
+ * @param name rest api name
+ * @param config configuration for stage
+ */
+export declare function deployAPIGatewayStage(name: string, config: any[]): Promise<void>;
+/** For Cognito */
+/**
+ * Set a cognito user pool configuration
+ * @param name user pool name
+ * @param config configuration for user pool
+ */
+export declare function setCognitoUserPool(name: string, config: any): Promise<void>;
+/**
+ * Create the cognito user pool clients
+ * @param name user pool name
+ * @param config configuration for user pool clients
+ */
+export declare function createCognitoUserPoolClients(name: string, clientConfigs: any[], uiConfigs: any[]): Promise<void>;
 /** For Lambda */
 /**
  * Create the versions and aliases for lambda

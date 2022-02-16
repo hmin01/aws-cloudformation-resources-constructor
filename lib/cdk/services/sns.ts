@@ -1,7 +1,6 @@
 import { Construct } from "constructs";
 import { aws_sns as sns } from "aws-cdk-lib";
 // Util
-import { getResource, storeResource } from "../../utils/cache";
 import { createId, extractDataFromArn, extractTags } from "../../utils/util";
 
 export class Topic {
@@ -16,21 +15,13 @@ export class Topic {
    */
   constructor(scope: Construct, config: any) {
     this._scope = scope;
-    // Set a list of tag
-    const tags = extractTags(config.Tags);
-    // Extract configuration for function
-    const attributes: any = config.Attributes;
     // Extract a topic name from arn
-    const topicName: string = extractDataFromArn(attributes.TopicArn, "resource");
-    // Get an arn for kms
-    const kmsKey: any = getResource("kms", attributes.KmsMasterKeyId);
+    const topicName: string = extractDataFromArn(config.TopicArn, "resource");
     // Set the properties for topic
     const props: sns.CfnTopicProps = {
-      contentBasedDeduplication: attributes.FifoTopic !== undefined ? attributes.ContentBasedDeduplication : undefined,
-      displayName: attributes.DisplayName,
-      fifoTopic: attributes.FifoTopic !== undefined ? attributes.FifoTopic : undefined,
-      kmsMasterKeyId: kmsKey !== undefined ? kmsKey.getId() : undefined,
-      tags: tags.length > 0 ? tags : undefined,
+      contentBasedDeduplication: config.FifoTopic ? config.ContentBasedDeduplication : undefined,
+      displayName: config.DisplayName,
+      fifoTopic: config.FifoTopic ? JSON.parse(config.FifoTopic) : undefined,
       topicName: topicName
     };
     // Create the topic

@@ -10,22 +10,16 @@ export declare class UserPool {
      */
     constructor(scope: Construct, config: any);
     /**
-     * Add an user pool client
-     * @description https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpoolclient.html
-     * @param config configuration for user pool client
+     * Create the default domain
+     * @param domain domain
      */
-    addClient(config: any): void;
+    createDefaultDomain(domain: any): void;
     /**
-     * Configurate the email
-     * @param config configuration for email
+     * Create a resource server for user pool
+     * @description https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpoolresourceserver.html
+     * @param config configuration for resource server
      */
-    configurateEmail(config: any): void;
-    /**
-     * Configurate a list of schema
-     * @description https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cognito-userpool-schemaattribute.html
-     * @param config configuration for schema
-     */
-    configurateSchema(config: any[]): void;
+    createResourceServer(config: any): void;
     /**
      * Get an arn for user pool
      * @returns arn for user pool
@@ -36,4 +30,14 @@ export declare class UserPool {
      * @returns id for user pool
      */
     getId(): string;
+    /**
+     * Get a provider name for user pool
+     * @returns provider name for user pool
+     */
+    getProviderName(): string;
+    /**
+     * Get a provider url for user pool
+     * @returns provider url for user pool
+     */
+    getProviderUrl(): string;
 }

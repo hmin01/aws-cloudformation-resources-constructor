@@ -6,7 +6,7 @@ export declare class Role {
      * Create the iam role
      * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-iam-role.html
      * @param scope scope context
-     * @param config configuration for role
+     * @param config configuration for iam role
      */
     constructor(scope: Construct, config: any);
     /**
@@ -60,7 +60,7 @@ export declare class Policy {
      * Create the iam policy
      * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-iam-managedpolicy.html
      * @param scope scope context
-     * @param config configuration for managed policy
+     * @param config configuration for iam managed policy
      */
     constructor(scope: Construct, config: any);
     /**
