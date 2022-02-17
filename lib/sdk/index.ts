@@ -1,11 +1,16 @@
+import { join } from "path";
 // Services (SDK)
 import * as SDKAPIGateway from "./services/apigateway";
 import * as SDKCognito from "./services/cognito";
 import * as SDKDynomoDB from "./services/dynamodb";
-import * as SDKLambda from "./services/lambda";
 import * as SDKSqs from "./services/sqs";
+// Services (SDK) - new
+import { LambdaSdk } from "./services/lambda";
 // Utile
 import { extractDataFromArn } from "../utils/util";
+
+// Set the directory for stored lambda function codes
+const CODE_DIR: string = join(__dirname, "../../resources/code");
 
 /** For Util */
 /**
@@ -15,7 +20,6 @@ export function destroySdkClients() {
   SDKAPIGateway.destroyAPIGatewayClient();
   SDKCognito.destroyCognitoClient();
   SDKDynomoDB.destroyDyanmoDBClient();
-  SDKLambda.destroyLambdaClient();
   SDKSqs.destroySqsClient();
 }
 /**
@@ -25,7 +29,6 @@ export function initSdkClients() {
   SDKAPIGateway.initAPIGatewayClient();
   SDKCognito.initCognitoClient();
   SDKDynomoDB.initDynamoDBClient();
-  SDKLambda.initLambdaClient();
   SDKSqs.initSqsClient();
 }
 
@@ -97,6 +100,9 @@ export async function deployAPIGatewayStage(name: string, config: any[]): Promis
  * @param config configuration for user pool
  */
 export async function setCognitoUserPool(name: string, config: any) {
+  // Create an sdk object for lambda
+  const lambda: LambdaSdk = new LambdaSdk({ region: process.env.REGION });
+
   // Get a user pool id for name
   const userPoolId: string = await SDKCognito.getUserPoolId(name);
   if (userPoolId === "") {
@@ -135,7 +141,7 @@ export async function setCognitoUserPool(name: string, config: any) {
       const functionName: string = extractDataFromArn(lambdaConfig[key], "resource");
       const qualifier: string = extractDataFromArn(lambdaConfig[key], "qualifier");
       // Get a lambda arn
-      const lambdaArn: string = await SDKLambda.getLambdaFunctionArn(functionName, qualifier !== "" ? qualifier : undefined);
+      const lambdaArn: string = await lambda.getFunctionArn(functionName, qualifier);
       // Set the lambda configuration
       if (lambdaArn !== "") {
         lambdaConfig[key] = lambdaArn;
@@ -145,6 +151,9 @@ export async function setCognitoUserPool(name: string, config: any) {
     await SDKCognito.updateLambdaConfiguration(userPoolId, lambdaConfig);
     console.info(`[NOTICE] Set the lambda configuration for user pool (for ${name})`);
   }
+
+  // Destroy an sdk object for lambda
+  lambda.destroy();
 }
 /**
  * Create the cognito user pool clients
@@ -182,25 +191,71 @@ export async function createCognitoUserPoolClients(name: string, clientConfigs: 
 
 /** For Lambda */
 /**
- * Create the versions and aliases for lambda
- * @param config configuration for versions and aliases for lambda
+ * Create the lambda function aliases
+ * @param functionName function name
+ * @param config configuration for aliases
+ * @param mapVersion mapping data for version
  */
- export async function createLambdaVersionsAndAliases(config: any): Promise<void> {
-  // Update function code and publish versions
-  for (const elem of config.Versions) {
-    await SDKLambda.publishVersion(elem);
+export async function createAliases(functionName: string, config: any, mapVersion?: any): Promise<void> {
+  // Create an sdk object for lambda
+  const lambda: LambdaSdk = new LambdaSdk({ region: process.env.REGION });
+
+  // Create the lambda function aliases
+  for (const elem of config) {
+    // Set a function version
+    const functionVersion: string = mapVersion ? mapVersion[elem.FunctionVersion] : elem.FunctionVersion;
+    // Create the alias for function
+    await lambda.createAlias(functionName, functionVersion, elem.Name, elem.Description !== "" ? elem.Description : undefined);
   }
-  // Create the aliases
-  for (const elem of config.Aliases) {
-    await SDKLambda.createAlias(elem);
-  }
+
+  // Destroy an sdk object for lambda
+  lambda.destroy();
 }
 /**
- * Set the event source mappings
+ * Create the event source mappings
  * @param config configuration for event source mappings
  */
- export async function setEventSourceMappings(config: any): Promise<void> {
+export async function createEventSourceMappings(config: any): Promise<void> {
+  // Create an sdk object for lambda
+  const lambda: LambdaSdk = new LambdaSdk({ region: process.env.REGION });
+
+  // Create the event source mappings
   for (const mappingId of Object.keys(config)) {
-    await SDKLambda.setEventSourceMapping(config[mappingId]);
+    await lambda.createEventSourceMapping(config[mappingId]);
   }
+
+  // Destroy an sdk object for lambda
+  lambda.destroy();
+}
+/**
+ * Publish the lambda function versions
+ * @param functionName function name
+ * @param config configuration for versions
+ * @returns mapping data for version
+ */
+export async function publishLambdaVersions(functionName: string, config: any): Promise<any> {
+  // Create an sdk object for lambda
+  const lambda: LambdaSdk = new LambdaSdk({ region: process.env.REGION });
+  // Set a version mapping data
+  const mapVersion: any = {};
+
+  // Publish the lambda function versions
+  for (const elem of config) {
+    if (elem.Version !== "$LATEST" && elem.StoredLocation && new RegExp("^s3://").test(elem.StoredLocation)) {
+      // Extract a file name from s3 url
+      const temp:string = elem.StoredLocation.replace(/^s3:\/\//, "").split("/").slice(1).join("/").split("/");
+      const filename: string = temp[temp.length - 1];
+      // Update the function code
+      await lambda.updateCode(functionName, join(CODE_DIR, filename));
+      // Publish the version
+      const version = await lambda.publishVersion(functionName, elem.Description);
+      // Mapping version
+      mapVersion[elem.Version] = version;
+    }
+  }
+
+  // Destroy an sdk object for lambda
+  lambda.destroy();
+  // Return
+  return mapVersion;
 }
