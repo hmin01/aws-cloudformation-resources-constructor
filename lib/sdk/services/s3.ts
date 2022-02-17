@@ -11,32 +11,33 @@ export class S3Sdk {
   private _client: s3.S3Client;
 
   /**
-   * Create the sdk object for amazon s3
+   * Create a sdk object for amazon s3
    * @param config configuration for client
    */
   constructor(config: any) {
-    // Create the client for amazon s3
+    // Create a client for amazon s3
     this._client = new s3.S3Client(config);
   }
 
   /**
    * Get a object in amazon s3
+   * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/interfaces/getobjectcommandinput.html
    * @param bucket bucket name
    * @param key object key
    * @param versionId version id
-   * @returns file data (stream)
+   * @returns object data (stream)
    */
   private async _getObject(bucket: string, key: string, versionId?: string): Promise<ReadableStream<any>> {
     try {
-      // Create the input to get the object
+      // Create an input to get the object
       const input: s3.GetObjectCommandInput = {
         Bucket: bucket,
         Key: key,
         VersionId: versionId
       };
-      // Create the command to get the object
+      // Create a command to get the object
       const command: s3.GetObjectCommand = new s3.GetObjectCommand(input);
-      // Send the command to get a object
+      // Send a command to get a object
       const response: s3.GetObjectCommandOutput = await this._client.send(command);
       // Return
       return response.Body as ReadableStream;
@@ -47,7 +48,7 @@ export class S3Sdk {
   }
 
   /**
-   * Destroy the client for amazon s3
+   * Destroy a client for amazon s3
    */
   public destroy(): void {
     this._client.destroy();

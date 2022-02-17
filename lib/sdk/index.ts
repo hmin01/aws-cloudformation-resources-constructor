@@ -1,10 +1,8 @@
 import { join } from "path";
 // Services (SDK)
-import * as SDKAPIGateway from "./services/apigateway";
 import * as SDKCognito from "./services/cognito";
-import * as SDKDynomoDB from "./services/dynamodb";
-import * as SDKSqs from "./services/sqs";
 // Services (SDK) - new
+import { APIGatewaySdk } from "./services/apigateway";
 import { LambdaSdk } from "./services/lambda";
 // Utile
 import { extractDataFromArn } from "../utils/util";
@@ -17,81 +15,100 @@ const CODE_DIR: string = join(__dirname, "../../resources/code");
  * Destroy the sdk clients
  */
 export function destroySdkClients() {
-  SDKAPIGateway.destroyAPIGatewayClient();
   SDKCognito.destroyCognitoClient();
-  SDKDynomoDB.destroyDyanmoDBClient();
-  SDKSqs.destroySqsClient();
 }
 /**
  * Init the sdk clients
  */
 export function initSdkClients() {
-  SDKAPIGateway.initAPIGatewayClient();
   SDKCognito.initCognitoClient();
-  SDKDynomoDB.initDynamoDBClient();
-  SDKSqs.initSqsClient();
 }
 
 /** For APIGateway */
 /**
- * Set the method integrations
- * @param name api name
- * @param config configuration for api
+ * Configure the methods in rest api
+ * @param restApiName rest api name
+ * @param config configuration for methods
  */
-export async function setAPIGatewayMethods(name: string, config: any[]): Promise<void> {
-  // Get an api id
-  const restApiId: string = await SDKAPIGateway.getRestApiId(name);
+export async function configureAPIGatewayMethods(restApiName: string, config: any[]): Promise<void> {
+  // Create a sdk object for amazon apigateway
+  const apigateway: APIGatewaySdk = new APIGatewaySdk({ region: process.env.REGION });
+
+  // Get a rest api id
+  const restApiId: string = await apigateway.getRestApiId(restApiName);
+  // Catch error
   if (restApiId === "") {
-    console.error(`[ERROR] Not found api id (for ${name})`);
-    process.exit(1);
+    console.error(`[ERROR] Not found rest api id (target: ${restApiName})`);
+    process.exit(47);
   }
-  // Set the methods
+
+  // Configure the methods
   for (const elem of config) {
     // Get a resource id
-    const resourceId: string = await SDKAPIGateway.getResourceId(restApiId, elem.path);
+    const resourceId: string = await apigateway.getResouceId(restApiId, elem.path);
+    // Catch error
     if (resourceId === "") {
-      console.error(`[ERROR] Not found resource id (for ${elem.path})`);
+      console.error(`[ERROR] Not found resource id (taget ${elem.path})`);
       break;
     }
-    // Set a method
-    if (elem.resourceMethods !== undefined) {
+    // Configure a method
+    if (elem.resourceMethods) {
       for (const method of Object.keys(elem.resourceMethods)) {
+        // Extrac the configurations
         const configForIntegration: any = elem.resourceMethods[method].methodIntegration;
         const configForResponse: any = elem.resourceMethods[method].methodResponses;
-        // Put the method integration
-        await SDKAPIGateway.putMethodIntegration(restApiId, resourceId, method, configForIntegration);
-        // Put the method response
-        await SDKAPIGateway.putMethodResponse(restApiId, resourceId, method, configForResponse);
-        // Put the method integration response
-        await SDKAPIGateway.putMethodIntegrationResponse(restApiId, resourceId, method, configForIntegration !== undefined ? configForIntegration.integrationResponses : undefined);
+        // Put a method integration
+        if (configForIntegration) {
+          await apigateway.putMethodIntegration(restApiId, resourceId, method, configForIntegration);
+        }
+        // Put a method response
+        if (configForResponse) {
+          await apigateway.putMethodResponses(restApiId, resourceId, method, configForResponse);
+        }
+        // Put a method integration response
+        if (configForIntegration && configForIntegration.integrationResponses) {
+          await apigateway.putMethodIntegrationResponses(restApiId, resourceId, method, configForIntegration !== undefined ? configForIntegration.integrationResponses : undefined);
+        }
         // Print console
         console.info(`[NOTICE] Put the method (for ${method} ${elem.path})`);
       }
-    } 
+    }
   }
+
+  // Destroy a sdk object for amazon apigateway
+  apigateway.destroy();
 }
 /**
- * Deploy the API Gateway stage (contain deployment)
+ * Deploy a stage (contain deployment)
  * @param name rest api name
  * @param config configuration for stage
  */
-export async function deployAPIGatewayStage(name: string, config: any[]): Promise<void> {
-  // Get an api id
-  const restApiId: string = await SDKAPIGateway.getRestApiId(name);
+export async function deployAPIGatewayStage(restApiName: string, config: any[]): Promise<void> {
+  // Create a sdk object for amazon apigateway
+  const apigateway: APIGatewaySdk = new APIGatewaySdk({ region: process.env.REGION });
+
+  // Get a rest api id
+  const restApiId: string = await apigateway.getRestApiId(restApiName);
+  // Catch error
   if (restApiId === "") {
-    console.error(`[ERROR] Not found api id (for ${name})`);
-    process.exit(1);
+    console.error(`[ERROR] Not found rest api id (target: ${restApiName})`);
+    process.exit(47);
   }
-  // Process
+
+  // Create the deployments and stages
   for (const elem of config) {
-    // Create the deployment
-    const deployment: string = await SDKAPIGateway.createDeployment(restApiId);
-    // Create the stage
-    await SDKAPIGateway.createStage(restApiId, deployment, elem);
+    // Create a deployment
+    const deployment: string = await apigateway.createDeployment(restApiId);
+    // Create a stage
+    await apigateway.createStage(restApiId, deployment, elem);
     // Print message
-    console.info(`[NOTICE] Deploy the stage (for ${name})`);
+    console.info(`[NOTICE] Deploy the stage (for ${restApiName})`);
   }
+
+  // Destroy a sdk object for amazon apigateway
+  apigateway.destroy();
 }
+
 
 /** For Cognito */
 /**
@@ -197,7 +214,7 @@ export async function createCognitoUserPoolClients(name: string, clientConfigs: 
  * @param mapVersion mapping data for version
  */
 export async function createAliases(functionName: string, config: any, mapVersion?: any): Promise<void> {
-  // Create an sdk object for lambda
+  // Create a sdk object for lambda
   const lambda: LambdaSdk = new LambdaSdk({ region: process.env.REGION });
 
   // Create the lambda function aliases
@@ -208,7 +225,7 @@ export async function createAliases(functionName: string, config: any, mapVersio
     await lambda.createAlias(functionName, functionVersion, elem.Name, elem.Description !== "" ? elem.Description : undefined);
   }
 
-  // Destroy an sdk object for lambda
+  // Destroy a sdk object for lambda
   lambda.destroy();
 }
 /**
@@ -216,7 +233,7 @@ export async function createAliases(functionName: string, config: any, mapVersio
  * @param config configuration for event source mappings
  */
 export async function createEventSourceMappings(config: any): Promise<void> {
-  // Create an sdk object for lambda
+  // Create a sdk object for lambda
   const lambda: LambdaSdk = new LambdaSdk({ region: process.env.REGION });
 
   // Create the event source mappings
@@ -224,7 +241,7 @@ export async function createEventSourceMappings(config: any): Promise<void> {
     await lambda.createEventSourceMapping(config[mappingId]);
   }
 
-  // Destroy an sdk object for lambda
+  // Destroy a sdk object for lambda
   lambda.destroy();
 }
 /**
@@ -234,7 +251,7 @@ export async function createEventSourceMappings(config: any): Promise<void> {
  * @returns mapping data for version
  */
 export async function publishLambdaVersions(functionName: string, config: any): Promise<any> {
-  // Create an sdk object for lambda
+  // Create a sdk object for lambda
   const lambda: LambdaSdk = new LambdaSdk({ region: process.env.REGION });
   // Set a version mapping data
   const mapVersion: any = {};
@@ -254,7 +271,7 @@ export async function publishLambdaVersions(functionName: string, config: any): 
     }
   }
 
-  // Destroy an sdk object for lambda
+  // Destroy a sdk object for lambda
   lambda.destroy();
   // Return
   return mapVersion;
