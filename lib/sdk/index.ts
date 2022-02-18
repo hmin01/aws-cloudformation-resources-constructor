@@ -145,7 +145,7 @@ export async function setCognitoUserPool(name: string, config: any): Promise<voi
  * @param name user pool name
  * @param config configuration for user pool clients
  */
-export async function createCognitoUserPoolClients(name: string, clientConfigs: any[], uiConfigs: any[]): Promise<void> {
+export async function createCognitoUserPoolClients(name: string, clientConfigs: any[], uiConfigs?: any[]): Promise<void> {
   // Creaet a sdk object for cognito
   const cognito: CognitoSdk = new CognitoSdk({ region: process.env.REGION });
 
@@ -158,19 +158,18 @@ export async function createCognitoUserPoolClients(name: string, clientConfigs: 
 
   // Create the user pool clients
   for (const elem of clientConfigs) {
-    // Extract the ui customization data
-    let uiData: any = undefined;
-    for (const data of uiConfigs) {
-      if (data.ClientId === elem.ClientId) {
-        uiData = data;
-        break;
-      }
-    } 
     // Create a user pool client
     const clientId: string = await cognito.createUserPoolClient(userPoolId, elem);
     // Set a ui customization
-    if (clientId && uiData) {
-      await cognito.setUICustomization(userPoolId, clientId, uiData);
+    if (clientId && uiConfigs) {
+      // Extract the ui customization data
+      let uiData: any = undefined;
+      for (const data of uiConfigs) {
+        if (data.ClientId === elem.ClientId) {
+          await cognito.setUICustomization(userPoolId, clientId, uiData);
+          break;
+        }
+      }
     }
     // Print message
     console.info(`[NOTICE] Create the user pool client (for ${elem.ClientName})`);
@@ -224,7 +223,13 @@ export async function createLambdaEventSourceMappings(config: any): Promise<void
  * @param s3Url s3 url
  * @param outputDir output directory path
  */
-export async function downloadLambdaCodeFromS3(region: string, s3Url: string, outputDir: string): Promise<void> {
+export async function downloadLambdaCodeFromS3(region: string, s3Url: string, outputDir: string): Promise<boolean> {
+  // Check a url format
+  if (!new RegExp("^s3://").test(s3Url)) {
+    console.warn("[WARNING] Not match the s3 url format");
+    return false;
+  }
+
   // Create a sdk object for s3
   const s3: S3Sdk = new S3Sdk({ region });
 
@@ -243,6 +248,8 @@ export async function downloadLambdaCodeFromS3(region: string, s3Url: string, ou
 
   // Destroy a sdk object for s3
   s3.destroy();
+  // Return
+  return true;
 }
 /**
  * Publish the lambda function versions

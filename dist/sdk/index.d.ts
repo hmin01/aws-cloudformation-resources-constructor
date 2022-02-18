@@ -23,7 +23,7 @@ export declare function setCognitoUserPool(name: string, config: any): Promise<v
  * @param name user pool name
  * @param config configuration for user pool clients
  */
-export declare function createCognitoUserPoolClients(name: string, clientConfigs: any[], uiConfigs: any[]): Promise<void>;
+export declare function createCognitoUserPoolClients(name: string, clientConfigs: any[], uiConfigs?: any[]): Promise<void>;
 /** For Lambda */
 /**
  * Create the lambda function aliases
@@ -43,7 +43,7 @@ export declare function createLambdaEventSourceMappings(config: any): Promise<vo
  * @param s3Url s3 url
  * @param outputDir output directory path
  */
-export declare function downloadLambdaCodeFromS3(region: string, s3Url: string, outputDir: string): Promise<void>;
+export declare function downloadLambdaCodeFromS3(region: string, s3Url: string, outputDir: string): Promise<boolean>;
 /**
  * Publish the lambda function versions
  * @param functionName function name
