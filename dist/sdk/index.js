@@ -207,7 +207,7 @@ exports.createLambdaEventSourceMappings = createLambdaEventSourceMappings;
  * Download a lambda code from s3
  * @param region region to create a s3 client
  * @param s3Url s3 url
- * @param outputDir output directory path
+ * @param outputDir output directory path (default: /resources/code)
  */
 async function downloadLambdaCodeFromS3(region, s3Url, outputDir) {
     // Check a url format
@@ -220,17 +220,12 @@ async function downloadLambdaCodeFromS3(region, s3Url, outputDir) {
     // Get a s3 object
     const obj = await s3.getObjectByUrl(s3Url);
     // Checking the existence of a directory (if there's none, create it)
-    if ((0, fs_1.existsSync)(outputDir)) {
-        (0, fs_1.mkdirSync)(outputDir, { recursive: true });
+    const oPath = outputDir ? outputDir : CODE_DIR;
+    if (!(0, fs_1.existsSync)(oPath)) {
+        (0, fs_1.mkdirSync)(oPath, { recursive: true });
     }
-    // Create a code file path
-    const filePath = (0, path_1.join)(outputDir, obj.filename);
-    // Create a code file
-    (0, fs_1.openSync)(filePath, "w");
     // Write data
-    obj.data.pipe((0, fs_1.createWriteStream)(filePath), { end: true });
-    // Destroy a sdk object for s3
-    s3.destroy();
+    obj.data.pipe((0, fs_1.createWriteStream)((0, path_1.join)(oPath, obj.filename))).on("close", () => s3.destroy());
     // Return
     return true;
 }
@@ -239,9 +234,10 @@ exports.downloadLambdaCodeFromS3 = downloadLambdaCodeFromS3;
  * Publish the lambda function versions
  * @param functionName function name
  * @param config configuration for versions
+ * @param dirPath path to the directory where the code is stored (default /resources/code)
  * @returns mapping data for version
  */
-async function publishLambdaVersions(functionName, config) {
+async function publishLambdaVersions(functionName, config, dirPath) {
     // Create a sdk object for lambda
     const lambda = new lambda_1.LambdaSdk({ region: process.env.REGION });
     // Set a version mapping data
@@ -253,7 +249,7 @@ async function publishLambdaVersions(functionName, config) {
             const temp = elem.StoredLocation.replace(/^s3:\/\//, "").split("/").slice(1).join("/").split("/");
             const filename = temp[temp.length - 1];
             // Update the function code
-            await lambda.updateCode(functionName, (0, path_1.join)(CODE_DIR, filename));
+            await lambda.updateCode(functionName, (0, path_1.join)(dirPath ? dirPath : CODE_DIR, filename));
             // Publish the version
             const version = await lambda.publishVersion(functionName, elem.Description);
             // Mapping version

@@ -1,12 +1,11 @@
 import { createWriteStream, existsSync, mkdirSync, openSync } from "fs";
 import { join } from "path";
+import { Readable } from "stream";
 // Services (SDK) - new
 import { APIGatewaySdk } from "./services/apigateway";
 import { CognitoSdk } from "./services/cognito";
 import { LambdaSdk } from "./services/lambda";
 import { S3Object, S3Sdk } from "./services/s3";
-// Utile
-import { extractDataFromArn } from "../utils/util";
 
 // Set the directory for stored lambda function codes
 const CODE_DIR: string = join(__dirname, "../../resources/code");
@@ -221,9 +220,9 @@ export async function createLambdaEventSourceMappings(config: any): Promise<void
  * Download a lambda code from s3
  * @param region region to create a s3 client
  * @param s3Url s3 url
- * @param outputDir output directory path
+ * @param outputDir output directory path (default: /resources/code)
  */
-export async function downloadLambdaCodeFromS3(region: string, s3Url: string, outputDir: string): Promise<boolean> {
+export async function downloadLambdaCodeFromS3(region: string, s3Url: string, outputDir?: string): Promise<boolean> {
   // Check a url format
   if (!new RegExp("^s3://").test(s3Url)) {
     console.warn("[WARNING] Not match the s3 url format");
@@ -232,22 +231,15 @@ export async function downloadLambdaCodeFromS3(region: string, s3Url: string, ou
 
   // Create a sdk object for s3
   const s3: S3Sdk = new S3Sdk({ region });
-
   // Get a s3 object
   const obj:S3Object = await s3.getObjectByUrl(s3Url);
   // Checking the existence of a directory (if there's none, create it)
-  if (existsSync(outputDir)) {
-    mkdirSync(outputDir, { recursive: true });
+  const oPath: string = outputDir ? outputDir : CODE_DIR;
+  if (!existsSync(oPath)) {
+    mkdirSync(oPath, { recursive: true });
   } 
-  // Create a code file path
-  const filePath: string = join(outputDir, obj.filename);
-  // Create a code file
-  openSync(filePath, "w");
   // Write data
-  obj.data.pipe(createWriteStream(filePath), { end: true });
-
-  // Destroy a sdk object for s3
-  s3.destroy();
+  obj.data.pipe(createWriteStream(join(oPath, obj.filename))).on("close", () => s3.destroy());
   // Return
   return true;
 }
@@ -255,9 +247,10 @@ export async function downloadLambdaCodeFromS3(region: string, s3Url: string, ou
  * Publish the lambda function versions
  * @param functionName function name
  * @param config configuration for versions
+ * @param dirPath path to the directory where the code is stored (default /resources/code)
  * @returns mapping data for version
  */
-export async function publishLambdaVersions(functionName: string, config: any): Promise<any> {
+export async function publishLambdaVersions(functionName: string, config: any, dirPath?: string): Promise<any> {
   // Create a sdk object for lambda
   const lambda: LambdaSdk = new LambdaSdk({ region: process.env.REGION });
   // Set a version mapping data
@@ -270,7 +263,7 @@ export async function publishLambdaVersions(functionName: string, config: any): 
       const temp:string = elem.StoredLocation.replace(/^s3:\/\//, "").split("/").slice(1).join("/").split("/");
       const filename: string = temp[temp.length - 1];
       // Update the function code
-      await lambda.updateCode(functionName, join(CODE_DIR, filename));
+      await lambda.updateCode(functionName, join(dirPath ? dirPath : CODE_DIR, filename));
       // Publish the version
       const version = await lambda.publishVersion(functionName, elem.Description);
       // Mapping version

@@ -52,14 +52,10 @@ export class RestApi {
     }) : undefined;
     // Create the properties for authorizer
     const props: apigateway.CfnAuthorizerProps = {
-      authorizerCredentials: config.authorizerCredentials,
-      authorizerResultTtlInSeconds: config.authorizerResultTtlInSeconds !== undefined ? Number(config.authorizerResultTtlInSeconds) : undefined,
-      authorizerUri: config.authorizerUri,
       authType: config.authType,
       identitySource: config.identitySource,
       identityValidationExpression: config.identityValidationExpression,
       name: config.name,
-      providerArns: providerArns,
       restApiId: this._restApi.ref,
       type: config.type
     };
