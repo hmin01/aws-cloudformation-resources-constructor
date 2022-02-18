@@ -28,7 +28,7 @@ export class S3Sdk {
    * @param versionId version id
    * @returns object data (stream)
    */
-  private async _getObject(bucket: string, key: string, versionId?: string): Promise<Readable> {
+  private async _getObject(bucket: string, key: string, versionId?: string): Promise<any> {
     try {
       // Create an input to get the object
       const input: s3.GetObjectCommandInput = {
@@ -41,7 +41,7 @@ export class S3Sdk {
       // Send a command to get a object
       const response: s3.GetObjectCommandOutput = await this._client.send(command);
       // Return
-      return response.Body as Readable;
+      return response.Body;
     } catch (err) {
       console.error(`[ERROR] Failed to get the object from amazon s3\n-> ${err}`);
       process.exit(1);

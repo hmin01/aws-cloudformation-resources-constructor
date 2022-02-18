@@ -41,13 +41,14 @@ export declare function createLambdaEventSourceMappings(config: any): Promise<vo
  * Download a lambda code from s3
  * @param region region to create a s3 client
  * @param s3Url s3 url
- * @param outputDir output directory path
+ * @param outputDir output directory path (default: /resources/code)
  */
-export declare function downloadLambdaCodeFromS3(region: string, s3Url: string, outputDir: string): Promise<boolean>;
+export declare function downloadLambdaCodeFromS3(region: string, s3Url: string, outputDir?: string): Promise<boolean>;
 /**
  * Publish the lambda function versions
  * @param functionName function name
  * @param config configuration for versions
+ * @param dirPath path to the directory where the code is stored (default /resources/code)
  * @returns mapping data for version
  */
-export declare function publishLambdaVersions(functionName: string, config: any): Promise<any>;
+export declare function publishLambdaVersions(functionName: string, config: any, dirPath?: string): Promise<any>;
