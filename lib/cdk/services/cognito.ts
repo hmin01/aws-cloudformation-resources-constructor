@@ -21,7 +21,7 @@ export class UserPool {
     const schema: any[] = [];
     if (config.SchemaAttributes) {
       for (const elem of config.SchemaAttributes) {
-        if (!defaultSchema(elem.Name)) {
+        if (!defaultSchema[elem.Name]) {
           schema.push({
             attributeDataType: elem.AttributeDataType,
             developerOnlyAttribute: elem.DeveloperOnlyAttribute,
@@ -90,16 +90,19 @@ export class UserPool {
   }
 
   /**
-   * Create the default domain
+   * Create a default domain
    * @param domain domain
    */
-  public createDefaultDomain(domain: any): void {
-    // Create the properties for user pool domain
+  public createDefaultDomain(domain: string): void {
+    // Extract a prefix domain
+    const split: string[] = domain.split(".");
+    const prefixDomain: string = split[0];
+    // Create a properties for user pool domain
     const props: cognito.CfnUserPoolDomainProps = {
-      domain: domain,
+      domain: prefixDomain,
       userPoolId: this._userPool.ref
     };
-    // Create the user pool default domain
+    // Create a user pool default domain
     new cognito.CfnUserPoolDomain(this._scope, createId(JSON.stringify(props)), props);
   }
   
@@ -109,7 +112,7 @@ export class UserPool {
    * @param config configuration for resource server
    */
   public createResourceServer(config: any): void {
-    // Create the properties for user pool resource server
+    // Create a properties for user pool resource server
     const props: cognito.CfnUserPoolResourceServerProps = {
       identifier: config.Identifier,
       name: config.Name,

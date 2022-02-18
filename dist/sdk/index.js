@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.publishLambdaVersions = exports.downloadLambdaCodeFromS3 = exports.createEventSourceMappings = exports.createAliases = exports.createCognitoUserPoolClients = exports.setCognitoUserPool = exports.deployAPIGatewayStage = exports.configureAPIGatewayMethods = void 0;
+exports.publishLambdaVersions = exports.downloadLambdaCodeFromS3 = exports.createLambdaEventSourceMappings = exports.createLambdaAliases = exports.createCognitoUserPoolClients = exports.setCognitoUserPool = exports.deployAPIGatewayStage = exports.configureAPIGatewayMethods = void 0;
 const fs_1 = require("fs");
 const path_1 = require("path");
 // Services (SDK) - new
@@ -175,7 +175,7 @@ exports.createCognitoUserPoolClients = createCognitoUserPoolClients;
  * @param config configuration for aliases
  * @param mapVersion mapping data for version
  */
-async function createAliases(functionName, config, mapVersion) {
+async function createLambdaAliases(functionName, config, mapVersion) {
     // Create a sdk object for lambda
     const lambda = new lambda_1.LambdaSdk({ region: process.env.REGION });
     // Create the lambda function aliases
@@ -188,12 +188,12 @@ async function createAliases(functionName, config, mapVersion) {
     // Destroy a sdk object for lambda
     lambda.destroy();
 }
-exports.createAliases = createAliases;
+exports.createLambdaAliases = createLambdaAliases;
 /**
  * Create the event source mappings
  * @param config configuration for event source mappings
  */
-async function createEventSourceMappings(config) {
+async function createLambdaEventSourceMappings(config) {
     // Create a sdk object for lambda
     const lambda = new lambda_1.LambdaSdk({ region: process.env.REGION });
     // Create the event source mappings
@@ -203,7 +203,7 @@ async function createEventSourceMappings(config) {
     // Destroy a sdk object for lambda
     lambda.destroy();
 }
-exports.createEventSourceMappings = createEventSourceMappings;
+exports.createLambdaEventSourceMappings = createLambdaEventSourceMappings;
 /**
  * Download a lambda code from s3
  * @param region region to create a s3 client

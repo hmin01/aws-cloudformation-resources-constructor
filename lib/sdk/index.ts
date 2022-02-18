@@ -187,7 +187,7 @@ export async function createCognitoUserPoolClients(name: string, clientConfigs: 
  * @param config configuration for aliases
  * @param mapVersion mapping data for version
  */
-export async function createAliases(functionName: string, config: any, mapVersion?: any): Promise<void> {
+export async function createLambdaAliases(functionName: string, config: any, mapVersion?: any): Promise<void> {
   // Create a sdk object for lambda
   const lambda: LambdaSdk = new LambdaSdk({ region: process.env.REGION });
 
@@ -206,7 +206,7 @@ export async function createAliases(functionName: string, config: any, mapVersio
  * Create the event source mappings
  * @param config configuration for event source mappings
  */
-export async function createEventSourceMappings(config: any): Promise<void> {
+export async function createLambdaEventSourceMappings(config: any): Promise<void> {
   // Create a sdk object for lambda
   const lambda: LambdaSdk = new LambdaSdk({ region: process.env.REGION });
 
