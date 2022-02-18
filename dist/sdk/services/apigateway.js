@@ -19,182 +19,216 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.initAPIGatewayClient = exports.putMethodResponse = exports.putMethodIntegrationResponse = exports.putMethodIntegration = exports.getRestApiId = exports.getResourceId = exports.createStage = exports.createDeployment = exports.destroyAPIGatewayClient = void 0;
+exports.APIGatewaySdk = void 0;
 const apigateway = __importStar(require("@aws-sdk/client-api-gateway"));
 // Service
 const lambda_1 = require("./lambda");
 // Util
 const util_1 = require("../../utils/util");
-// Set a client for api gateway
-let client;
-// Set resources by api
-const resourcesByApi = {};
-/**
- * Destroy a client for api gateway
- */
-function destroyAPIGatewayClient() {
-    client.destroy();
-}
-exports.destroyAPIGatewayClient = destroyAPIGatewayClient;
-/**
- * Create the deployment for rest api
- * @param restApiId rest api id
- * @param config configuration for deployment
- * @returns created deployment id
- */
-async function createDeployment(restApiId) {
-    try {
-        // Create the input to create the deployment
-        const input = {
-            restApiId: restApiId,
-        };
-        // Create the command to create the deployment
-        const command = new apigateway.CreateDeploymentCommand(input);
-        // Send the command to create the deployment
-        const response = await client.send(command);
-        // Result
-        if (response.id !== undefined) {
-            return response.id;
-        }
-        else {
-            console.error(`[ERROR] Failed to create deployment (for ${restApiId})`);
-            process.exit(1);
-        }
+class APIGatewaySdk {
+    /**
+     * Create a sdk object for amazon apigateway
+     * @param config configuration for amzon apigateway
+     */
+    constructor(config) {
+        // Create a client for amazon apigateway
+        this._client = new apigateway.APIGatewayClient(config);
+        // Set a mapping data for resources
+        this._resources = {};
     }
-    catch (err) {
-        console.error(`[ERROR] Failed to create deployment\n${err}`);
-        process.exit(1);
+    /**
+     * Destroy a client for amazon apigateway
+     */
+    destroy() {
+        this._client.destroy();
     }
-}
-exports.createDeployment = createDeployment;
-/**
- * Create the stage for rest api
- * @param restApiId rest api id
- * @param deploymentId deployment id
- * @param config configuration for stage
- */
-async function createStage(restApiId, deploymentId, config) {
-    try {
-        // Create the input to create the stage
-        const input = {
-            deploymentId: deploymentId,
-            restApiId: restApiId,
-            stageName: config.stageName,
-            // Opitonal
-            cacheClusterEnabled: config.cacheClusterEnabled,
-            cacheClusterSize: config.cacheClusterSize,
-            canarySettings: config.canarySettings,
-            description: config.description,
-            documentationVersion: config.documentationVersion,
-            tags: config.tags,
-            tracingEnabled: config.tracingEnabled,
-            variables: config.variables
-        };
-        // Create the command to create the stage
-        const command = new apigateway.CreateStageCommand(input);
-        // Send the command to create the stage
-        await client.send(command);
-    }
-    catch (err) {
-        console.error(`[ERROR] Failed to create stage\n${err}`);
-        process.exit(1);
-    }
-}
-exports.createStage = createStage;
-/**
- * Get resource id according to path
- * @param apiId api id
- * @param path path
- * @returns resource id
- */
-async function getResourceId(apiId, path) {
-    if (resourcesByApi[apiId] !== undefined) {
-        return resourcesByApi[apiId][path] !== undefined ? resourcesByApi[apiId][path] : "";
-    }
-    else {
-        // Create the input to get a list of resource id
-        const input = {
-            limit: 500,
-            restApiId: apiId
-        };
-        // Create the command to get a list of resource id
-        const command = new apigateway.GetResourcesCommand(input);
-        // Send the command to get a list of resource id
-        const response = await client.send(command);
-        // Result
-        if (response.items === undefined || response.items.length === 0) {
-            console.error(`[ERROR] Failed to get a list of resource id (for ${apiId})`);
-            process.exit(1);
+    /**
+     * Re-processing uri
+     * @description https://docs.aws.amazon.com/apigateway/api-reference/resource/integration/#uri
+     * @param type type for integration [HTTP|HTTP_PROXY|AWS|AWS_PROXY|MOCK]
+     * @param uri uri
+     * @returns re-processed uri
+     */
+    async _reProcessingUri(type, uri) {
+        try {
+            if (type.includes("AWS")) {
+                const service = uri.split(":")[4];
+                switch (service) {
+                    case "lambda":
+                        // Extract a previous arn for aws resource
+                        const temp = uri.split(":").slice(5).join(":").split("/");
+                        const rawArn = temp[temp.length - 2];
+                        // Extract a lambda function name and qualifier from previous arn
+                        const functionName = (0, util_1.extractDataFromArn)(rawArn, "resource");
+                        const qualifier = (0, util_1.extractDataFromArn)(rawArn, "qualifier");
+                        // Get an arn for lambda function
+                        const lambda = new lambda_1.LambdaSdk({ region: process.env.RESION });
+                        const lambdaArn = await lambda.getFunctionArn(functionName, qualifier);
+                        lambda.destroy();
+                        // Reprocessing uri and return
+                        if (lambdaArn === "") {
+                            return uri;
+                        }
+                        else {
+                            return `arn:aws:apigateway:${process.env.REGION}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations`;
+                        }
+                    case "s3":
+                        const uriPaths = uri.split(":");
+                        // Change the region for uri
+                        uriPaths[3] = process.env.REGION;
+                        // Combine uri path and return
+                        return uriPaths.join(":");
+                    default:
+                        return "";
+                }
+            }
+            else if (type.includes("HTTP")) {
+                return uri;
+            }
+            else {
+                return "";
+            }
         }
-        // Re-processing for response
-        const resources = {};
-        for (const elem of response.items) {
-            resources[elem.path] = elem.id;
-        }
-        // Store
-        resourcesByApi[apiId] = resources;
-        // Return result and print warning message
-        if (resourcesByApi[apiId][path] !== undefined) {
-            return resourcesByApi[apiId][path];
-        }
-        else {
-            console.warn(`[WARNING] Not found resource id in rest api (for ${path})`);
+        catch (err) {
+            console.warn(`[WARNING] Failed to re-processing for uri (target: ${uri})\n-> ${err}`);
             return "";
         }
     }
-}
-exports.getResourceId = getResourceId;
-/**
- * Get a rest api id
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/classes/getrestapiscommand.html
- * @param name name for rest api
- * @returns rest api id
- */
-async function getRestApiId(name) {
-    try {
-        // Create the input to get rest apis
-        const input = {
-            limit: 500,
-        };
-        // Create the command to get rest apis
-        const command = new apigateway.GetRestApisCommand(input);
-        // Send the command to get rest apis
-        const response = await client.send(command);
-        // Result
-        if (response.items === undefined || response.items.length === 0) {
-            console.error(`[ERROR] Failed to get rest apis`);
-            process.exit(1);
+    /**
+     * Create a deployment
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/createdeploymentcommandinput.html
+     * @param restApiId rest api id
+     * @returns deployment id
+     */
+    async createDeployment(restApiId) {
+        try {
+            // Create an input to create a deployment
+            const input = {
+                restApiId: restApiId
+            };
+            // Create a command to create a deployment
+            const command = new apigateway.CreateDeploymentCommand(input);
+            // Send a command to create a deployment
+            const response = await this._client.send(command);
+            // Return
+            return response.id;
         }
-        // Find resource id
-        for (const elem of response.items) {
-            if (elem.name === name && elem.id) {
-                return elem.id;
+        catch (err) {
+            console.error(`[ERROR] Failed to create a deployment (target: ${restApiId})\n-> ${err}`);
+            process.exit(40);
+        }
+    }
+    /**
+     * Creat a stage
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/createstagecommandinput.html
+     * @param restApiId rest api id
+     * @param deploymentId deployment id
+     * @param config configuration for stage
+     */
+    async createStage(restApiId, deploymentId, config) {
+        try {
+            // Create an input to create a stage
+            const input = {
+                deploymentId: deploymentId,
+                restApiId: restApiId,
+                stageName: config.stageName,
+                // Opitonal
+                cacheClusterEnabled: config.cacheClusterEnabled,
+                cacheClusterSize: config.cacheClusterSize,
+                canarySettings: config.canarySettings,
+                description: config.description,
+                documentationVersion: config.documentationVersion,
+                tags: config.tags,
+                tracingEnabled: config.tracingEnabled,
+                variables: config.variables
+            };
+            // Create a command to create a stage
+            const command = new apigateway.CreateStageCommand(input);
+            // Send a command to create a stage
+            await this._client.send(command);
+        }
+        catch (err) {
+            console.error(`[ERROR] Failed to create a stage (target: ${restApiId})\n-> ${err}`);
+            process.exit(41);
+        }
+    }
+    /**
+     * Get a resource id
+     * @param restApiId rest api id
+     * @param path resource path
+     * @returns resource id
+     */
+    async getResouceId(restApiId, path) {
+        try {
+            // Create an input to get a resource id
+            const input = {
+                limit: 500,
+                restApiId: restApiId
+            };
+            // Create a paginater
+            const paginator = apigateway.paginateGetResources({ client: this._client }, input);
+            // Process a result
+            for await (const page of paginator) {
+                if (page.items) {
+                    for (const elem of page.items) {
+                        if (elem.path && elem.path === path) {
+                            return elem.id;
+                        }
+                    }
+                }
             }
+            // Return
+            return "";
         }
-        // Return
-        console.warn(`[WARNING] Not found rest api id (for ${name})`);
-        return "";
+        catch (err) {
+            console.error(`[ERROR] Failed to get a resource id (target: ${path})\n-> ${err}`);
+            process.exit(42);
+        }
     }
-    catch (err) {
-        console.warn(`[WARNING] Not found rest api id (for ${name})`);
-        return "";
+    /**
+     * Get a rest api id
+     * @param name rest api name
+     * @returns rest api id
+     */
+    async getRestApiId(name) {
+        try {
+            // Create an input to get a rest api id
+            const input = {
+                limit: 500
+            };
+            // Create a paginator
+            const paginator = apigateway.paginateGetRestApis({ client: this._client }, input);
+            // Process a result
+            for await (const page of paginator) {
+                if (page.items) {
+                    for (const elem of page.items) {
+                        if (elem.name && elem.name === name) {
+                            return elem.id;
+                        }
+                    }
+                }
+            }
+            // Return
+            return "";
+        }
+        catch (err) {
+            console.error(`[ERROR] Failed to get a rest api id (target: ${name})\n-> ${err}`);
+            process.exit(43);
+        }
     }
-}
-exports.getRestApiId = getRestApiId;
-/**
- * Put the method integration
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/classes/putintegrationcommand.html
- * @param restApiId id for rest api
- * @param resourceId id for resource in api
- * @param httpMethod http method
- * @param config configuration for method integration
- */
-async function putMethodIntegration(restApiId, resourceId, httpMethod, config) {
-    try {
-        if (config !== undefined) {
+    /**
+     * Put a method integration
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/putintegrationcommandinput.html
+     * @param restApiId rest api id
+     * @param resourceId resource id
+     * @param httpMethod http method
+     * @param config configuration for method integration
+     */
+    async putMethodIntegration(restApiId, resourceId, httpMethod, config) {
+        try {
             // Re-processing a uri
-            const uri = config.uri !== undefined ? await reprocessingUri(config.type, config.uri) : "";
-            // Creaet the input to put method integration
+            const uri = config.uri ? await this._reProcessingUri(config.type, config.uri) : "";
+            // Create an input to put a method integration
             const input = {
                 httpMethod: httpMethod,
                 resourceId: resourceId,
@@ -212,69 +246,63 @@ async function putMethodIntegration(restApiId, resourceId, httpMethod, config) {
                 tlsConfig: config.tlsConfig,
                 uri: uri !== "" ? uri : undefined,
             };
-            // Create the command to put method integration
+            // Create a command to put a method integration
             const command = new apigateway.PutIntegrationCommand(input);
-            // Send the command to put method integration
-            await client.send(command);
+            // Send a command to put a method integration
+            await this._client.send(command);
+        }
+        catch (err) {
+            console.error(`[ERROR] Failed to put a method integration (target: ${resourceId}, ${httpMethod})\n-> ${err}`);
+            process.exit(44);
         }
     }
-    catch (err) {
-        console.error(`[ERROR] Failed to put method integration\n${err}`);
-        process.exit(1);
-    }
-}
-exports.putMethodIntegration = putMethodIntegration;
-/**
- * Put the method integration reesponse
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/classes/putintegrationresponsecommand.html
- * @param restApiId rest api id
- * @param resourceId resource id
- * @param httpMethod http method
- * @param config configuration for method integration response
- */
-async function putMethodIntegrationResponse(restApiId, resourceId, httpMethod, config) {
-    try {
-        if (config !== undefined) {
+    /**
+     * Put a method integration response
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/putintegrationresponsecommandinput.html
+     * @param restApiId rest api id
+     * @param resourceId resource id
+     * @param httpMethod http method
+     * @param config configuration for method integration response
+     */
+    async putMethodIntegrationResponses(restApiId, resourceId, httpMethod, config) {
+        try {
             for (const statusCode of Object.keys(config)) {
-                // Extract the configuration for status code
-                const data = config[statusCode];
-                // Create the input for put method integration response
+                // Extract a configuration for status code
+                const elem = config[statusCode];
+                // Create an input to put a method integration response
                 const input = {
                     httpMethod: httpMethod,
                     restApiId: restApiId,
                     resourceId: resourceId,
                     statusCode: statusCode,
                     // Optional
-                    contentHandling: data.contentHandling,
-                    responseParameters: data.responseParameters,
-                    responseTemplates: data.responseTemplates
+                    contentHandling: elem.contentHandling,
+                    responseParameters: elem.responseParameters,
+                    responseTemplates: elem.responseTemplates
                 };
-                // Create the command to put method integration response
+                // Create a command to put a method integration response
                 const command = new apigateway.PutIntegrationResponseCommand(input);
-                // Send the command to put method integration response
-                await client.send(command);
+                // Send a command to put a method integration response
+                await this._client.send(command);
             }
         }
+        catch (err) {
+            console.error(`[ERROR] Failed to put a method integration response (target: ${resourceId}, ${httpMethod})\n-> ${err}`);
+            process.exit(45);
+        }
     }
-    catch (err) {
-        console.error(`[ERROR] Failed to put method integration response\n${err}`);
-        process.exit(1);
-    }
-}
-exports.putMethodIntegrationResponse = putMethodIntegrationResponse;
-/**
- * Put the method response
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/classes/putmethodresponsecommand.html
- * @param restApiId rest api id
- * @param resourceId resource id
- * @param httpMethod http method
- * @param config configuration for method response
- */
-async function putMethodResponse(restApiId, resourceId, httpMethod, config) {
-    try {
-        if (config !== undefined) {
+    /**
+     * Put a method response
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/putmethodresponsecommandinput.html
+     * @param restApiId rest api id
+     * @param resourceId resourceId
+     * @param httpMethod http method
+     * @param config configuration for method response
+     */
+    async putMethodResponses(restApiId, resourceId, httpMethod, config) {
+        try {
             for (const statusCode of Object.keys(config)) {
-                // Create the input to put method response
+                // Create an input to put a method response
                 const input = {
                     httpMethod: httpMethod,
                     resourceId: resourceId,
@@ -284,67 +312,16 @@ async function putMethodResponse(restApiId, resourceId, httpMethod, config) {
                     responseModels: config[statusCode].responseModels,
                     responseParameters: config[statusCode].responseParameters
                 };
-                // Create the command to put method response
+                // Create a command to put a method response
                 const command = new apigateway.PutMethodResponseCommand(input);
-                // Send the command to put method response
-                await client.send(command);
+                // Send a command to put a method response
+                await this._client.send(command);
             }
         }
-    }
-    catch (err) {
-        console.error(`[ERROR] Failed to put method response\n${err}`);
-        process.exit(1);
-    }
-}
-exports.putMethodResponse = putMethodResponse;
-/**
- * Init a client for api gateway
- */
-function initAPIGatewayClient() {
-    client = new apigateway.APIGatewayClient({ region: process.env.REGION });
-}
-exports.initAPIGatewayClient = initAPIGatewayClient;
-/**
- * Re-processing uri
- * @description https://docs.aws.amazon.com/apigateway/api-reference/resource/integration/#uri
- * @param type type for integration [HTTP|HTTP_PROXY|AWS|AWS_PROXY|MOCK]
- * @param uri uri
- * @returns re-processed uri
- */
-async function reprocessingUri(type, uri) {
-    if (type.includes("AWS")) {
-        const service = uri.split(":")[4];
-        switch (service) {
-            case "lambda":
-                // Extract a previous arn for aws resource
-                const temp = uri.split(":").slice(5).join(":").split("/");
-                const rawArn = temp[temp.length - 2];
-                // Extract a lambda function name and qualifier from previous arn
-                const functionName = (0, util_1.extractDataFromArn)(rawArn, "resource");
-                const qualifier = (0, util_1.extractDataFromArn)(rawArn, "qualifier");
-                // Get an arn for lambda function
-                const lambdaArn = await (0, lambda_1.getLambdaFunctionArn)(functionName, qualifier !== "" ? qualifier : undefined);
-                // Reprocessing uri and return
-                if (lambdaArn === "") {
-                    return uri;
-                }
-                else {
-                    return `arn:aws:apigateway:${process.env.REGION}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations`;
-                }
-            case "s3":
-                const uriPaths = uri.split(":");
-                // Change the region for uri
-                uriPaths[3] = process.env.REGION;
-                // Combine uri path and return
-                return uriPaths.join(":");
-            default:
-                return "";
+        catch (err) {
+            console.error(`[ERROR] Failed to put a method response (target: ${resourceId}, ${httpMethod})\n-> ${err}`);
+            process.exit(46);
         }
     }
-    else if (type.includes("HTTP")) {
-        return uri;
-    }
-    else {
-        return "";
-    }
 }
+exports.APIGatewaySdk = APIGatewaySdk;

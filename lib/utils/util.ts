@@ -1,5 +1,6 @@
 import { createHash } from "crypto";
 import { readFileSync } from "fs";
+import { Readable } from "stream";
 import { CfnTag } from "aws-cdk-lib";
 
 /**
@@ -221,4 +222,18 @@ export function loadJsonFile(filePath: string) {
     // Exit
     process.exit(1);
   }
+}
+
+/**
+ * Stream to string
+ * @param steam readable stream
+ * @returns converted string
+ */
+export async function streamToBuffer(steam: Readable): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    const chunks: Uint8Array[] = [];
+    steam.on("data", chunk => chunks.push(chunk));
+    steam.on("error", err => reject(err));
+    steam.on("end", () => resolve(Buffer.concat(chunks)));
+  });
 }

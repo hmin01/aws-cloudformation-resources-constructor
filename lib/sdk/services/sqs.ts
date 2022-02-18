@@ -1,65 +1,73 @@
+// AWS SDK
 import * as sqs from "@aws-sdk/client-sqs";
 
-// Set a client for sqs
-let client: sqs.SQSClient;
+export class SQSSdk {
+  private _client: sqs.SQSClient;
 
-/**
- * Destroy a client for sqs
- */
-export function destroySqsClient(): void {
-  client.destroy();
-}
-
-/**
- * Get an arn for sqs queue
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-sqs/classes/getqueueurlcommand.html
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-sqs/classes/getqueueattributescommand.html
- * @param queueName name for sqs queue
- * @returns arn for sqs queue
- */
-export async function getSqsQueueArn(queueName: string, accountId?: string): Promise<string> {
-  try {
-    // Create the input to get url for sqs queue
-    const inputForUrl: sqs.GetQueueUrlCommandInput = {
-      QueueName: queueName,
-      QueueOwnerAWSAccountId: accountId
-    };
-    // Create the command to get url for sqs queue
-    const cmdForUrl: sqs.GetQueueUrlCommand = new sqs.GetQueueUrlCommand(inputForUrl);
-    // Send the command to get url for sqs queue
-    const resForUrl: sqs.GetQueueUrlCommandOutput = await client.send(cmdForUrl);
-    // Result
-    const queueUrl: string|undefined = resForUrl.QueueUrl;
-    if (queueUrl === undefined) {
-      console.error(`[WARNING] Not found sqs queue (for ${queueName})`);
-      return "";
-    }
-
-    // Create the input to get arn for sqs queue
-    const inputForArn: sqs.GetQueueAttributesCommandInput = {
-      AttributeNames: ["QueueArn"],
-      QueueUrl: queueUrl
-    };
-    // Create the command to get arn for sqs queue
-    const cmdForArn: sqs.GetQueueAttributesCommand = new sqs.GetQueueAttributesCommand(inputForArn);
-    // Send command to get arn for sqs queue
-    const resForArn: sqs.GetQueueAttributesCommandOutput = await client.send(cmdForArn);
-    // Result
-    if (resForArn.Attributes !== undefined && resForArn.Attributes.QueueArn !== undefined) {
-      return resForArn.Attributes.QueueArn;
-    } else {
-      console.error(`[WARNING] Not found sqs queue (for ${queueName})`);
-      return "";
-    }
-  } catch (err) {
-    console.error(`[WARNING] Not found sqs queue (for ${queueName})`);
-    return "";
+  /**
+   * Create a sdk object for amazon sqs
+   * @param config configuration for client
+   */
+  constructor(config: any) {
+    // Create a client for amazon sqs
+    this._client = new sqs.SQSClient(config);
   }
-}
 
-/**
- * Init a client for sqs
- */
-export function initSqsClient(): void {
-  client = new sqs.SQSClient({ region: process.env.REGION });
+  /**
+   * Destroy a client for amazon sqs
+   */
+  public destroy(): void {
+    this._client.destroy();
+  }
+
+  /**
+   * Get a queue arn
+   * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-sqs/interfaces/getqueueattributescommandinput.html
+   * @param queueUrl queue url
+   * @returns queue arn
+   */
+  public async getQueueArn(queueUrl: string): Promise<string> {
+    try {
+      // Create an input to get a queue arn
+      const input: sqs.GetQueueAttributesCommandInput = {
+        AttributeNames: ["QueueArn"],
+        QueueUrl: queueUrl
+      };
+      // Create a command to get a queue arn
+      const command: sqs.GetQueueAttributesCommand = new sqs.GetQueueAttributesCommand(input);
+      // Send a command to get a queue arn
+      const response: sqs.GetQueueAttributesCommandOutput = await this._client.send(command);
+      // Return
+      return response.Attributes ? response.Attributes.QueueArn as string : "";
+    } catch (err) {
+      console.error(`[ERROR] Failed to get a queue arn (target: ${queueUrl})\n-> ${err}`);
+      process.exit(21);
+    }
+  }
+
+  /**
+   * Get a queue url
+   * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-sqs/interfaces/getqueueurlcommandinput.html
+   * @param queueName queue name
+   * @param accountId account id of queue owner
+   * @returns queue url
+   */
+  public async getQueueUrl(queueName: string, accountId?: string): Promise<string> {
+    try {
+      // Create an input to get a queue url
+      const input: sqs.GetQueueUrlCommandInput = {
+        QueueName: queueName,
+        QueueOwnerAWSAccountId: accountId
+      };
+      // Create a command to get a queue url
+      const command: sqs.GetQueueUrlCommand = new sqs.GetQueueUrlCommand(input);
+      // Send a command to get a queue url
+      const response: sqs.GetQueueUrlCommandOutput = await this._client.send(command);
+      // Return
+      return response.QueueUrl as string;
+    } catch (err) {
+      console.error(`[ERROR] Failed to get a queue url (target: ${queueName})\n-> ${err}`);
+      process.exit(20);
+    }
+  }
 }

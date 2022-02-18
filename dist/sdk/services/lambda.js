@@ -19,250 +19,233 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setEventSourceMapping = exports.publishVersion = exports.initLambdaClient = exports.getLambdaFunctionArn = exports.destroyLambdaClient = exports.createAlias = void 0;
+exports.LambdaSdk = void 0;
+const fs_1 = require("fs");
+// AWS SDK
 const lambda = __importStar(require("@aws-sdk/client-lambda"));
 // Services
 const dynamodb_1 = require("./dynamodb");
 const sqs_1 = require("./sqs");
 // Util
 const util_1 = require("../../utils/util");
-// Set a client for lambda
-let client;
-// Set the version mapping
-const versionMapping = {};
-/**
- * Create an alias for lambda function
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-lambda/classes/createaliascommand.html
- * @param config configuration for alias of lambda function
- */
-async function createAlias(config) {
-    // Extract the configuration
-    const version = versionMapping[config.FunctionVersion];
-    if (version !== undefined && version.FunctionName !== undefined) {
-        // Create the input to create alias
-        const input = {
-            Description: config.Description,
-            FunctionName: version.FunctionName,
-            FunctionVersion: version.Version,
-            Name: config.Name
-        };
-        // Create the command to create alias
-        const command = new lambda.CreateAliasCommand(input);
-        // Send the command to create alias
-        const response = await client.send(command);
-        // Result
-        if (response.AliasArn !== undefined) {
-            console.info(`[NOTICE] Create alias (for ${version.FunctionName} / ${response.Name})`);
+class LambdaSdk {
+    /**
+     * Create a client for aws lambda
+     * @param config
+     */
+    constructor(config) {
+        // Create a client for aws lambda
+        this._client = new lambda.LambdaClient(config);
+    }
+    /**
+     * Check the existing event source mapping
+     * @param eventSourceArn arn for evnet source
+     * @param functionArn arn for lambda function
+     * @returns existence
+     */
+    async _checkExistingEventSourceMapping(eventSourceArn, functionArn) {
+        try {
+            // Create an input to get a list of event source mapping
+            const input = {
+                EventSourceArn: eventSourceArn,
+                FunctionName: functionArn
+            };
+            // Create a command to get a list of event source mapping
+            const command = new lambda.ListEventSourceMappingsCommand(input);
+            // Send a command to get a list of event source mapping
+            const response = await this._client.send(command);
+            // Return
+            return response.EventSourceMappings && response.EventSourceMappings.length > 0 ? true : false;
         }
-        else {
-            console.error(`[ERROR] Failed to create alias (for ${version.FunctionName})`);
-            process.exit(1);
+        catch (err) {
+            console.error(`[ERROR] Failed to get a list of event source mapping (target: ${functionArn})\n-> ${err}`);
+            process.exit(12);
+        }
+    }
+    /**
+     * Create a function alias
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-lambda/interfaces/createaliascommandinput.html
+     * @param functionName function name
+     * @param functionVersion function version
+     * @param name name for alias
+     * @param description description for alias
+     */
+    async createAlias(functionName, functionVersion, name, description) {
+        try {
+            // Create an client to create a function alias
+            const input = {
+                Description: description,
+                FunctionName: functionName,
+                FunctionVersion: functionVersion,
+                Name: name
+            };
+            // Create a command to create a function alias
+            const command = new lambda.CreateAliasCommand(input);
+            // Send a command to create a function alias
+            await this._client.send(command);
+        }
+        catch (err) {
+            console.error(`[ERROR] Failed to create a funcition alias (target: ${functionName})\n-> ${err}`);
+            process.exit(10);
+        }
+    }
+    /**
+     * Create the event source mapping
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-lambda/interfaces/createeventsourcemappingcommandinput.html
+     * @param config configuration for event source mapping
+     */
+    async createEventSourceMapping(config) {
+        try {
+            // Extract a function name and qualifier from function arn
+            const functionName = (0, util_1.extractDataFromArn)(config.FunctionArn, "resource");
+            const qualifier = (0, util_1.extractDataFromArn)(config.FunctionArn, "qualifier");
+            // Get an arn for lambda function
+            const functionArn = await this.getFunctionArn(functionName, qualifier);
+            // Extract a resource id, service type from arn
+            const resourceId = (0, util_1.extractDataFromArn)(config.EventSourceArn, "resource");
+            const serviceType = (0, util_1.extractDataFromArn)(config.EventSourceArn, "service");
+            // Extract a event source arn
+            let eventSourceArn;
+            switch (serviceType) {
+                case "dynamodb":
+                    // Create a sdk client for amazon dynamodb
+                    const dynamodb = new dynamodb_1.DynamoDBSdk({ region: process.env.REGION });
+                    // Get a queue arn
+                    eventSourceArn = await dynamodb.getTableArn(resourceId);
+                    // Destroy a sdk client for amazon dynamodb
+                    dynamodb.destroy();
+                    break;
+                case "kinesis":
+                    eventSourceArn = config.EventSourceArn;
+                    break;
+                case "sqs":
+                    // Create a sdk client for amazon sqs
+                    const sqs = new sqs_1.SQSSdk({ region: process.env.REGION });
+                    // Get a queue url
+                    const queueUrl = await sqs.getQueueUrl(resourceId);
+                    // Get a queue arn
+                    eventSourceArn = await sqs.getQueueArn(queueUrl);
+                    // Destroy a sdk client for amazon sqs
+                    sqs.destroy();
+                    break;
+                default:
+                    eventSourceArn = config.EventSourceArn;
+                    break;
+            }
+            // Check existence
+            const existence = await this._checkExistingEventSourceMapping(eventSourceArn, functionArn);
+            if (existence) {
+                console.warn(`[WARNING] Mapping for these services already exists`);
+                return;
+            }
+            // Create an input to create the event source mapping
+            const input = {
+                BatchSize: config.BatchSize ? Number(config.BatchSize) : undefined,
+                BisectBatchOnFunctionError: config.BisectBatchOnFunctionError,
+                Enabled: config.State && (config.State === "Enabled" || config.State === "Creating" || config.State === "Updating") ? true : false,
+                EventSourceArn: eventSourceArn,
+                FilterCriteria: config.FilterCriteria,
+                FunctionName: functionArn,
+                FunctionResponseTypes: config.FunctionResponseTypes && config.FunctionResponseTypes.length > 0 ? config.FunctionResponseTypes : undefined,
+                MaximumBatchingWindowInSeconds: config.MaximumBatchingWindowInSeconds ? Number(config.MaximumBatchingWindowInSeconds) : undefined,
+                MaximumRecordAgeInSeconds: config.MaximumRecordAgeInSeconds ? Number(config.MaximumRecordAgeInSeconds) : undefined,
+                MaximumRetryAttempts: config.MaximumRetryAttempts ? Number(config.MaximumRetryAttempts) : undefined,
+                ParallelizationFactor: config.ParallelizationFactor ? Number(config.ParallelizationFactor) : undefined,
+                TumblingWindowInSeconds: config.TumblingWindowInSeconds ? Number(config.TumblingWindowInSeconds) : undefined
+            };
+            // Create a command to create the event source mapping
+            const command = new lambda.CreateEventSourceMappingCommand(input);
+            // Send a command to create the event source mapping
+            await this._client.send(command);
+        }
+        catch (err) {
+            console.error(`[ERROR] Failed to create the event source mapping`);
+            process.exit(13);
+        }
+    }
+    /**
+     * Destroy a client for aws lambda
+     * @returns
+     */
+    destroy() {
+        return this._client.destroy();
+    }
+    /**
+     * Get a function arn
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-lambda/interfaces/getfunctionconfigurationcommandinput.html
+     * @param functionName function name
+     * @param qualifier version or alias for function
+     * @returns arn for lambda function
+     */
+    async getFunctionArn(functionName, qualifier) {
+        try {
+            // Create an input to get a function arn
+            const input = {
+                FunctionName: functionName,
+                Qualifier: qualifier !== "" ? qualifier : undefined
+            };
+            // Create a command to get a function arn
+            const command = new lambda.GetFunctionConfigurationCommand(input);
+            // Create a command to get a function arn
+            const response = await this._client.send(command);
+            // Return
+            return response.FunctionArn ? response.FunctionArn : "";
+        }
+        catch (err) {
+            console.error(`[ERROR] Failed to get a function arn (target: ${functionName})\n-> ${err}`);
+            process.exit(11);
+        }
+    }
+    /**
+     * Publish the lambda function version
+     * @param functionName function name
+     * @param description description for version
+     * @returns version value
+     */
+    async publishVersion(functionName, description) {
+        try {
+            // Create an input to publish the function version
+            const input = {
+                Description: description,
+                FunctionName: functionName
+            };
+            // Create a command to publish the function version
+            const command = new lambda.PublishVersionCommand(input);
+            // Send a command to publish the function version
+            const response = await this._client.send(command);
+            // Return
+            return response.Version;
+        }
+        catch (err) {
+            console.error(`[ERROR] Failed to publish the function version (target: ${functionName})\n-> ${err}`);
+            process.exit(15);
+        }
+    }
+    /**
+     * Update the function code
+     * @param functionName function name
+     * @param location stored location for code
+     */
+    async updateCode(functionName, location) {
+        try {
+            // Load a code file
+            const data = await (0, util_1.streamToBuffer)((0, fs_1.createReadStream)(location));
+            // Create an input to update the function code
+            const input = {
+                FunctionName: functionName,
+                ZipFile: new Uint8Array(data)
+            };
+            // Create a command to update the function code
+            const command = new lambda.UpdateFunctionCodeCommand(input);
+            // Send a command to update the function code
+            await this._client.send(command);
+            // Wait for update
+            await lambda.waitUntilFunctionUpdated({ client: this._client, maxWaitTime: 30, maxDelay: 1, minDelay: 1 }, { FunctionName: functionName });
+        }
+        catch (err) {
+            console.error(`[ERROR] Failed to update the function code (for ${functionName})\n-> ${err}`);
+            process.exit(14);
         }
     }
 }
-exports.createAlias = createAlias;
-/**
- * Destroy a client for lambda
- */
-function destroyLambdaClient() {
-    client.destroy();
-}
-exports.destroyLambdaClient = destroyLambdaClient;
-/**
- * Extract the stored location for lambda code
- * @param location location path (for s3 uri)
- * @returns s3 bucket name and key or undefined
- */
-function extractStoredLocation(location) {
-    const regex = new RegExp("^s3://");
-    if (regex.test(location)) {
-        // Extract a bucket name and key
-        const split = location.replace(/^s3:\/\//g, "").split("/");
-        const bucketName = split[0];
-        const key = split.slice(1).join("/");
-        // Return
-        return { bucketName, key };
-    }
-    else {
-        return undefined;
-    }
-}
-/**
- * Get an arn for lambda function
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-lambda/classes/getfunctionconfigurationcommand.html
- * @param functionName name for lambda function
- * @param qualifier version or alias for lambda function
- */
-async function getLambdaFunctionArn(functionName, qualifier) {
-    try {
-        // Create the input to get arn for lambda function
-        const input = {
-            FunctionName: functionName,
-            Qualifier: qualifier
-        };
-        // Create the command to get arn for lambda function
-        const command = new lambda.GetFunctionConfigurationCommand(input);
-        // Send the command to get arn for lambda function
-        const response = await client.send(command);
-        // Result
-        if (response && response.FunctionArn) {
-            return response.FunctionArn;
-        }
-        else {
-            console.error(`[WARNING] Not found lambda function (for ${functionName})`);
-            return "";
-        }
-    }
-    catch (err) {
-        console.error(`[WARNING] Not found lambda function (for ${functionName})`);
-        return "";
-    }
-}
-exports.getLambdaFunctionArn = getLambdaFunctionArn;
-/**
- * Init a client for lambda
- */
-function initLambdaClient() {
-    client = new lambda.LambdaClient({ region: process.env.REGION });
-}
-exports.initLambdaClient = initLambdaClient;
-/**
- * Create the version (and update lambda function)
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-lambda/classes/publishversioncommand.html
- * @param config configuration for version of lambda function
- */
-async function publishVersion(config) {
-    // Extract the stored location (s3 location)
-    const storedLocation = config.StoredLocation !== undefined ? extractStoredLocation(config.StoredLocation) : undefined;
-    if (config.Version !== "$LATEST" && storedLocation !== undefined) {
-        // Create the properties to update lambda function code
-        const updateProps = {
-            FunctionName: config.FunctionName,
-            S3Bucket: storedLocation.bucketName,
-            S3Key: storedLocation.key
-        };
-        // Create the command to update lambda function code
-        const updateCommand = new lambda.UpdateFunctionCodeCommand(updateProps);
-        // Send command to update function code
-        const updateResponse = await client.send(updateCommand);
-        // Result
-        if (updateResponse.FunctionName !== undefined) {
-            console.info(`[NOTICE] Update lambda function code (${updateResponse.FunctionName})`);
-        }
-        else {
-            console.error(`[ERROR] Failed to update lambda function code`);
-            process.exit(1);
-        }
-        // Delay
-        await (0, util_1.delay)(1500);
-        // Create the input to publish version
-        const publishProps = {
-            FunctionName: updateResponse.FunctionName,
-            Description: config.Description !== undefined && config.Description !== "" ? config.Description : undefined
-        };
-        // Create the command to publish version
-        const publishCommand = new lambda.PublishVersionCommand(publishProps);
-        // Send command to publish version
-        const publishResponse = await client.send(publishCommand);
-        // Result
-        if (publishResponse.FunctionName !== undefined) {
-            console.info(`[NOTICE] Publish version (for ${publishResponse.FunctionName}:${publishResponse.Version})`);
-            versionMapping[config.Version] = publishResponse;
-        }
-        else {
-            console.error(`[ERROR] Failed to publish version`);
-            process.exit(1);
-        }
-    }
-}
-exports.publishVersion = publishVersion;
-/**
- * Set the event source mapping
- * @param config configuration for event source mapping
- */
-async function setEventSourceMapping(config) {
-    // Extract a event source arn
-    let eventSourceArn;
-    // Extract a service type and resource id from arn
-    const serviceType = (0, util_1.extractDataFromArn)(config.EventSourceArn, "service");
-    let resourceId = (0, util_1.extractDataFromArn)(config.EventSourceArn, "resource");
-    switch (serviceType) {
-        case "dynamodb":
-            eventSourceArn = await (0, dynamodb_1.getDynamoDBTableArn)(resourceId);
-            break;
-        case "kinesis":
-            // Progress
-            eventSourceArn = config.EventSourceArn;
-            break;
-        case "sqs":
-            eventSourceArn = await (0, sqs_1.getSqsQueueArn)(resourceId);
-            break;
-        default:
-            // Progress
-            eventSourceArn = config.EventSourceArn;
-            break;
-    }
-    // Extract a function name from arn
-    const functionName = (0, util_1.extractDataFromArn)(config.FunctionArn, "resource");
-    if (functionName !== "") {
-        // Extract a qualifier from arn and get arn for lambda
-        const qualifier = (0, util_1.extractDataFromArn)(config.FunctionArn, "qualifier");
-        const functionArn = await getLambdaFunctionArn(functionName, qualifier !== "" ? qualifier : undefined);
-        // Catch error
-        if (eventSourceArn === "" || functionArn === "") {
-            console.error(`[ERROR] Failed to create event source mapping`);
-            process.exit(1);
-        }
-        // Create the input for list event source mapping
-        const inputForList = {
-            EventSourceArn: eventSourceArn,
-            FunctionName: functionArn
-        };
-        // Create the command for list event source mapping
-        const cmdForList = new lambda.ListEventSourceMappingsCommand(inputForList);
-        // Send the command for list event source mapping
-        const resForList = await client.send(cmdForList);
-        // Result
-        if (resForList.EventSourceMappings !== undefined && resForList.EventSourceMappings.length > 0) {
-            console.error(`[WARNING] Mapping for these services already exists`);
-            return;
-        }
-        // Create the input to create event source mapping
-        const inputForCreate = {
-            BatchSize: config.BatchSize !== undefined ? Number(config.BatchSize) : undefined,
-            BisectBatchOnFunctionError: config.BisectBatchOnFunctionError,
-            // DestinationConfig: config.DestinationConfig !== undefined ? {
-            //   OnFailure: config.DestinationConfig.OnFailure !== undefined ? {
-            //     Destination 
-            //   } : undefined,
-            // } : undefined,
-            Enabled: config.State !== undefined && (config.State === "Enabled" || config.State === "Creating" || config.State === "Updating") ? true : false,
-            EventSourceArn: eventSourceArn,
-            FilterCriteria: config.FilterCriteria,
-            FunctionName: functionArn,
-            FunctionResponseTypes: config.FunctionResponseTypes !== undefined && config.FunctionResponseTypes.length > 0 ? config.FunctionResponseTypes : undefined,
-            MaximumBatchingWindowInSeconds: config.MaximumBatchingWindowInSeconds !== undefined ? Number(config.MaximumBatchingWindowInSeconds) : undefined,
-            MaximumRecordAgeInSeconds: config.MaximumRecordAgeInSeconds !== undefined ? Number(config.MaximumRecordAgeInSeconds) : undefined,
-            MaximumRetryAttempts: config.MaximumRetryAttempts !== undefined ? Number(config.MaximumRetryAttempts) : undefined,
-            ParallelizationFactor: config.ParallelizationFactor !== undefined ? Number(config.ParallelizationFactor) : undefined,
-            TumblingWindowInSeconds: config.TumblingWindowInSeconds !== undefined ? Number(config.TumblingWindowInSeconds) : undefined
-        };
-        // Create the command to create event source mapping
-        const cmdForCreate = new lambda.CreateEventSourceMappingCommand(inputForCreate);
-        // Send command to create event source mapping
-        const resForCreate = await client.send(cmdForCreate);
-        // Result
-        if (resForCreate.UUID !== undefined) {
-            console.info(`[NOTICE] Create the event source mapping (for ${resForCreate.UUID})`);
-        }
-        else {
-            console.error(`[ERROR] Failed to create event source mapping`);
-            process.exit(1);
-        }
-    }
-    else {
-        console.error(`[ERROR] Not found for lambda function name (for ${config.FunctionArn})`);
-        process.exit(1);
-    }
-}
-exports.setEventSourceMapping = setEventSourceMapping;
+exports.LambdaSdk = LambdaSdk;
