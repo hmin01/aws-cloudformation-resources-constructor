@@ -1,7 +1,9 @@
+/// <reference types="node" />
+import { Readable } from "stream";
 export interface S3Object {
     filename: string;
     extension: string;
-    data: ReadableStream;
+    data: Readable;
 }
 export declare class S3Sdk {
     private _client;

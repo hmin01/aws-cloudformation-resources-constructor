@@ -1,12 +1,3 @@
-/** For Util */
-/**
- * Destroy the sdk clients
- */
-export declare function destroySdkClients(): void;
-/**
- * Init the sdk clients
- */
-export declare function initSdkClients(): void;
 /** For APIGateway */
 /**
  * Configure the methods in rest api
@@ -46,6 +37,13 @@ export declare function createAliases(functionName: string, config: any, mapVers
  * @param config configuration for event source mappings
  */
 export declare function createEventSourceMappings(config: any): Promise<void>;
+/**
+ * Download a lambda code from s3
+ * @param region region to create a s3 client
+ * @param s3Url s3 url
+ * @param outputDir output directory path
+ */
+export declare function downloadLambdaCodeFromS3(region: string, s3Url: string, outputDir: string): Promise<void>;
 /**
  * Publish the lambda function versions
  * @param functionName function name
