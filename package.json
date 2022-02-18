@@ -19,7 +19,7 @@
   },
   "name": "aws-cfn-constructor",
   "description": "Constructor for AWS CloudFormation resources using AWS CDK",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
