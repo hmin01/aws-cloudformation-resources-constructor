@@ -1,286 +1,312 @@
 import * as cognito from "@aws-sdk/client-cognito-identity-provider";
+// Services
+import { LambdaSdk } from "./lambda";
+// Util
+import { extractDataFromArn } from "../../utils/util";
 
-// Set a client for cognito
-let client: cognito.CognitoIdentityProviderClient;
-// Set client by user pool
-const clientIdMapping: any = {};
+export class CognitoSdk {
+  private _client: cognito.CognitoIdentityProviderClient;
+  private _mapping: any;
 
-/**
- * Create the user pool client
- * @description https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpoolclient.html
- * @param userPoolId user pool id
- * @param config configuration for user pool client
- * @returns user pool client id
- */
-export async function createUserPoolClient(userPoolId: string, config: any): Promise<string> {
-  // Create the input to create the user pool client
-  const input: cognito.CreateUserPoolClientCommandInput = {
-    ClientName: config.ClientName,
-    UserPoolId: userPoolId,
-    // Optional
-    AccessTokenValidity: config.AccessTokenValidity !== undefined ? Number(config.AccessTokenValidity) : undefined,
-    AllowedOAuthFlows: config.AllowedOAuthFlows,
-    AllowedOAuthFlowsUserPoolClient: config.AllowedOAuthFlowsUserPoolClient,
-    AllowedOAuthScopes: config.AllowedOAuthScopes,
-    CallbackURLs: config.CallbackURLs,
-    DefaultRedirectURI: config.DefaultRedirectURI,
-    EnableTokenRevocation: config.EnableTokenRevocation,
-    ExplicitAuthFlows: config.ExplicitAuthFlows,
-    GenerateSecret: true,
-    IdTokenValidity: config.IdTokenValidity !== undefined ? Number(config.IdTokenValidity) : undefined,
-    LogoutURLs: config.LogoutURLs,
-    PreventUserExistenceErrors: config.PreventUserExistenceErrors,
-    ReadAttributes: config.ReadAttributes,
-    RefreshTokenValidity: config.RefreshTokenValidity !== undefined ? Number(config.RefreshTokenValidity) : undefined,
-    SupportedIdentityProviders: config.SupportedIdentityProviders,
-    TokenValidityUnits: config.TokenValidityUnits,
-    WriteAttributes: config.WriteAttributes
-  };
-  // Create the command to create the user pool client
-  const command: cognito.CreateUserPoolClientCommand = new cognito.CreateUserPoolClientCommand(input);
-  // Send the command to create the user pool client
-  const response: cognito.CreateUserPoolClientCommandOutput = await client.send(command);
-  // Result
-  if (response.UserPoolClient && response.UserPoolClient.ClientId) {
-    return response.UserPoolClient.ClientId;
-  } else {
-    return "";
+  /**
+   * Create a sdk object for amazon cognito
+   * @param config configuration for client
+   */
+  constructor(config: any) {
+    // Create a client for amazon cognito
+    this._client = new cognito.CognitoIdentityProviderClient(config);
+    // Set a user pool mapping data
+    this._mapping = {};
   }
-}
 
-/**
- * Create the user pool domain
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-cognito-identity-provider/classes/createuserpooldomaincommand.html
- * @param userPoolId user pool id
- * @param domain domain
- * @param certificateArn certificateArn (for cloudFront) 
- */
-export async function createUserPoolDomain(userPoolId: string, domain: string, certificateArn: string|undefined): Promise<void> {
-  // Create the input to create user pool domain
-  const input: cognito.CreateUserPoolDomainCommandInput = {
-    CustomDomainConfig: certificateArn !== undefined ? {
-      CertificateArn: certificateArn
-    } : undefined,
-    Domain: domain,
-    UserPoolId: userPoolId
-  };
-  // Create the command to create user pool domain
-  const command: cognito.CreateUserPoolDomainCommand = new cognito.CreateUserPoolDomainCommand(input);
-  // Send the command to create user pool domain
-  await client.send(command);
-}
-
-/**
- * Destroy a client for cognito
- */
-export function destroyCognitoClient(): void {
-  client.destroy();
-}
-
-/**
- * Get an id for user pool
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-cognito-identity-provider/classes/listuserpoolscommand.html
- * @param userPoolName user pool name
- * @returns id for user pool
- */
-export async function getUserPoolId(userPoolName: string): Promise<string> {
-  let nextToken: string|undefined = undefined;
-  do {
-    // Create the input to get a list of user pool
-    const input: cognito.ListUserPoolsCommandInput = {
-      MaxResults: 60,
-      NextToken: nextToken
-    };
-    // Create the command to get a list of user pool
-    const command: cognito.ListUserPoolsCommand = new cognito.ListUserPoolsCommand(input);
-    // Send the command to get a list of user pool
-    const response: cognito.ListUserPoolsCommandOutput = await client.send(command);
-    // Result
-    if (response.UserPools) {
-      for (const elem of response.UserPools) {
-        if (elem.Name && elem.Name == userPoolName) {
-          if (elem.Id) {
-            return elem.Id;
-          }
-          break;
+  /**
+   * Create a user pool client
+   * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-cognito-identity-provider/interfaces/createuserpoolclientcommandinput.html
+   * @param userPoolId user pool id
+   * @param config configuration for user pool client
+   * @returns user pool client id
+   */
+  public async createUserPoolClient(userPoolId: string, config: any): Promise<string> {
+    try {
+      // Create an input to create a user pool client
+      const input: cognito.CreateUserPoolClientCommandInput = {
+        AccessTokenValidity: config.AccessTokenValidity ? Number(config.AccessTokenValidity) : undefined,
+        AllowedOAuthFlows: config.AllowedOAuthFlows,
+        AllowedOAuthFlowsUserPoolClient: config.AllowedOAuthFlowsUserPoolClient,
+        AllowedOAuthScopes: config.AllowedOAuthScopes,
+        CallbackURLs: config.CallbackURLs,
+        ClientName: config.ClientName,
+        DefaultRedirectURI: config.DefaultRedirectURI,
+        EnableTokenRevocation: config.EnableTokenRevocation,
+        ExplicitAuthFlows: config.ExplicitAuthFlows,
+        GenerateSecret: true,
+        IdTokenValidity: config.IdTokenValidity ? Number(config.IdTokenValidity) : undefined,
+        LogoutURLs: config.LogoutURLs,
+        PreventUserExistenceErrors: config.PreventUserExistenceErrors,
+        ReadAttributes: config.ReadAttributes,
+        RefreshTokenValidity: config.RefreshTokenValidity ? Number(config.RefreshTokenValidity) : undefined,
+        SupportedIdentityProviders: config.SupportedIdentityProviders,
+        TokenValidityUnits: config.TokenValidityUnits,
+        UserPoolId: userPoolId,
+        WriteAttributes: config.WriteAttributes
+      };
+      // Create a command to create a user pool client
+      const command: cognito.CreateUserPoolClientCommand = new cognito.CreateUserPoolClientCommand(input);
+      // Send a command to create a user pool client
+      const response: cognito.CreateUserPoolClientCommandOutput = await this._client.send(command);
+      // Return
+      if (response.UserPoolClient && response.UserPoolClient.ClientId) {
+        // Store a mapping data
+        if (!this._mapping[userPoolId]) {
+          this._mapping[userPoolId] = {};
         }
+        return this._mapping[userPoolId][config.ClientId] = response.UserPoolClient.ClientId as string;
+      } else {
+        return "";
       }
+    } catch (err) {
+      console.error(`[ERROR] Failed to create a user pool client (target: ${config.ClientName})\n-> ${err}`);
+      process.exit(50);
     }
-    //Escape
-    nextToken = response.NextToken;
-    if (!nextToken) {
-      break;
-    }
-  } while (true);
-  // Return
-  console.warn(`[WARNING] Not found user pool id (for ${userPoolName})`);
-  return "";
-}
+  }
 
-/**
- * Get a user pool client id
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-cognito-identity-provider/classes/createuserpoolclientcommand.html
- * @param userPoolId user pool id
- * @param clientId user pool client old id
- * @param clientName user pool client name
- * @returns user pool client id
- */
-export async function getUserPoolClientId(userPoolId: string, clientId: string|undefined, clientName: string|undefined): Promise<string> {
-  if (clientId) {
-    const eClientId: string|undefined = clientIdMapping[clientId];
-    if (eClientId) {
-      return eClientId;
-    } else if (clientName) {
-      return await _getUsesrPoolClientId(userPoolId, clientName);
-    } else {
-      console.warn(`[WARNING] Not found current user pool client id (for ${clientId})`);
+  /**
+   * Create a user pool domain
+   * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-cognito-identity-provider/interfaces/createuserpooldomaincommandinput.html
+   * @param userPoolId user pool id
+   * @param domain domain
+   * @param certificateArn certification arn (for acm arn)
+   */
+  public async createUserPoolDomain(userPoolId: string, domain: string, certificateArn: string|undefined): Promise<void> {
+    try {
+      // Create an input to create a user pool domain
+      const input: cognito.CreateUserPoolDomainCommandInput = {
+        CustomDomainConfig: certificateArn !== undefined ? {
+          CertificateArn: certificateArn
+        } : undefined,
+        Domain: domain,
+        UserPoolId: userPoolId
+      };
+      // Create a command to create a user pool domain
+      const command: cognito.CreateUserPoolDomainCommand = new cognito.CreateUserPoolDomainCommand(input);
+      // Send a command to create a user pool domain
+      await this._client.send(command);
+    } catch (err) {
+      console.error(`[ERROR] Failed to create a user pool domain (target: ${userPoolId})\n-> ${err}`);
+      process.exit(51);
+    }
+  }
+
+  /**
+   * Destroy a client for amazon cognito
+   */
+  public destroy(): void {
+    this._client.destroy();
+  }
+
+  /**
+   * Get a user pool id
+   * @param userPoolName user pool name 
+   * @returns user pool id
+   */
+  public async getUserPoolId(userPoolName: string): Promise<string> {
+    try {
+      // Create a input to get a list of user pool
+      const input: cognito.ListUserPoolsCommandInput = {
+        MaxResults: 60
+      };
+      // Create a paginator
+      const paginator = cognito.paginateListUserPools({ client: this._client }, input);
+      // Find a user pool id
+      for await (const page of paginator) {
+        if (page.UserPools) {
+          for (const userPool of page.UserPools) {
+            if (userPool.Name && userPool.Name === userPoolName) {
+              return userPool.Id as string;
+            }
+          }
+        } 
+      }
       return "";
+    } catch (err) {
+      console.error(`[ERROR] Failed to get a user pool id (target: ${userPoolName})\n-> ${err}`);
+      process.exit(52);
     }
-  } else if (clientName) {
-    return await _getUsesrPoolClientId(userPoolId, clientName);
-  } else {
-    console.error(`[ERROR] Invalid parameter`);
-    process.exit(1);
   }
-}
 
-/**
- * Get a user pool client id using client name
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-cognito-identity-provider/classes/listuserpoolclientscommand.html
- * @param userPoolId user pool id
- * @param clientName user pool client name
- * @returns user pool client id
- */
-async function _getUsesrPoolClientId(userPoolId: string, clientName: string): Promise<string> {
-  let nextToken: string|undefined = undefined;
-  do {
-    // Create the input to get a list of client
-    const input: cognito.ListUserPoolClientsCommandInput = {
-      MaxResults: 50,
-      NextToken: nextToken,
-      UserPoolId: userPoolId,
-    };
-    // Create the command to get a list of client
-    const command: cognito.ListUserPoolClientsCommand = new cognito.ListUserPoolClientsCommand(input);
-    // Send the command to get a list of client
-    const response: cognito.ListUserPoolClientsCommandOutput = await client.send(command);
-    // Result
-    if (response.UserPoolClients) {
-      for (const client of response.UserPoolClients) {
-        if (client.ClientName && clientName === clientName) {
-          if (client.ClientId) {
-            return client.ClientId;
+  /**
+   * Get a user pool client id
+   * @param userPoolId user pool id
+   * @param type qualifier type [name|id]
+   * @param qualifier previous user pool client id or user pool client name
+   * @returns user pool client id
+   */
+  public async getUserPoolClientId(userPoolId: string, type: string, qualifier: string): Promise<string> {
+    try {
+      // Check a type
+      if (type === "id") {
+        if (this._mapping[userPoolId] && this._mapping[userPoolId][qualifier]) {
+          return this._mapping[userPoolId][qualifier];
+        }
+      } else {
+        // Create an input to get a list of user pool client
+        const input: cognito.ListUserPoolClientsCommandInput = {
+          MaxResults: 60,
+          UserPoolId: userPoolId
+        };
+        // Create a paginator
+        const paginator = cognito.paginateListUserPoolClients({ client: this._client }, input);
+        // Find a user pool client id
+        for await (const page of paginator) {
+          if (page.UserPoolClients) {
+            for (const userPoolClient of page.UserPoolClients) {
+              if (userPoolClient.ClientName && userPoolClient.ClientName === qualifier) {
+                return userPoolClient.ClientId as string;
+              }
+            }
           }
-          break;
+        }        
+      }
+      return "";
+    } catch (err) {
+      console.error(`[ERROR] Failed to get a user pool client id (target: ${qualifier})\n-> ${err}`);
+      process.exit(53);
+    }
+  }
+
+  /**
+   * Set a MFA confiugration
+   * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-cognito-identity-provider/interfaces/setuserpoolmfaconfigcommandinput.html
+   * @param userPoolId user pool id
+   * @param config configuration for MFA configuration
+   */
+  public async setMFAConfiguration(userPoolId: string, config: any): Promise<void> {
+    try {
+      // Create an input to set MFA
+      const input: cognito.SetUserPoolMfaConfigCommandInput = {
+        MfaConfiguration: config.MfaConfiguration,
+        SmsMfaConfiguration: config.SmsMfaConfiguration !== undefined ? {
+          SmsAuthenticationMessage: config.SmsMfaConfiguration.SmsAuthenticationMessage,
+          SmsConfiguration: {
+            ExternalId: config.SmsMfaConfiguration.SmsConfiguration.ExternalId,
+            SnsCallerArn: config.SmsMfaConfiguration.SmsConfiguration.SnsCallerArn
+          }
+        } : undefined,
+        SoftwareTokenMfaConfiguration: config.SoftwareTokenMfaConfiguration !== undefined ? {
+          Enabled: config.SoftwareTokenMfaConfiguration.Enabled
+        } : undefined,
+        UserPoolId: userPoolId
+      };
+      // Create a command to set MFA
+      const command: cognito.SetUserPoolMfaConfigCommand = new cognito.SetUserPoolMfaConfigCommand(input);
+      // Send a command to set MFA
+      await this._client.send(command);
+    } catch (err) {
+      console.error(`[ERROR] Failed to set a MFA configuration (target: ${userPoolId})\n-> ${err}`);
+      process.exit(54);
+    }
+  }
+
+  /**
+   * Set a UI customization
+   * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-cognito-identity-provider/interfaces/setuicustomizationcommandinput.html
+   * @param userPoolId user pool id
+   * @param clientId user pool client id
+   * @param config configuration for UI customization
+   * @returns result
+   */
+  public async setUICustomization(userPoolId: string, clientId: string, config: any): Promise<boolean> {
+    try {
+      // Create an input to set ui customization
+      const input: cognito.SetUICustomizationCommandInput = {
+        ClientId: clientId,
+        CSS: config.CSS,
+        // ImageFile: config.ImageUrl
+        UserPoolId: userPoolId
+      };
+      // Create a command to set ui customization
+      const command: cognito.SetUICustomizationCommand = new cognito.SetUICustomizationCommand(input);
+      // Send a command to set ui customization
+      await this._client.send(command);
+      // Return
+      return true;
+    } catch (err) {
+      console.warn(`[WARNING] Failed to set a UI customization (target: ${clientId})\n-> ${err}`);
+      return false;
+    }
+  }
+
+  /**
+   * Update an email configuraion
+   * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-cognito-identity-provider/interfaces/updateuserpoolcommandinput.html
+   * @param userPoolId user pool id
+   * @param config configuration for email
+   * @returns result
+   */
+  public async updateEmailConfiguration(userPoolId: string, config: any): Promise<boolean> {
+    try {
+      // Create an input to udpate email configuration
+      const input: cognito.UpdateUserPoolCommandInput = {
+        EmailConfiguration: config.EmailConfiguration,
+        EmailVerificationMessage: config.EmailVerificationMessage,
+        EmailVerificationSubject: config.EmailVerificationSubject,
+        UserPoolId: userPoolId
+      };
+      // Create a command to update email configuration
+      const command: cognito.UpdateUserPoolCommand = new cognito.UpdateUserPoolCommand(input);
+      // Send a command to update email configuration
+      await this._client.send(command);
+      // Return
+      return true;
+    } catch (err) {
+      console.warn(`[WARNING] Failed to update an email configuration (target: ${userPoolId})\n-> ${err}`);
+      return false;
+    }
+  }
+
+  /**
+   * Update a lambda configuration
+   * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-cognito-identity-provider/modules/lambdaconfigtype.html
+   * @param userPoolId user pool id
+   * @param config configuration for lambda
+   * @returns result
+   */
+  public async updateLambdaConfiguration(userPoolId: string, config: any): Promise<boolean> {
+    try {
+      // Create a sdk object for lambda
+      const lambda: LambdaSdk = new LambdaSdk({ region: process.env.REGION });
+      // Refactoring a lambda configuration data
+      const lambdaConfig: any = {};
+      for (const key of Object.keys(config)) {
+        // Extract a previous lambda arn
+        const prevFunctionArn: string = config[key];
+        // Extract a lambda functino name and qualifier
+        const functionName: string = extractDataFromArn(prevFunctionArn, "resource");
+        const qualifier: string = extractDataFromArn(prevFunctionArn, "qualifier");
+        // Get a lambda arn
+        const functionArn: string = await lambda.getFunctionArn(functionName, qualifier !== "" ? qualifier : undefined);
+        // Set a lambda arn
+        if (functionArn !== "") {
+          lambdaConfig[key] = functionArn;
         }
       }
+      // Destroy a sdk object for lambda
+      lambda.destroy();
+
+      // Create an input to update lambda configuration for user pool
+      const input: cognito.UpdateUserPoolCommandInput = {
+        LambdaConfig: lambdaConfig,
+        UserPoolId: userPoolId,
+      };
+      // Create a command to update lambda configuration for user pool
+      const command: cognito.UpdateUserPoolCommand = new cognito.UpdateUserPoolCommand(input);
+      // Send a command to update lambda configuration
+      await this._client.send(command);
+      // Return
+      return true;
+    } catch (err) {
+      console.warn(`[WARNING] Failed to update a lambda configuration (target: ${userPoolId})\n-> ${err}`);
+      return false;
     }
-    // Escape
-    nextToken = response.NextToken;
-    if (!nextToken) {
-      break;
-    }
-  } while (true);
-  // Return
-  console.warn(`[WARNING] Not found user pool client id (for ${clientName})`);
-  return "";
-}
-
-/**
- * Init a client for cognito
- */
-export function initCognitoClient(): void {
-  client = new cognito.CognitoIdentityProviderClient({ region: process.env.REGION });
-}
-
-/**
- * Set a MFA configuration
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-cognito-identity-provider/classes/setuserpoolmfaconfigcommand.html
- * @param userPoolId user pool id
- * @param config configuration for MFA configuration
- * @param externalId external id (for role)
- * @param snsCallerArn arn for sns
- */
-export async function setMfaConfiguration(userPoolId: string, config: any, externalId: string|undefined, snsCallerArn: string|undefined): Promise<void> {
-  // Create the input to set MFA
-  const input: cognito.SetUserPoolMfaConfigCommandInput = {
-    UserPoolId: userPoolId,
-    // Optional
-    MfaConfiguration: config.MfaConfiguration,
-    SmsMfaConfiguration: config.SmsMfaConfiguration !== undefined ? {
-      SmsAuthenticationMessage: config.SmsMfaConfiguration.SmsAuthenticationMessage,
-      SmsConfiguration: {
-        ExternalId: externalId,
-        SnsCallerArn: snsCallerArn
-      }
-    } : undefined,
-    SoftwareTokenMfaConfiguration: config.SoftwareTokenMfaConfiguration !== undefined ? {
-      Enabled: config.SoftwareTokenMfaConfiguration.Enabled
-    } : undefined,
-  };
-  // Create the command to set MFA
-  const command: cognito.SetUserPoolMfaConfigCommand = new cognito.SetUserPoolMfaConfigCommand(input);
-  // Send the command to set MFA
-  await client.send(command);
-}
-
-/**
- * Set a UI customization for user pool client
- * @param userPoolId user pool id
- * @param clientId user pool client id
- * @param config configuration for UI customization
- */
-export async function setUICustomization(userPoolId: string, clientId: string, config: any): Promise<Boolean> {
-  // Create the input to set ui customization
-  const input: cognito.SetUICustomizationCommandInput = {
-    UserPoolId: userPoolId,
-    // Optional
-    CSS: config.CSS,
-    ClientId: clientId,
-    // ImageFile: config.ImageUrl
-  };
-  // Create the command to set ui customization
-  const command: cognito.SetUICustomizationCommand = new cognito.SetUICustomizationCommand(input);
-  // Send the command to set ui customization
-  await client.send(command);
-  // Return
-  return true;
-}
-
-/**
- * Update the email configuration for user pool
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-cognito-identity-provider/classes/updateuserpoolcommand.html
- * @param userPoolId user pool id
- * @param config configuration for email
- */
-export async function updateEmailConfiguration(userPoolId: string, config: any) {
-  // Create the input to udpate email configuration
-  const input: cognito.UpdateUserPoolCommandInput = {
-    EmailConfiguration: config.EmailConfiguration,
-    EmailVerificationMessage: config.EmailVerificationMessage,
-    EmailVerificationSubject: config.EmailVerificationSubject,
-    UserPoolId: userPoolId
-  };
-  // Create the command to update email configuration
-  const command: cognito.UpdateUserPoolCommand = new cognito.UpdateUserPoolCommand(input);
-  // Send the command to update email configuration
-  await client.send(command);
-}
-
-/**
- * Update the lambda configuration for user pool
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-cognito-identity-provider/classes/updateuserpoolcommand.html
- * @param userPoolId user pool id
- * @param config configuration for lambda
- */
-export async function updateLambdaConfiguration(userPoolId: string, config: any) {
-  // Create the input to update lambda configuration for user pool
-  const input: cognito.UpdateUserPoolCommandInput = {
-    LambdaConfig: config,
-    UserPoolId: userPoolId,
-  };
-  // Create the command to update lambda configuration for user pool
-  const command: cognito.UpdateUserPoolCommand = new cognito.UpdateUserPoolCommand(input);
-  // Send the command to update lambda configuration
-  await client.send(command);
+  }
 }

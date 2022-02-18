@@ -1,10 +1,11 @@
+import { Readable } from "stream";
 // AWS SDK
 import * as s3 from "@aws-sdk/client-s3";
 
 export interface S3Object {
   filename: string;
   extension: string;
-  data: ReadableStream;
+  data: Readable;
 }
 
 export class S3Sdk {
@@ -27,7 +28,7 @@ export class S3Sdk {
    * @param versionId version id
    * @returns object data (stream)
    */
-  private async _getObject(bucket: string, key: string, versionId?: string): Promise<ReadableStream<any>> {
+  private async _getObject(bucket: string, key: string, versionId?: string): Promise<Readable> {
     try {
       // Create an input to get the object
       const input: s3.GetObjectCommandInput = {
@@ -40,7 +41,7 @@ export class S3Sdk {
       // Send a command to get a object
       const response: s3.GetObjectCommandOutput = await this._client.send(command);
       // Return
-      return response.Body as ReadableStream;
+      return response.Body as Readable;
     } catch (err) {
       console.error(`[ERROR] Failed to get the object from amazon s3\n-> ${err}`);
       process.exit(1);
@@ -72,7 +73,7 @@ export class S3Sdk {
     const extension: string = temp[temp.length - 1];
 
     // Get a object
-    const data: ReadableStream = await this._getObject(bucket, key);
+    const data: Readable = await this._getObject(bucket, key);
     // Return
     return { filename, extension, data };
   }
