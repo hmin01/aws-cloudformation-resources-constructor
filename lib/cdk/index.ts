@@ -89,34 +89,28 @@ export function createCloudFrontPolicies(scope: Construct, config: any) {
   // Create the cache policies
   for (const elem of config.CachePolicy) {
     if (elem.Type !== "managed") {
-      // Get an id for policy
-      const id: string = elem.CachePolicy.Id;
       // Create a cache policy
-      const policy: CachePolicy = new CachePolicy(scope, id, elem.CachePolicy.CachePolicyConfig);
+      const policy: CachePolicy = new CachePolicy(scope, elem.CachePolicy.CachePolicyConfig);
       // Set the resource
-      storeResource("cloudfront-cachepolicy", id, policy);
+      storeResource("cloudfront-cachepolicy", elem.CachePolicy.Id, policy);
     }
   }
   // Create the origin request policies
   for (const elem of config.OriginRequestPolicy) {
     if (elem.Type !== "managed") {
-      // Get an id for policy
-      const id: string = elem.CachePolicy.Id;
       // Create a cache policy
-      const policy: OriginRequestPolicy = new OriginRequestPolicy(scope, id, elem.OriginRequestPolicy.OriginRequestPolicyConfig);
+      const policy: OriginRequestPolicy = new OriginRequestPolicy(scope, elem.OriginRequestPolicy.OriginRequestPolicyConfig);
       // Set the resource
-      storeResource("cloudfront-originrequestpolicy", id, policy);
+      storeResource("cloudfront-originrequestpolicy", elem.OriginRequestPolicy.Id, policy);
     }
   }
   // Create the response header policies
   for (const elem of config.ResponseHeadersPolicy) {
     if (elem. Type !== "managed") {
-      // Get an id for policy
-      const id: string = elem.CachePolicy.Id;
       // Create a cache policy
-      const policy: ResponseHeadersPolicy = new ResponseHeadersPolicy(scope, id, elem.ResponseHeadersPolicy.ResponseHeadersPolicyConfig);;
+      const policy: ResponseHeadersPolicy = new ResponseHeadersPolicy(scope, elem.ResponseHeadersPolicy.ResponseHeadersPolicyConfig);;
       // Set the resource
-      storeResource("cloudfront-responseheaderspolicy", id, policy);
+      storeResource("cloudfront-responseheaderspolicy", elem.ResponseHeadersPolicy.Id, policy);
     }
   }
 }
@@ -130,7 +124,7 @@ export function createCloudFrontDistributions(scope: Construct, config: any) {
     // Get a configuration for distribution
     const elem: any = config[distributionId];
     // Create a distribution
-    const distribution: Distribution = new Distribution(scope, elem.DistributionConfig, "arn:aws:acm:ap-northeast-1:395824177941:certificate/67febc61-f11c-4eeb-9832-f99750fa7955");
+    const distribution: Distribution = new Distribution(scope, elem.DistributionConfig);
     // Store the resource
     storeResource("cloudfront-distribution", distributionId, distribution);
   }

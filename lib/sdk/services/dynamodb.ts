@@ -1,47 +1,45 @@
+// AWS SDK
 import * as dynamodb from "@aws-sdk/client-dynamodb";
 
-// Set a client for dynamodb
-let client: dynamodb.DynamoDBClient;
+export class DynamoDBSdk {
+  private _client: dynamodb.DynamoDBClient;
 
-/**
- * Destroy a client for dynamodb
- */
-export function destroyDyanmoDBClient(): void {
-  client.destroy();
-}
-
-/**
- * Get an arn for dynamodb table
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-dynamodb/classes/describetablecommand.html
- * @param tableName name for dynamodb table
- * @returns arn for dynamodb table
- */
-export async function getDynamoDBTableArn(tableName: string): Promise<string> {
-  try {
-    // Create the input to get arn for dynamodb table
-    const input: dynamodb.DescribeTableCommandInput = {
-      TableName: tableName
-    };
-    // Create the command to get arn for dynamodb table
-    const command: dynamodb.DescribeTableCommand = new dynamodb.DescribeTableCommand(input);
-    // Send the command to get url for dynamodb table
-    const response: dynamodb.DescribeTableCommandOutput = await client.send(command);
-    // Result
-    if (response.Table && response.Table.TableArn) {
-      return response.Table.TableArn;
-    } else {
-      console.error(`[WARNING] Not found dynamodb table (for ${tableName})`);
-      return "";
-    }
-  } catch (err) {
-    console.error(`[WARNING] Not found dynamodb table (for ${tableName})`);
-    return "";
+  /**
+   * Create a sdk object for amazon dynamodb
+   * @param config configuration for amazon dynamodb
+   */
+  constructor(config: any) {
+    // Create a client for amazon dynamodb
+    this._client = new dynamodb.DynamoDBClient(config);
   }
-}
 
-/**
- * Init a client for dynamodb
- */
-export function initDynamoDBClient(): void {
-  client = new dynamodb.DynamoDBClient({ region: process.env.REGION });
+  /**
+   * Destroy a client for amazon dynamodb
+   */
+  public destroy(): void {
+    this._client.destroy();
+  }
+
+  /**
+   * Get a table arn
+   * @param tableName table name 
+   * @returns arn for table
+   */
+  public async getTableArn(tableName: string): Promise<string> {
+    try {
+      // Create an input to get a table arn
+      const input: dynamodb.DescribeTableCommandInput = {
+        TableName: tableName
+      };
+      // Create a command to get a table arn
+      const command: dynamodb.DescribeTableCommand = new dynamodb.DescribeTableCommand(input);
+      // Send a command to get a table arn
+      const response: dynamodb.DescribeTableCommandOutput = await this._client.send(command);
+      // Return
+      return response.Table ? response.Table.TableArn as string : "";
+    } catch (err) {
+      console.error(`[ERROR] Failed to get a table arn (target: ${tableName})\n-> ${err}`);
+      process.exit(30);
+    }
+  }
 }

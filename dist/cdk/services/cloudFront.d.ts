@@ -1,73 +1,65 @@
 import { Construct } from "constructs";
+export declare class CachePolicy {
+    private _policy;
+    private _scope;
+    /**
+     * Create a cloudfront cache policy
+     * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-cachepolicy-cachepolicyconfig.html
+     * @param scope scope context
+     * @param config configuration for cache policy
+     */
+    constructor(scope: Construct, config: any);
+    /**
+     * Get a cache policy id
+     * @returns cache policy id
+     */
+    getId(): string;
+}
 export declare class Distribution {
     private _distribution;
     private _scope;
     /**
-     * Create the cloudFront distribution
-     * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-cloudfront-distribution.html
+     * Create a cloudfront distribution
+     * @description
      * @param scope scope context
      * @param config configuration for distribution
      */
-    constructor(scope: Construct, config: any, acmCertArn: string);
+    constructor(scope: Construct, config: any);
     /**
-     * Create the format for cache behavior
-     * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-cachebehavior.html
-     * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-defaultcachebehavior.html
-     * @param config configuration for cache behavior
-     * @returns format for cache behavior
+     * Get a distribution id
+     * @returns distribution id
      */
-    createCacheBehaviorFormat(config: any): any;
-    /**
-     * Set the tags
-     * @param config configuration for tags
-     */
-    setTags(config: any): void;
+    getId(): string;
 }
 export declare class Function {
     private _function;
     private _scope;
     /**
-     * Create the function for cloudfront
+     * Create a cloudfront function
      * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-cloudfront-function.html
      * @param scope scope context
      * @param config configuration for function
      */
     constructor(scope: Construct, config: any);
     /**
-     * Get an arn for function
-     * @returns arn for function
+     * Get a function arn
+     * @returns function arn
      */
     getArn(): string;
 }
-export declare class CachePolicy {
-    private _policy;
-    private _scope;
-    /**
-     * Create the cache policy for cloudfront
-     * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-cloudfront-cachepolicy.html
-     * @param scope scope context
-     * @param prevId previous resource id
-     * @param config configuration for cache policy
-     */
-    constructor(scope: Construct, prevId: string, config: any);
-    /**
-     * Get id for cache policy
-     * @returns id for cache policy
-     */
-    getId(): string;
-}
 export declare class OriginAccessIdentity {
-    private _oai;
+    private _identiry;
     private _scope;
     /**
-     * Create the origin access identiry for cloudFront
+     * Create a cloudfront origin access identity
+     * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-cloudfrontoriginaccessidentity-cloudfrontoriginaccessidentityconfig.html
      * @param scope scope context
-     * @param comment comment
+     * @param config configuration for origin access identity
      */
-    constructor(scope: Construct, comment: string);
+    constructor(scope: Construct, config: any);
     /**
-     * Get an id for origin access identiry
-     * @returns id for origin access identity
+     * Get a origin access identity id
+     * @returns origin access identity id
      */
     getId(): string;
 }
@@ -75,16 +67,15 @@ export declare class OriginRequestPolicy {
     private _policy;
     private _scope;
     /**
-     * Create the origin request policy for cloudfront
-     * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-cloudfront-originrequestpolicy.html
+     * Create a cloudfront origin request policy
+     * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-originrequestpolicy-originrequestpolicyconfig.html
      * @param scope scope context
-     * @param prevId previous resource id
-     * @param config configuration for orgin request policy
+     * @param config configuration for origin request policy
      */
-    constructor(scope: Construct, prevId: string, config: any);
+    constructor(scope: Construct, config: any);
     /**
-     * Get an id for response headers policy
-     * @returns id for response headers policy
+     * Get a origin request policy id
+     * @returns origin request policy id
      */
     getId(): string;
 }
@@ -92,16 +83,15 @@ export declare class ResponseHeadersPolicy {
     private _policy;
     private _scope;
     /**
-     * Create the response header policy for cloudfront
-     * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-cloudfront-responseheaderspolicy.html
+     * Create a cloudfront response headers policy
+     * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-responseheaderspolicy-responseheaderspolicyconfig.html
      * @param scope scope context
-     * @param prevId previous resource id
-     * @param config configuration for response header policy
+     * @param config configuration for response headers policy
      */
-    constructor(scope: Construct, prevId: string, config: any);
+    constructor(scope: Construct, config: any);
     /**
-     * Get an id for response headers policy
-     * @returns id for response headers policy
+     * Get a response headers policy id
+     * @returns response headers policy id
      */
     getId(): string;
 }
