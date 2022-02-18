@@ -10,10 +10,10 @@ export declare class UserPool {
      */
     constructor(scope: Construct, config: any);
     /**
-     * Create the default domain
+     * Create a default domain
      * @param domain domain
      */
-    createDefaultDomain(domain: any): void;
+    createDefaultDomain(domain: string): void;
     /**
      * Create a resource server for user pool
      * @description https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpoolresourceserver.html

@@ -31,12 +31,12 @@ export declare function createCognitoUserPoolClients(name: string, clientConfigs
  * @param config configuration for aliases
  * @param mapVersion mapping data for version
  */
-export declare function createAliases(functionName: string, config: any, mapVersion?: any): Promise<void>;
+export declare function createLambdaAliases(functionName: string, config: any, mapVersion?: any): Promise<void>;
 /**
  * Create the event source mappings
  * @param config configuration for event source mappings
  */
-export declare function createEventSourceMappings(config: any): Promise<void>;
+export declare function createLambdaEventSourceMappings(config: any): Promise<void>;
 /**
  * Download a lambda code from s3
  * @param region region to create a s3 client

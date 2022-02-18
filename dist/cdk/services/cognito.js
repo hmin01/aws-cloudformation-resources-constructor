@@ -18,7 +18,7 @@ class UserPool {
         const schema = [];
         if (config.SchemaAttributes) {
             for (const elem of config.SchemaAttributes) {
-                if (!defaultSchema(elem.Name)) {
+                if (!defaultSchema[elem.Name]) {
                     schema.push({
                         attributeDataType: elem.AttributeDataType,
                         developerOnlyAttribute: elem.DeveloperOnlyAttribute,
@@ -86,16 +86,19 @@ class UserPool {
         this._userPool = new aws_cdk_lib_1.aws_cognito.CfnUserPool(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
     }
     /**
-     * Create the default domain
+     * Create a default domain
      * @param domain domain
      */
     createDefaultDomain(domain) {
-        // Create the properties for user pool domain
+        // Extract a prefix domain
+        const split = domain.split(".");
+        const prefixDomain = split[0];
+        // Create a properties for user pool domain
         const props = {
-            domain: domain,
+            domain: prefixDomain,
             userPoolId: this._userPool.ref
         };
-        // Create the user pool default domain
+        // Create a user pool default domain
         new aws_cdk_lib_1.aws_cognito.CfnUserPoolDomain(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
     }
     /**
@@ -104,7 +107,7 @@ class UserPool {
      * @param config configuration for resource server
      */
     createResourceServer(config) {
-        // Create the properties for user pool resource server
+        // Create a properties for user pool resource server
         const props = {
             identifier: config.Identifier,
             name: config.Name,
