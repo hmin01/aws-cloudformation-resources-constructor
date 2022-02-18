@@ -1,50 +1,15 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.publishLambdaVersions = exports.createEventSourceMappings = exports.createAliases = exports.createCognitoUserPoolClients = exports.setCognitoUserPool = exports.deployAPIGatewayStage = exports.configureAPIGatewayMethods = exports.initSdkClients = exports.destroySdkClients = void 0;
+exports.publishLambdaVersions = exports.downloadLambdaCodeFromS3 = exports.createEventSourceMappings = exports.createAliases = exports.createCognitoUserPoolClients = exports.setCognitoUserPool = exports.deployAPIGatewayStage = exports.configureAPIGatewayMethods = void 0;
+const fs_1 = require("fs");
 const path_1 = require("path");
-// Services (SDK)
-const SDKCognito = __importStar(require("./services/cognito"));
 // Services (SDK) - new
 const apigateway_1 = require("./services/apigateway");
+const cognito_1 = require("./services/cognito");
 const lambda_1 = require("./services/lambda");
-// Utile
-const util_1 = require("../utils/util");
+const s3_1 = require("./services/s3");
 // Set the directory for stored lambda function codes
 const CODE_DIR = (0, path_1.join)(__dirname, "../../resources/code");
-/** For Util */
-/**
- * Destroy the sdk clients
- */
-function destroySdkClients() {
-    SDKCognito.destroyCognitoClient();
-}
-exports.destroySdkClients = destroySdkClients;
-/**
- * Init the sdk clients
- */
-function initSdkClients() {
-    SDKCognito.initCognitoClient();
-}
-exports.initSdkClients = initSdkClients;
 /** For APIGateway */
 /**
  * Configure the methods in rest api
@@ -132,56 +97,38 @@ exports.deployAPIGatewayStage = deployAPIGatewayStage;
  * @param config configuration for user pool
  */
 async function setCognitoUserPool(name, config) {
-    // Create an sdk object for lambda
-    const lambda = new lambda_1.LambdaSdk({ region: process.env.REGION });
+    // Creaet a sdk object for cognito
+    const cognito = new cognito_1.CognitoSdk({ region: process.env.REGION });
     // Get a user pool id for name
-    const userPoolId = await SDKCognito.getUserPoolId(name);
+    const userPoolId = await cognito.getUserPoolId(name);
     if (userPoolId === "") {
-        console.error(`[ERROR] Not found user pool id (for ${name})`);
-        process.exit(1);
+        console.error(`[ERROR] Not found a user pool id (for ${name})`);
+        process.exit(55);
     }
-    // // Create the user pool custom domain
-    // await SDKCognito.createUserPoolDomain(userPoolId, config.CustomDomainDescription.Domain, config.CustomDomainDescription.CustomDomainConfig.CertificateArn);
-    console.info(`[NOTICE] Set the custom domain for user pool (for ${name})`);
-    // Set the MFA configuration
+    // Set a MFA configuration
     if (config.MFAConfig) {
-        await SDKCognito.setMfaConfiguration(userPoolId, config.MFAConfig, undefined, undefined);
+        await cognito.setMFAConfiguration(userPoolId, config.MFAConfig);
         console.info(`[NOTICE] Set the MFA configuration for user pool (for ${name})`);
     }
-    // Update the email configuration
+    // Update a email configuration
     if (config.EmailConfiguration) {
-        // Copy the configuration
+        // Copy a configuration
         const emailConfig = JSON.parse(JSON.stringify(config.EmailConfiguration));
         // Re-processing
         if (emailConfig.EmailSendingAccount !== undefined && emailConfig.EmailSendingAccount === "DEVELOPER") {
             // Get and set arn (for sns)
         }
-        // Update
-        await SDKCognito.updateEmailConfiguration(userPoolId, emailConfig);
+        // Update a email configuration
+        await cognito.updateEmailConfiguration(userPoolId, emailConfig);
         console.info(`[NOTICE] Update the email configuration for user pool (for ${name})`);
     }
-    // Update the lambda configuration
+    // Update a lambda configuration
     if (config.LambdaConfig) {
-        // Copy the configuration
-        const lambdaConfig = JSON.parse(JSON.stringify(config.LambdaConfig));
-        // Re-processing
-        for (const key of Object.keys(lambdaConfig)) {
-            // Extract a function name and qualifier
-            const functionName = (0, util_1.extractDataFromArn)(lambdaConfig[key], "resource");
-            const qualifier = (0, util_1.extractDataFromArn)(lambdaConfig[key], "qualifier");
-            // Get a lambda arn
-            const lambdaArn = await lambda.getFunctionArn(functionName, qualifier);
-            // Set the lambda configuration
-            if (lambdaArn !== "") {
-                lambdaConfig[key] = lambdaArn;
-            }
-        }
-        // Update
-        await SDKCognito.updateLambdaConfiguration(userPoolId, lambdaConfig);
+        await cognito.updateLambdaConfiguration(userPoolId, config.LambdaConfig);
         console.info(`[NOTICE] Set the lambda configuration for user pool (for ${name})`);
     }
-    // Destroy an sdk object for lambda
-    lambda.destroy();
+    // Destory a sdk object for cognito
+    cognito.destroy();
 }
 exports.setCognitoUserPool = setCognitoUserPool;
 /**
@@ -190,11 +137,13 @@ exports.setCognitoUserPool = setCognitoUserPool;
  * @param config configuration for user pool clients
  */
 async function createCognitoUserPoolClients(name, clientConfigs, uiConfigs) {
+    // Creaet a sdk object for cognito
+    const cognito = new cognito_1.CognitoSdk({ region: process.env.REGION });
     // Get a user pool id for name
-    const userPoolId = await SDKCognito.getUserPoolId(name);
+    const userPoolId = await cognito.getUserPoolId(name);
     if (userPoolId === "") {
-        console.error(`[ERROR] Not found user pool id (for ${name})`);
-        process.exit(1);
+        console.error(`[ERROR] Not found a user pool id (for ${name})`);
+        process.exit(55);
     }
     // Create the user pool clients
     for (const elem of clientConfigs) {
@@ -206,15 +155,17 @@ async function createCognitoUserPoolClients(name, clientConfigs, uiConfigs) {
                 break;
             }
         }
-        // Create the user pool client
-        const clientId = await SDKCognito.createUserPoolClient(userPoolId, elem);
-        // Set the ui customization
+        // Create a user pool client
+        const clientId = await cognito.createUserPoolClient(userPoolId, elem);
+        // Set a ui customization
         if (clientId && uiData) {
-            await SDKCognito.setUICustomization(userPoolId, clientId, uiData);
+            await cognito.setUICustomization(userPoolId, clientId, uiData);
         }
         // Print message
         console.info(`[NOTICE] Create the user pool client (for ${elem.ClientName})`);
     }
+    // Destory a sdk object for cognito
+    cognito.destroy();
 }
 exports.createCognitoUserPoolClients = createCognitoUserPoolClients;
 /** For Lambda */
@@ -253,6 +204,31 @@ async function createEventSourceMappings(config) {
     lambda.destroy();
 }
 exports.createEventSourceMappings = createEventSourceMappings;
+/**
+ * Download a lambda code from s3
+ * @param region region to create a s3 client
+ * @param s3Url s3 url
+ * @param outputDir output directory path
+ */
+async function downloadLambdaCodeFromS3(region, s3Url, outputDir) {
+    // Create a sdk object for s3
+    const s3 = new s3_1.S3Sdk({ region });
+    // Get a s3 object
+    const obj = await s3.getObjectByUrl(s3Url);
+    // Checking the existence of a directory (if there's none, create it)
+    if ((0, fs_1.existsSync)(outputDir)) {
+        (0, fs_1.mkdirSync)(outputDir, { recursive: true });
+    }
+    // Create a code file path
+    const filePath = (0, path_1.join)(outputDir, obj.filename);
+    // Create a code file
+    (0, fs_1.openSync)(filePath, "w");
+    // Write data
+    obj.data.pipe((0, fs_1.createWriteStream)(filePath), { end: true });
+    // Destroy a sdk object for s3
+    s3.destroy();
+}
+exports.downloadLambdaCodeFromS3 = downloadLambdaCodeFromS3;
 /**
  * Publish the lambda function versions
  * @param functionName function name
