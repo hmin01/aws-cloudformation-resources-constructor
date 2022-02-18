@@ -147,19 +147,18 @@ async function createCognitoUserPoolClients(name, clientConfigs, uiConfigs) {
     }
     // Create the user pool clients
     for (const elem of clientConfigs) {
-        // Extract the ui customization data
-        let uiData = undefined;
-        for (const data of uiConfigs) {
-            if (data.ClientId === elem.ClientId) {
-                uiData = data;
-                break;
-            }
-        }
         // Create a user pool client
         const clientId = await cognito.createUserPoolClient(userPoolId, elem);
         // Set a ui customization
-        if (clientId && uiData) {
-            await cognito.setUICustomization(userPoolId, clientId, uiData);
+        if (clientId && uiConfigs) {
+            // Extract the ui customization data
+            let uiData = undefined;
+            for (const data of uiConfigs) {
+                if (data.ClientId === elem.ClientId) {
+                    await cognito.setUICustomization(userPoolId, clientId, uiData);
+                    break;
+                }
+            }
         }
         // Print message
         console.info(`[NOTICE] Create the user pool client (for ${elem.ClientName})`);
@@ -211,6 +210,11 @@ exports.createLambdaEventSourceMappings = createLambdaEventSourceMappings;
  * @param outputDir output directory path
  */
 async function downloadLambdaCodeFromS3(region, s3Url, outputDir) {
+    // Check a url format
+    if (!new RegExp("^s3://").test(s3Url)) {
+        console.warn("[WARNING] Not match the s3 url format");
+        return false;
+    }
     // Create a sdk object for s3
     const s3 = new s3_1.S3Sdk({ region });
     // Get a s3 object
@@ -227,6 +231,8 @@ async function downloadLambdaCodeFromS3(region, s3Url, outputDir) {
     obj.data.pipe((0, fs_1.createWriteStream)(filePath), { end: true });
     // Destroy a sdk object for s3
     s3.destroy();
+    // Return
+    return true;
 }
 exports.downloadLambdaCodeFromS3 = downloadLambdaCodeFromS3;
 /**
