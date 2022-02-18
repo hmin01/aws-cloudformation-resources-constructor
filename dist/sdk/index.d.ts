@@ -9,17 +9,17 @@ export declare function destroySdkClients(): void;
 export declare function initSdkClients(): void;
 /** For APIGateway */
 /**
- * Set the method integrations
- * @param name api name
- * @param config configuration for api
+ * Configure the methods in rest api
+ * @param restApiName rest api name
+ * @param config configuration for methods
  */
-export declare function setAPIGatewayMethods(name: string, config: any[]): Promise<void>;
+export declare function configureAPIGatewayMethods(restApiName: string, config: any[]): Promise<void>;
 /**
- * Deploy the API Gateway stage (contain deployment)
+ * Deploy a stage (contain deployment)
  * @param name rest api name
  * @param config configuration for stage
  */
-export declare function deployAPIGatewayStage(name: string, config: any[]): Promise<void>;
+export declare function deployAPIGatewayStage(restApiName: string, config: any[]): Promise<void>;
 /** For Cognito */
 /**
  * Set a cognito user pool configuration
@@ -35,12 +35,21 @@ export declare function setCognitoUserPool(name: string, config: any): Promise<v
 export declare function createCognitoUserPoolClients(name: string, clientConfigs: any[], uiConfigs: any[]): Promise<void>;
 /** For Lambda */
 /**
- * Create the versions and aliases for lambda
- * @param config configuration for versions and aliases for lambda
+ * Create the lambda function aliases
+ * @param functionName function name
+ * @param config configuration for aliases
+ * @param mapVersion mapping data for version
  */
-export declare function createLambdaVersionsAndAliases(config: any): Promise<void>;
+export declare function createAliases(functionName: string, config: any, mapVersion?: any): Promise<void>;
 /**
- * Set the event source mappings
+ * Create the event source mappings
  * @param config configuration for event source mappings
  */
-export declare function setEventSourceMappings(config: any): Promise<void>;
+export declare function createEventSourceMappings(config: any): Promise<void>;
+/**
+ * Publish the lambda function versions
+ * @param functionName function name
+ * @param config configuration for versions
+ * @returns mapping data for version
+ */
+export declare function publishLambdaVersions(functionName: string, config: any): Promise<any>;

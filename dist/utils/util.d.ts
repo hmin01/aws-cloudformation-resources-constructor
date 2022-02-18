@@ -1,3 +1,5 @@
+/// <reference types="node" />
+import { Readable } from "stream";
 import { CfnTag } from "aws-cdk-lib";
 /**
  * Change the part about AWS arn
@@ -51,3 +53,9 @@ export declare function extractTags(tags: unknown): CfnTag[];
  * @returns loaded data
  */
 export declare function loadJsonFile(filePath: string): any;
+/**
+ * Stream to string
+ * @param steam readable stream
+ * @returns converted string
+ */
+export declare function streamToBuffer(steam: Readable): Promise<Buffer>;

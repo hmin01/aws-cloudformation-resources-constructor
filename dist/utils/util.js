@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loadJsonFile = exports.extractTags = exports.extractPrincipal = exports.extractDataFromArn = exports.delay = exports.checkAwsArnPattern = exports.createId = exports.changePartaboutArn = void 0;
+exports.streamToBuffer = exports.loadJsonFile = exports.extractTags = exports.extractPrincipal = exports.extractDataFromArn = exports.delay = exports.checkAwsArnPattern = exports.createId = exports.changePartaboutArn = void 0;
 const crypto_1 = require("crypto");
 const fs_1 = require("fs");
 /**
@@ -242,3 +242,17 @@ function loadJsonFile(filePath) {
     }
 }
 exports.loadJsonFile = loadJsonFile;
+/**
+ * Stream to string
+ * @param steam readable stream
+ * @returns converted string
+ */
+async function streamToBuffer(steam) {
+    return new Promise((resolve, reject) => {
+        const chunks = [];
+        steam.on("data", chunk => chunks.push(chunk));
+        steam.on("error", err => reject(err));
+        steam.on("end", () => resolve(Buffer.concat(chunks)));
+    });
+}
+exports.streamToBuffer = streamToBuffer;

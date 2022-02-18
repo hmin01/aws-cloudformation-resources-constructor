@@ -1,63 +1,76 @@
-/**
- * Destroy a client for api gateway
- */
-export declare function destroyAPIGatewayClient(): void;
-/**
- * Create the deployment for rest api
- * @param restApiId rest api id
- * @param config configuration for deployment
- * @returns created deployment id
- */
-export declare function createDeployment(restApiId: string): Promise<string>;
-/**
- * Create the stage for rest api
- * @param restApiId rest api id
- * @param deploymentId deployment id
- * @param config configuration for stage
- */
-export declare function createStage(restApiId: string, deploymentId: string, config: any): Promise<void>;
-/**
- * Get resource id according to path
- * @param apiId api id
- * @param path path
- * @returns resource id
- */
-export declare function getResourceId(apiId: string, path: string): Promise<string>;
-/**
- * Get a rest api id
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/classes/getrestapiscommand.html
- * @param name name for rest api
- * @returns rest api id
- */
-export declare function getRestApiId(name: string): Promise<string>;
-/**
- * Put the method integration
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/classes/putintegrationcommand.html
- * @param restApiId id for rest api
- * @param resourceId id for resource in api
- * @param httpMethod http method
- * @param config configuration for method integration
- */
-export declare function putMethodIntegration(restApiId: string, resourceId: string, httpMethod: string, config: any): Promise<void>;
-/**
- * Put the method integration reesponse
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/classes/putintegrationresponsecommand.html
- * @param restApiId rest api id
- * @param resourceId resource id
- * @param httpMethod http method
- * @param config configuration for method integration response
- */
-export declare function putMethodIntegrationResponse(restApiId: string, resourceId: string, httpMethod: string, config: any): Promise<void>;
-/**
- * Put the method response
- * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/classes/putmethodresponsecommand.html
- * @param restApiId rest api id
- * @param resourceId resource id
- * @param httpMethod http method
- * @param config configuration for method response
- */
-export declare function putMethodResponse(restApiId: string, resourceId: string, httpMethod: string, config: any): Promise<void>;
-/**
- * Init a client for api gateway
- */
-export declare function initAPIGatewayClient(): void;
+export declare class APIGatewaySdk {
+    private _client;
+    private _resources;
+    /**
+     * Create a sdk object for amazon apigateway
+     * @param config configuration for amzon apigateway
+     */
+    constructor(config: any);
+    /**
+     * Destroy a client for amazon apigateway
+     */
+    destroy(): void;
+    /**
+     * Re-processing uri
+     * @description https://docs.aws.amazon.com/apigateway/api-reference/resource/integration/#uri
+     * @param type type for integration [HTTP|HTTP_PROXY|AWS|AWS_PROXY|MOCK]
+     * @param uri uri
+     * @returns re-processed uri
+     */
+    private _reProcessingUri;
+    /**
+     * Create a deployment
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/createdeploymentcommandinput.html
+     * @param restApiId rest api id
+     * @returns deployment id
+     */
+    createDeployment(restApiId: string): Promise<string>;
+    /**
+     * Creat a stage
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/createstagecommandinput.html
+     * @param restApiId rest api id
+     * @param deploymentId deployment id
+     * @param config configuration for stage
+     */
+    createStage(restApiId: string, deploymentId: string, config: any): Promise<void>;
+    /**
+     * Get a resource id
+     * @param restApiId rest api id
+     * @param path resource path
+     * @returns resource id
+     */
+    getResouceId(restApiId: string, path: string): Promise<string>;
+    /**
+     * Get a rest api id
+     * @param name rest api name
+     * @returns rest api id
+     */
+    getRestApiId(name: string): Promise<string>;
+    /**
+     * Put a method integration
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/putintegrationcommandinput.html
+     * @param restApiId rest api id
+     * @param resourceId resource id
+     * @param httpMethod http method
+     * @param config configuration for method integration
+     */
+    putMethodIntegration(restApiId: string, resourceId: string, httpMethod: string, config: any): Promise<void>;
+    /**
+     * Put a method integration response
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/putintegrationresponsecommandinput.html
+     * @param restApiId rest api id
+     * @param resourceId resource id
+     * @param httpMethod http method
+     * @param config configuration for method integration response
+     */
+    putMethodIntegrationResponses(restApiId: string, resourceId: string, httpMethod: string, config: any): Promise<void>;
+    /**
+     * Put a method response
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/putmethodresponsecommandinput.html
+     * @param restApiId rest api id
+     * @param resourceId resourceId
+     * @param httpMethod http method
+     * @param config configuration for method response
+     */
+    putMethodResponses(restApiId: string, resourceId: string, httpMethod: string, config: any): Promise<void>;
+}
