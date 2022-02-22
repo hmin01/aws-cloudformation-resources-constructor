@@ -37,7 +37,7 @@ export class LambdaSdk {
    * @param functionArn arn for lambda function
    * @returns existence
    */
-  private async _checkExistingEventSourceMapping(eventSourceArn: string, functionArn: string): Promise<boolean> {
+  private async _checkExistingEventSourceMapping(eventSourceArn: string, functionArn: string): Promise<lambda.EventSourceMappingConfiguration[]> {
     try {
       // Create an input to get a list of event source mapping
       const input: lambda.ListEventSourceMappingsCommandInput = {
@@ -49,11 +49,11 @@ export class LambdaSdk {
       // Send a command to get a list of event source mapping
       const response: lambda.ListEventSourceMappingsCommandOutput = await this._client.send(command);
       // Return
-      return response.EventSourceMappings && response.EventSourceMappings.length > 0 ? true : false;
+      return response.EventSourceMappings ? response.EventSourceMappings as lambda.EventSourceMappingConfiguration[] : [];
     } catch (err) {
       catchError(CODE.ERROR.LAMBDA.FUNCTION.GET_EVENT_SOURCE_MAPPINGS, false, eventSourceArn, err as Error);
       // Return
-      return false;
+      return [];
     }
   }
 
@@ -104,7 +104,7 @@ export class LambdaSdk {
       switch (serviceType) {
         case "dynamodb":
           // Create a sdk client for amazon dynamodb
-          const dynamodb: DynamoDBSdk = new DynamoDBSdk({ region: process.env.REGION });
+          const dynamodb: DynamoDBSdk = new DynamoDBSdk({ region: process.env.TARGET_REGION });
           // Get a queue arn
           eventSourceArn = await dynamodb.getTableArn(resourceId);
           // Destroy a sdk client for amazon dynamodb
@@ -115,7 +115,7 @@ export class LambdaSdk {
           break;
         case "sqs":
           // Create a sdk client for amazon sqs
-          const sqs: SQSSdk = new SQSSdk({ region: process.env.REGION });
+          const sqs: SQSSdk = new SQSSdk({ region: process.env.TARGET_REGION });
           // Get a queue url
           const queueUrl: string = await sqs.getQueueUrl(resourceId);
           // Get a queue arn
@@ -129,9 +129,17 @@ export class LambdaSdk {
       }
 
       // Check existence
-      const existence: boolean = await this._checkExistingEventSourceMapping(eventSourceArn, functionArn);
-      if (existence) {
+      const eventSourceMappings: any[] = await this._checkExistingEventSourceMapping(eventSourceArn, functionArn);
+      if (eventSourceMappings.length > 0) {
         console.warn(`[WARNING] Mapping for these services already exists`);
+        // Activate the event source mappings
+        for (const elem of eventSourceMappings) {
+          // Extract a enabled status
+          const enabled: boolean = elem.State === "Disabling" || elem.State === "Disable" || elem.State === "Deleting" ? false : true;
+          // Update an event source mapping
+          await this.updateEventSourceMapping(elem.UUID, { Enabled: enabled });
+        }
+        // Return
         return;
       }
 
@@ -238,6 +246,34 @@ export class LambdaSdk {
       await lambda.waitUntilFunctionUpdated({ client: this._client, maxWaitTime: 30, maxDelay: 1, minDelay: 1 }, { FunctionName: functionName });
     } catch (err) {
       catchError(CODE.ERROR.LAMBDA.FUNCTION.UPDATE_CODE, false, functionName, err as Error);
+    }
+  }
+
+  /**
+   * Update an event source mapping
+   * @param uuid event source mapping uuid
+   * @param config configuration for event source mapping
+   */
+  public async updateEventSourceMapping(uuid: string, config: any): Promise<void> {
+    try {
+      // Create an input to update an event source mapping
+      const input: lambda.UpdateEventSourceMappingCommandInput = {
+        BatchSize: config.BatchSize,
+        BisectBatchOnFunctionError: config.BisectBatchOnFunctionError,
+        Enabled: config.Enabled,
+        MaximumBatchingWindowInSeconds: config.MaximumBatchingWindowInSeconds ? Number(config.MaximumBatchingWindowInSeconds) : undefined,
+        MaximumRecordAgeInSeconds: config.MaximumRecordAgeInSeconds ? Number(config.MaximumRecordAgeInSeconds) : undefined,
+        MaximumRetryAttempts: config.MaximumRetryAttempts ? Number(config.MaximumRetryAttempts) : undefined,
+        ParallelizationFactor: config.ParallelizationFactor ? Number(config.ParallelizationFactor) :undefined,
+        TumblingWindowInSeconds: config.TumblingWindowInSeconds ? Number(config.TumblingWindowInSeconds) : undefined,
+        UUID: uuid,
+      };
+      // Create a command to update an event source mapping
+      const command: lambda.UpdateEventSourceMappingCommand = new lambda.UpdateEventSourceMappingCommand(input);
+      // Send a command to update an event source mapping
+      await this._client.send(command);
+    } catch (err) {
+      catchError(CODE.ERROR.LAMBDA.FUNCTION.UPDATE_EVENT_SOURCE_MAPPING, false, uuid, err as Error);
     }
   }
 }

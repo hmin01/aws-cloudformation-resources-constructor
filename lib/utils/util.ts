@@ -2,6 +2,8 @@ import { createHash } from "crypto";
 import { readFileSync } from "fs";
 import { Readable } from "stream";
 import { CfnTag } from "aws-cdk-lib";
+// Response
+import { CODE, catchError } from "../models/response";
 
 /**
  * Change the part about AWS arn
@@ -200,6 +202,25 @@ export function extractTags(tags: unknown): CfnTag[] {
     });
   } else {
     return [];
+  }
+}
+
+/**
+ * Initial setting
+ * @param envPath environment file path
+ */
+export function initialSetting(envPath: string): void {
+  // Load a configuration data
+  const env: any = loadJsonFile(envPath);
+  // Set the environment various
+  process.env.ASSUME_ROLE_ARN = env.ASSUME_ROLE_ARN;
+  process.env.ORIGIN_ACCOUNT = env.ORIGIN_ACCOUNT;
+  process.env.ORIGIN_REGION = env.ORIGIN_REGION;
+  process.env.TARGET_ACCOUNT = env.TARGET_ACCOUNT;
+  process.env.TARGET_REGION = env.TARGET_REGION;
+  // Catch error
+  if (!process.env.ORIGIN_ACCOUNT || !process.env.ORIGIN_REGION || !process.env.TARGET_ACCOUNT || !process.env.TARGET_REGION) {
+    catchError(CODE.ERROR.COMMON.INVALIED_ENV, true);
   }
 }
 
