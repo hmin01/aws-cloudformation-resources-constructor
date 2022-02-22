@@ -357,7 +357,7 @@ class CognitoSdk {
     async updateLambdaConfiguration(userPoolId, config) {
         try {
             // Create a sdk object for lambda
-            const lambda = new lambda_1.LambdaSdk({ region: process.env.REGION });
+            const lambda = new lambda_1.LambdaSdk({ region: process.env.TARGET_REGION });
             // Refactoring a lambda configuration data
             const lambdaConfig = {};
             for (const key of Object.keys(config)) {

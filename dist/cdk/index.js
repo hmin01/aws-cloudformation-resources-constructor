@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createSQSQueues = exports.createSNSTopics = exports.createLambdaFunctions = exports.createIAMRoles = exports.createIAMPolicies = exports.createDynamoDBTables = exports.createCognitoUserPool = exports.createCloudFrontOAI = exports.createCloudFrontDistributions = exports.createCloudFrontPolicies = exports.createRestApi = exports.loadJsonFile = void 0;
-const fs_1 = require("fs");
+exports.createSQSQueues = exports.createSNSTopics = exports.createLambdaFunctions = exports.createIAMRoles = exports.createIAMPolicies = exports.createDynamoDBTables = exports.createCognitoUserPool = exports.createCloudFrontOAI = exports.createCloudFrontDistributions = exports.createCloudFrontPolicies = exports.createRestApi = void 0;
 // Resources (CDK)
 const apigateway_1 = require("./services/apigateway ");
 const cloudFront_1 = require("./services/cloudFront");
@@ -14,29 +13,6 @@ const sqs_1 = require("./services/sqs");
 // Util
 const cache_1 = require("../utils/cache");
 const util_1 = require("../utils/util");
-/** For Util */
-/**
- * Load a json data (configuration)
- * @param filePath file path
- * @returns loaded data
- */
-function loadJsonFile(filePath) {
-    try {
-        // Read a file ata
-        const data = (0, fs_1.readFileSync)(filePath).toString();
-        // Transform to json and return data
-        return JSON.parse(data);
-    }
-    catch (err) {
-        // Print error message
-        if (typeof err === "string" || err instanceof Error) {
-            console.error(`[ERROR] ${err}`);
-        }
-        // Exit
-        process.exit(1);
-    }
-}
-exports.loadJsonFile = loadJsonFile;
 /** For Amazon APIGateway */
 /**
  * Create the rest api
@@ -49,10 +25,6 @@ function createRestApi(scope, config) {
         const restApi = new apigateway_1.RestApi(scope, elem);
         // Store the resource
         (0, cache_1.storeResource)("restApi", elem.name, restApi);
-        // // Create the authorizers
-        // for (const data of elem.Authorizers) {
-        //   restApi.createAuthorizer(data);
-        // }
         // Create the gateway responses
         for (const data of elem.GatewayResponses) {
             restApi.createGatewayResponse(data);

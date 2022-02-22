@@ -15,19 +15,12 @@ class Function {
      */
     constructor(scope, config, storedLocation) {
         this._scope = scope;
-        // Extract a bucket name and key
-        const s3 = this.extractStoredLocation(storedLocation);
-        if (s3 === undefined) {
-            console.error("[ERROR] Lambda code must be stored in s3 bucket");
-            process.exit(1);
-        }
         // Get an arn for role
         const role = config.Role ? (0, cache_1.getResource)("role", (0, util_1.extractDataFromArn)(config.Role, "resource")) ? (0, cache_1.getResource)("role", (0, util_1.extractDataFromArn)(config.Role, "resource")) : config.Role : undefined;
         // Set the properties for lambda function
         const props = {
             code: {
-                s3Bucket: s3.bucketName,
-                s3Key: s3.key
+                zipFile: " "
             },
             role: role ? role.getArn() : config.Role,
             // Optional
@@ -47,7 +40,7 @@ class Function {
                 mode: config.TracingConfig.Mode
             } : undefined
         };
-        // Create the function
+        // Create a function
         this._function = new aws_cdk_lib_1.aws_lambda.CfnFunction(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
     }
     /**
@@ -85,25 +78,6 @@ class Function {
         const version = new aws_cdk_lib_1.aws_lambda.CfnVersion(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
         // Return
         return version.attrVersion;
-    }
-    /**
-     * Extract the stored location for lambda code
-     * @param location location path (for s3 uri)
-     * @returns s3 bucket name and key or undefined
-     */
-    extractStoredLocation(location) {
-        const regex = new RegExp("^s3://");
-        if (regex.test(location)) {
-            // Extract a bucket name and key
-            const split = location.replace(/^s3:\/\//g, "").split("/");
-            const bucketName = split[0];
-            const key = split.slice(1).join("/");
-            // Return
-            return { bucketName, key };
-        }
-        else {
-            return undefined;
-        }
     }
     /**
      * Get an arn for function
