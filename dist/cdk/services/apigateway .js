@@ -86,9 +86,7 @@ class RestApi {
                 restApiId: this._restApi.ref,
                 // Optional
                 apiKeyRequired: methodOption.apiKeyRequired,
-                authorizationScopes: methodOption.authorizationScopes,
-                authorizationType: methodOption.authorizationType,
-                authorizerId: methodOption.authorizerId !== undefined ? this._mapping.authorizer[methodOption.authorizerId] : undefined,
+                authorizationType: "NONE",
                 requestModels: Object.keys(requestModels).length > 0 ? requestModels : undefined,
                 requestParameters: methodOption.requestParameters,
                 requestValidatorId: methodOption.requestValidatorId !== undefined ? this._mapping.requestValidator[methodOption.requestValidatorId] : undefined

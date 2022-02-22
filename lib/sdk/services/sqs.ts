@@ -1,5 +1,7 @@
 // AWS SDK
 import * as sqs from "@aws-sdk/client-sqs";
+// Response
+import { CODE, catchError } from "../../models/response";
 
 export class SQSSdk {
   private _client: sqs.SQSClient;
@@ -9,8 +11,18 @@ export class SQSSdk {
    * @param config configuration for client
    */
   constructor(config: any) {
+    // Create the params for client
+    const params: sqs.SQSClientConfig = {
+      credentials: config.credentials ? {
+        accessKeyId: config.credentials.AccessKeyId,
+        expiration: config.credentials.Expiration ? new Date(config.credentials.Expiration) : undefined,
+        secretAccessKey: config.credentials.SecretAccessKey,
+        sessionToken: config.credentials.SessionToken
+      } : undefined,
+      region: config.region
+    };
     // Create a client for amazon sqs
-    this._client = new sqs.SQSClient(config);
+    this._client = new sqs.SQSClient(params);
   }
 
   /**
@@ -40,8 +52,7 @@ export class SQSSdk {
       // Return
       return response.Attributes ? response.Attributes.QueueArn as string : "";
     } catch (err) {
-      console.error(`[ERROR] Failed to get a queue arn (target: ${queueUrl})\n-> ${err}`);
-      process.exit(21);
+      return catchError(CODE.ERROR.SQS.QUEUE.GET_ARN, false, queueUrl, err as Error);
     }
   }
 
@@ -66,8 +77,7 @@ export class SQSSdk {
       // Return
       return response.QueueUrl as string;
     } catch (err) {
-      console.error(`[ERROR] Failed to get a queue url (target: ${queueName})\n-> ${err}`);
-      process.exit(20);
+      return catchError(CODE.ERROR.SQS.QUEUE.GET_URL, false, queueName, err as Error);
     }
   }
 }

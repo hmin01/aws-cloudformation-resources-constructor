@@ -1,6 +1,8 @@
 import { Readable } from "stream";
 // AWS SDK
 import * as s3 from "@aws-sdk/client-s3";
+// Response
+import { CODE, catchError } from "../../models/response";
 
 export interface S3Object {
   filename: string;
@@ -16,8 +18,18 @@ export class S3Sdk {
    * @param config configuration for client
    */
   constructor(config: any) {
+    // Create the params for client
+    const params: s3.S3ClientConfig = {
+      credentials: config.credentials ? {
+        accessKeyId: config.credentials.AccessKeyId,
+        expiration: config.credentials.Expiration ? new Date(config.credentials.Expiration) : undefined,
+        secretAccessKey: config.credentials.SecretAccessKey,
+        sessionToken: config.credentials.SessionToken
+      } : undefined,
+      region: config.region
+    };
     // Create a client for amazon s3
-    this._client = new s3.S3Client(config);
+    this._client = new s3.S3Client(params);
   }
 
   /**
@@ -43,8 +55,9 @@ export class S3Sdk {
       // Return
       return response.Body;
     } catch (err) {
-      console.error(`[ERROR] Failed to get the object from amazon s3\n-> ${err}`);
-      process.exit(1);
+      catchError(CODE.ERROR.S3.OBJECT.GET_ITEM, true, `${bucket}/${key}`, err as Error);
+      // Return
+      return undefined;
     }
   }
 

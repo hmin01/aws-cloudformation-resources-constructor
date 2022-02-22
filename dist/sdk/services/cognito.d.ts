@@ -27,6 +27,18 @@ export declare class CognitoSdk {
      */
     destroy(): void;
     /**
+     * Get a user pool arn
+     * @param userPoolId user pool id
+     * @returns user pool arn
+     */
+    getUserPoolArn(userPoolId: string): Promise<string>;
+    /**
+     * Get a user pool name
+     * @param userPoolId user pool id
+     * @returns user pool name
+     */
+    getUserPoolName(userPoolId: string): Promise<string>;
+    /**
      * Get a user pool id
      * @param userPoolName user pool name
      * @returns user pool id

@@ -19,15 +19,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DynamoDBSdk = void 0;
-// AWS SDK
-const dynamodb = __importStar(require("@aws-sdk/client-dynamodb"));
-// Response
+exports.STSSdk = void 0;
+const sts = __importStar(require("@aws-sdk/client-sts"));
+// Reponse
 const response_1 = require("../../models/response");
-class DynamoDBSdk {
+class STSSdk {
     /**
-     * Create a sdk object for amazon dynamodb
-     * @param config configuration for amazon dynamodb
+     * Create a sdk object for amazon sts
+     * @param config configuration for client
      */
     constructor(config) {
         // Create the params for client
@@ -40,36 +39,41 @@ class DynamoDBSdk {
             } : undefined,
             region: config.region
         };
-        // Create a client for amazon dynamodb
-        this._client = new dynamodb.DynamoDBClient(params);
+        // Create a client for amazon sts
+        this._client = new sts.STSClient(params);
     }
     /**
-     * Destroy a client for amazon dynamodb
+     * Assume a role
+     * @param sessionName session name
+     * @param roleArn role arn
+     * @returns credentials
+     */
+    async assumeRole(sessionName, roleArn) {
+        try {
+            // Create an input to assume a role
+            const input = {
+                DurationSeconds: 900,
+                RoleArn: roleArn,
+                RoleSessionName: sessionName
+            };
+            // Create a command to assume a role
+            const command = new sts.AssumeRoleCommand(input);
+            // Send a command to assume a role
+            const response = await this._client.send(command);
+            // Return
+            return response.Credentials;
+        }
+        catch (err) {
+            (0, response_1.catchError)(response_1.CODE.STS.ASSUME_ROLE, true, roleArn, err);
+            // Return
+            return undefined;
+        }
+    }
+    /**
+     * Destroy a client for amazon sts
      */
     destroy() {
         this._client.destroy();
     }
-    /**
-     * Get a table arn
-     * @param tableName table name
-     * @returns arn for table
-     */
-    async getTableArn(tableName) {
-        try {
-            // Create an input to get a table arn
-            const input = {
-                TableName: tableName
-            };
-            // Create a command to get a table arn
-            const command = new dynamodb.DescribeTableCommand(input);
-            // Send a command to get a table arn
-            const response = await this._client.send(command);
-            // Return
-            return response.Table ? response.Table.TableArn : "";
-        }
-        catch (err) {
-            return (0, response_1.catchError)(response_1.CODE.ERROR.DYNAMODB.TABLE.GET_ARN, false, tableName, err);
-        }
-    }
 }
-exports.DynamoDBSdk = DynamoDBSdk;
+exports.STSSdk = STSSdk;

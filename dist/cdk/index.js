@@ -49,10 +49,10 @@ function createRestApi(scope, config) {
         const restApi = new apigateway_1.RestApi(scope, elem);
         // Store the resource
         (0, cache_1.storeResource)("restApi", elem.name, restApi);
-        // Create the authorizers
-        for (const data of elem.Authorizers) {
-            restApi.createAuthorizer(data);
-        }
+        // // Create the authorizers
+        // for (const data of elem.Authorizers) {
+        //   restApi.createAuthorizer(data);
+        // }
         // Create the gateway responses
         for (const data of elem.GatewayResponses) {
             restApi.createGatewayResponse(data);

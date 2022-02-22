@@ -89,7 +89,7 @@ function extractDataFromArn(arn, type) {
         case "account":
             return split[4];
         case "resource":
-            if (service === "dynamodb") {
+            if (service === "cognito-idp" || service === "dynamodb") {
                 const temp = split[5].split("/");
                 return temp[1];
             }

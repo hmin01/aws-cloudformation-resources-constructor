@@ -1,10 +1,18 @@
-/** For APIGateway */
+/** Initial setting */
+export declare function initialSetting(envPath: string): void;
+/**
+ * Configure the authorizers
+ * @param restApiName rest api name
+ * @param config configuration for authorizers
+ * @returns mapping data for authorizer
+ */
+export declare function configeAPIGatewayAuthorizers(restApiName: string, config: any[]): Promise<any>;
 /**
  * Configure the methods in rest api
  * @param restApiName rest api name
  * @param config configuration for methods
  */
-export declare function configureAPIGatewayMethods(restApiName: string, config: any[]): Promise<void>;
+export declare function configureAPIGatewayMethods(restApiName: string, config: any[], authMapping?: any): Promise<void>;
 /**
  * Deploy a stage (contain deployment)
  * @param name rest api name

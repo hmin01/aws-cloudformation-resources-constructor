@@ -1,24 +1,151 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.publishLambdaVersions = exports.downloadLambdaCodeFromS3 = exports.createLambdaEventSourceMappings = exports.createLambdaAliases = exports.createCognitoUserPoolClients = exports.setCognitoUserPool = exports.deployAPIGatewayStage = exports.configureAPIGatewayMethods = void 0;
+exports.publishLambdaVersions = exports.downloadLambdaCodeFromS3 = exports.createLambdaEventSourceMappings = exports.createLambdaAliases = exports.createCognitoUserPoolClients = exports.setCognitoUserPool = exports.deployAPIGatewayStage = exports.configureAPIGatewayMethods = exports.configeAPIGatewayAuthorizers = exports.initialSetting = void 0;
 const fs_1 = require("fs");
 const path_1 = require("path");
+// Responses
+const response_1 = require("../models/response");
 // Services (SDK) - new
 const apigateway_1 = require("./services/apigateway");
 const cognito_1 = require("./services/cognito");
 const lambda_1 = require("./services/lambda");
 const s3_1 = require("./services/s3");
+const sts_1 = require("./services/sts");
+// Util
+const util_1 = require("../utils/util");
 // Set the directory for stored lambda function codes
 const CODE_DIR = (0, path_1.join)(__dirname, "../../resources/code");
-/** For APIGateway */
+/** Initial setting */
+function initialSetting(envPath) {
+    // Load a configuration data
+    const env = (0, util_1.loadJsonFile)(envPath);
+    // Set the environment various
+    process.env.ASSUME_ROLE_ARN = env.ASSUME_ROLE_ARN;
+    process.env.ORIGIN_ACCOUNT = env.ORIGIN_ACCOUNT;
+    process.env.ORIGIN_REGION = env.ORIGIN_REGION;
+    process.env.TARGET_ACCOUNT = env.TARGET_ACCOUNT;
+    process.env.TARGET_REGION = env.TARGET_REGION;
+    // Catch error
+    if (!process.env.ORIGIN_ACCOUNT || !process.env.ORIGIN_REGION || !process.env.TARGET_ACCOUNT || !process.env.TARGET_REGION) {
+        (0, response_1.catchError)(response_1.CODE.ERROR.COMMON.INVALIED_ENV, true);
+    }
+}
+exports.initialSetting = initialSetting;
+// /** For APIGateway */
+/**
+ * Configure the authorizers
+ * @param restApiName rest api name
+ * @param config configuration for authorizers
+ * @returns mapping data for authorizer
+ */
+async function configeAPIGatewayAuthorizers(restApiName, config) {
+    // Create a sdk object for amazon apigateway
+    const apigateway = new apigateway_1.APIGatewaySdk({ region: process.env.TARGET_REGION });
+    // Get a rest api id
+    const restApiId = await apigateway.getRestApiId(restApiName);
+    // Catch error
+    if (restApiId === "") {
+        (0, response_1.catchError)(response_1.CODE.ERROR.COMMON.NOT_FOUND_ID, true, restApiName);
+    }
+    // Create a sdk object for amazon sts
+    const sts = new sts_1.STSSdk({ region: process.env.TARGET_REGION });
+    // Get a credentials for origin account
+    let credentials = undefined;
+    if (process.env.ASSUME_ROLE_ARN) {
+        credentials = await sts.assumeRole("describeOriginAccountServices", process.env.ASSUME_ROLE_ARN);
+    }
+    // Destory a sdk object for amazon sts
+    sts.destroy();
+    // Create a sdk object for amazon cognito
+    const cognito = new cognito_1.CognitoSdk({ region: process.env.TARGET_REGION });
+    // Create a sdk object for aws lambda
+    const lambda = new lambda_1.LambdaSdk({ region: process.env.TARGET_REGION });
+    // Set a mapping data for authorizer
+    const mapping = {};
+    // Create the authorizers
+    for (const elem of config) {
+        // Copy a configuration for authorizer
+        const authConfig = JSON.parse(JSON.stringify(elem));
+        // Extract an authorizer uri or provider arns by auth type
+        if (authConfig.type.includes("COGNITO")) {
+            if (authConfig.providerARNs) {
+                const providerARNs = [];
+                for (const arn of authConfig.providerARNs) {
+                    if (credentials) {
+                        // Extract a region from arn
+                        const region = (0, util_1.extractDataFromArn)(arn, "region");
+                        // Create a params for sdk client
+                        const params = {
+                            credentials: credentials,
+                            region: region
+                        };
+                        // Create a sdk object for amazon cognito (temporary)
+                        const tempCognito = new cognito_1.CognitoSdk(params);
+                        // Extract a user pool id
+                        const prevUserPoolId = (0, util_1.extractDataFromArn)(arn, "resource");
+                        if (prevUserPoolId === "") {
+                            (0, response_1.catchError)(response_1.CODE.ERROR.COMMON.NOT_FOUND_ID, true, arn);
+                        }
+                        // Get a user pool name
+                        const userPoolName = await tempCognito.getUserPoolName(prevUserPoolId);
+                        if (userPoolName === "") {
+                            (0, response_1.catchError)(response_1.CODE.ERROR.COMMON.NOT_FOUND_NAME, true, prevUserPoolId);
+                        }
+                        // Get a user pool id
+                        const userPoolId = await cognito.getUserPoolId(userPoolName);
+                        if (userPoolId === "") {
+                            (0, response_1.catchError)(response_1.CODE.ERROR.COMMON.NOT_FOUND_ID, true, userPoolName);
+                        }
+                        // Get a user pool arn
+                        let userPoolArn = await cognito.getUserPoolArn(userPoolId);
+                        if (userPoolArn === "") {
+                            (0, response_1.catchError)(response_1.CODE.ERROR.COMMON.NOT_FOUND_ID, false, userPoolId);
+                            // Set a previouse user pool arn
+                            userPoolArn = arn;
+                        }
+                        // Set a provider arns
+                        providerARNs.push(userPoolArn);
+                        // Destroy a sdk object for amazon cognito (temporary)
+                        tempCognito.destroy();
+                    }
+                    else {
+                        providerARNs.push(arn);
+                    }
+                }
+                // Set a provider arns
+                authConfig.providerARNs = providerARNs.length > 0 ? providerARNs : undefined;
+            }
+        }
+        else {
+            // Extract a lambda function name and qualifier(version or alias) from arn
+            const functionName = (0, util_1.extractDataFromArn)(authConfig.authorizerUri, "resource");
+            const qualifier = (0, util_1.extractDataFromArn)(authConfig.authorizerUri, "qualifier");
+            // Get a function arn
+            const functionArn = await lambda.getFunctionArn(functionName, qualifier !== "" ? qualifier : undefined);
+            // Set a authorizer uri
+            if (functionArn !== "") {
+                authConfig.authorizerUri = `arn:aws:apigateway:${process.env.TARGET_REGION}:lambda:path/2015-03-31/functions/${functionArn}/invocations`;
+            }
+        }
+        // Create an authorizer
+        mapping[elem.id] = await apigateway.createAuthorizer(restApiId, authConfig);
+    }
+    // Destroy a sdk object for amazon apigateway, amazon cognito, aws lambda
+    apigateway.destroy();
+    cognito.destroy();
+    lambda.destroy();
+    // Return
+    return mapping;
+}
+exports.configeAPIGatewayAuthorizers = configeAPIGatewayAuthorizers;
 /**
  * Configure the methods in rest api
  * @param restApiName rest api name
  * @param config configuration for methods
  */
-async function configureAPIGatewayMethods(restApiName, config) {
+async function configureAPIGatewayMethods(restApiName, config, authMapping) {
     // Create a sdk object for amazon apigateway
-    const apigateway = new apigateway_1.APIGatewaySdk({ region: process.env.REGION });
+    const apigateway = new apigateway_1.APIGatewaySdk({ region: process.env.TARGET_REGION });
     // Get a rest api id
     const restApiId = await apigateway.getRestApiId(restApiName);
     // Catch error
@@ -38,9 +165,11 @@ async function configureAPIGatewayMethods(restApiName, config) {
         // Configure a method
         if (elem.resourceMethods) {
             for (const method of Object.keys(elem.resourceMethods)) {
+                // Extract a configuration for method
+                const methodConfig = elem.resourceMethods[method];
                 // Extrac the configurations
-                const configForIntegration = elem.resourceMethods[method].methodIntegration;
-                const configForResponse = elem.resourceMethods[method].methodResponses;
+                const configForIntegration = methodConfig.methodIntegration;
+                const configForResponse = methodConfig.methodResponses;
                 // Put a method integration
                 if (configForIntegration) {
                     await apigateway.putMethodIntegration(restApiId, resourceId, method, configForIntegration);
@@ -52,6 +181,13 @@ async function configureAPIGatewayMethods(restApiName, config) {
                 // Put a method integration response
                 if (configForIntegration && configForIntegration.integrationResponses) {
                     await apigateway.putMethodIntegrationResponses(restApiId, resourceId, method, configForIntegration !== undefined ? configForIntegration.integrationResponses : undefined);
+                }
+                // Update a method to add an authorizer
+                if (authMapping && authMapping[methodConfig.authorizerId]) {
+                    // Set a authorizer id
+                    methodConfig.authorizerId = authMapping[methodConfig.authorizerId];
+                    // Add an authorization options for method
+                    await apigateway.addAuthorizerForMethod(restApiId, resourceId, method, methodConfig);
                 }
                 // Print console
                 console.info(`[NOTICE] Put the method (for ${method} ${elem.path})`);
@@ -69,7 +205,7 @@ exports.configureAPIGatewayMethods = configureAPIGatewayMethods;
  */
 async function deployAPIGatewayStage(restApiName, config) {
     // Create a sdk object for amazon apigateway
-    const apigateway = new apigateway_1.APIGatewaySdk({ region: process.env.REGION });
+    const apigateway = new apigateway_1.APIGatewaySdk({ region: process.env.TARGET_REGION });
     // Get a rest api id
     const restApiId = await apigateway.getRestApiId(restApiName);
     // Catch error
@@ -98,7 +234,7 @@ exports.deployAPIGatewayStage = deployAPIGatewayStage;
  */
 async function setCognitoUserPool(name, config) {
     // Creaet a sdk object for cognito
-    const cognito = new cognito_1.CognitoSdk({ region: process.env.REGION });
+    const cognito = new cognito_1.CognitoSdk({ region: process.env.TARGET_REGION });
     // Get a user pool id for name
     const userPoolId = await cognito.getUserPoolId(name);
     if (userPoolId === "") {
@@ -138,7 +274,7 @@ exports.setCognitoUserPool = setCognitoUserPool;
  */
 async function createCognitoUserPoolClients(name, clientConfigs, uiConfigs) {
     // Creaet a sdk object for cognito
-    const cognito = new cognito_1.CognitoSdk({ region: process.env.REGION });
+    const cognito = new cognito_1.CognitoSdk({ region: process.env.TARGET_REGION });
     // Get a user pool id for name
     const userPoolId = await cognito.getUserPoolId(name);
     if (userPoolId === "") {
@@ -176,7 +312,7 @@ exports.createCognitoUserPoolClients = createCognitoUserPoolClients;
  */
 async function createLambdaAliases(functionName, config, mapVersion) {
     // Create a sdk object for lambda
-    const lambda = new lambda_1.LambdaSdk({ region: process.env.REGION });
+    const lambda = new lambda_1.LambdaSdk({ region: process.env.TARGET_REGION });
     // Create the lambda function aliases
     for (const elem of config) {
         // Set a function version
@@ -194,7 +330,7 @@ exports.createLambdaAliases = createLambdaAliases;
  */
 async function createLambdaEventSourceMappings(config) {
     // Create a sdk object for lambda
-    const lambda = new lambda_1.LambdaSdk({ region: process.env.REGION });
+    const lambda = new lambda_1.LambdaSdk({ region: process.env.TARGET_REGION });
     // Create the event source mappings
     for (const mappingId of Object.keys(config)) {
         await lambda.createEventSourceMapping(config[mappingId]);
@@ -239,7 +375,7 @@ exports.downloadLambdaCodeFromS3 = downloadLambdaCodeFromS3;
  */
 async function publishLambdaVersions(functionName, config, dirPath) {
     // Create a sdk object for lambda
-    const lambda = new lambda_1.LambdaSdk({ region: process.env.REGION });
+    const lambda = new lambda_1.LambdaSdk({ region: process.env.TARGET_REGION });
     // Set a version mapping data
     const mapVersion = {};
     // Publish the lambda function versions
