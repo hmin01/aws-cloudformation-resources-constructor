@@ -1,4 +1,8 @@
 {
+  "SCANINFO": {
+    "REGION": "ap-northeast-2",
+    "ACCOUNT": "391285059836"
+  },
   "Lambda": {
     "LambdaFunctions": {
       "v2pc-api-revoke_token": {
@@ -85,7 +89,7 @@
             },
             "RevisionId": "2a54911b-7439-46b1-b94f-b52691edb8dc",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-revoke_token%3A%24LATEST.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-revoke_token%3A%24LATEST.zip"
           },
           {
             "FunctionName": "v2pc-api-revoke_token",
@@ -113,7 +117,7 @@
             },
             "RevisionId": "810c15bf-848b-4e69-9bd1-706e41869f60",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-revoke_token%3A1.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-revoke_token%3A1.zip"
           },
           {
             "FunctionName": "v2pc-api-revoke_token",
@@ -141,7 +145,7 @@
             },
             "RevisionId": "e0cc7b9d-9b64-4f83-a767-ea8cc098d05e",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-revoke_token%3A3.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-revoke_token%3A3.zip"
           },
           {
             "FunctionName": "v2pc-api-revoke_token",
@@ -169,7 +173,7 @@
             },
             "RevisionId": "a7854d0f-c19d-4848-9586-47927f622026",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-revoke_token%3A4.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-revoke_token%3A4.zip"
           }
         ],
         "Configuration": {
@@ -208,9 +212,9 @@
         },
         "Code": {
           "RepositoryType": "S3",
-          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-api-revoke_token-ef1b2ed2-62fa-4a44-b3e9-8dd563e747e1?versionId=c5xV3Xw6gU1wvLlfcJ2IKW2A_ngt2G3r&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkgwRgIhAKrJFgZD0vG%2ByhRiObhCcd2Fmgs0oZEi7OMlSgb2Gv69AiEAqjF0FMkyU%2ByNrFA7jCdVmrPOJuiKi4RbPJTSdYDdPoEqjQQIuf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwyNTE5MzE4OTM2MTYiDItJgFsLc%2FuA54h6BirhA%2BqV833EQNrb%2F1IdfDd76p%2Fxc9bGeIPUDiWXZ2pUCbsMrCbb0n59%2FK6mMMkRsd7CzLngXFCPpTSanlodp%2F0dvYcKdtRFPH9kuG2uyeBtRTYc9IM6384H1fhSAVoCF%2F7i9s4PJ1Ud2xHMqCj0OY3aJM1ahmgMZUNToqqXQPCxlOF8Ns7jQQX5t0HFExe47NlYxjApTsSWpvxncgIRSsdvyJ%2FkRlrOTp0pJTTf%2FLIFajbzm331FcvN1QoiHmk8jicwXR5nKVjB073jpUIhbzShvSrIPBWv9Qklzp6e%2FqB%2FtkSxNrHfklpHnvXTALHiL6GtPllxB0xDMMu1S3QNLP%2FCAkclBESPPKcFMAH6t%2BzxDAiHttz5FRueK2ZU7YgIJj7aFpgYs7nbI2EccCFD3IE2rrHdnEOgVMr7DEEMW8%2Fj01GMPh%2BLMnrcmWjgEFgl%2FcNmx98r9K7DZiBIUbqA7lgbeuQjV9VSX4RTWTHq6raZaF2VCcevQuevKicbZMD59Ahn3BZndXajp5WPRzdBay0P84fb6OHiOg8P%2FMHxqLJpWSVCxs5uidYQw7J1SN4MrFPhvnvoXf6375wJp4vLr8C%2FLhzB6yGs32CNWZt%2BXlUdZ%2BYpKp4uS5tmN7suu%2B93WkmCAPQwt6rJjwY6pAEY4wbLn%2FrgPWyPiyOurkwgHGOfXnJ0aAJ6Mv%2BFEaSwHdoyvjIrw8QR8jtc2bvPSh%2B5m62RuqSc%2BrKTqxU%2BJ1o7cFvIv3qQ%2BREqVu8uZC4IK4yJQTgv5bGDw89NLvO7SW2IfPO36AhNNYGqKOWyk1bgfDM1w1wVUQjMxlbg0LeDHPxeeP7bW%2FFotLMOHkHQ54OcXSIztosBd62Ngfy0q6KKmkW2cA%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220127T090942Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YGEKS2KTI%2F20220127%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=3e40ea598310a7cddfc5f706c9b79c1f4f219dcfc4bcb56b91c8c9bfb16a0ad2"
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-api-revoke_token-ef1b2ed2-62fa-4a44-b3e9-8dd563e747e1?versionId=c5xV3Xw6gU1wvLlfcJ2IKW2A_ngt2G3r&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkYwRAIgLrTOycC8f%2Fltxm3d5rVsA7gIwIkEDJRh5puxPF6ZwDMCIDClksS9ipn4XRlCHe6WkfALaM2ORQmolkPvFavou6qoKoQECFEQAxoMMjUxOTMxODkzNjE2Igxvx9V2hU6iFZFy07Uq4QP9ggrvGF%2BQZWu3EGXG%2FQDyBHKo0v7zIi4BkAA5cdzTVFpdrLd4ZU9KQWhKJr2Kuchx1SNAWw%2F1w2HS1c9IPL8eoPxB9qdOsAwqeKwo53EMpOc249XyS%2FLyCxkry864sFEU%2FFwmsk8xEfmw0oWYwfk33TvNIEz%2BVtB8QslpNARZSX7lTldZQh9RFYiwzk6T%2Fr3OIEeYH6NtzSjn9p23ELn3H5AxE0xe%2BCD%2BDXSwNWPcQAad3m7uQnphKWV8baqYxI5rKCfPOlEyo3A7qqjT5rb4aQTey1xKNbhFYoaDmUL7H%2F3IkFEw6qHX4eOkVvwoxOkkDnTgdRMCKsLh6pItV9oFjjysxiVBaTGRqrXCMhIbIdXu6%2FMm411CXpgd1hUkTZWZhjg1B2zs%2B5VuH3z09bQDIqlWNZOEOxfffzSxtnSpSxb%2BC%2F%2BEzhe19JZa1c4p3fYIHFjkq%2FDfrAuZKzCRTxdnlb3SMveX%2FwWgMbu4HT%2Bq4tmxBwAx9xOjZXNvK%2F7754n%2B05V3UoNdOCrlmo1pxReY%2FdnRFcChkNJQDyVDSKjA9XsmVQKFW3kBBZPjvoCTQKSjO4M8S01rmNtbnKgqP9Sky0gEMEUfSUc%2BffMU4iWn58srWZSijwxpDPdLQDzZv1%2FSMKfc0JAGOqYBu%2F2tYDBimRH4aFn7vZ%2BtT3T66gtXltpdKH9I%2FnX4ATjCqb6ctu6xLphkRHSM6AeZWC7%2Bwwm%2B72aJk%2BgWi1IbX0w6SrqqwedQLXxy%2B8MK9JabziMIrKrycNpNIg4Lym1sYJDYH4AxaD2CnUsXUO04iMqXTmLFMWI3EHF9w40RJ%2BxD3v46QkM8fCOymbmhUG9rR67qLBghi3%2FzTOBBZUdwdaVWii7HCA%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012648Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YFA2ZQADH%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=62c427f4ad6adf3dac70ed53678e5d81b47170d6f02d7bd6e230911fb9091af4"
         },
-        "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-revoke_token.zip"
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-revoke_token.zip"
       },
       "v2pc-get-viewdata-last": {
         "FunctionName": "v2pc-get-viewdata-last",
@@ -292,7 +296,7 @@
             },
             "RevisionId": "4e93e55b-7ad9-4855-8e22-831f74ebdba9",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-get-viewdata-last%3A%24LATEST.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-get-viewdata-last%3A%24LATEST.zip"
           },
           {
             "FunctionName": "v2pc-get-viewdata-last",
@@ -318,7 +322,7 @@
             },
             "RevisionId": "dd585174-edd7-49b2-bfcb-7c4e0ae213c4",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-get-viewdata-last%3A1.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-get-viewdata-last%3A1.zip"
           },
           {
             "FunctionName": "v2pc-get-viewdata-last",
@@ -344,7 +348,7 @@
             },
             "RevisionId": "b7676fa6-0127-4985-8715-e3f168cc950a",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-get-viewdata-last%3A2.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-get-viewdata-last%3A2.zip"
           }
         ],
         "Configuration": {
@@ -384,9 +388,9 @@
         },
         "Code": {
           "RepositoryType": "S3",
-          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-get-viewdata-last-118454ad-46d1-48a1-b424-2e1bbb1869e7?versionId=rEmXkSwFwGV4pjzl.s6V77gIiUl2jS.n&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkYwRAIgdwNd9IxhoaFYIzvZm%2F4Zy67TApUGoKDIDvUMAiQjCsYCIHljGkGf0JEOtAY%2FKUtr2fLIa59EZZ%2FlXtd50j%2FF3dZLKo0ECLn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMjUxOTMxODkzNjE2Igz0MbeQA6JfkLV8VYUq4QOFt5fyEADiMBLPEdr4j9QQcBdpVtW9X2xvo0dO15r76VM7BzpH15Qmh0ukkkqtHmjG%2BQLUBlQWSr0DwqT2Q5GbjXVWV7DDUCMTKLgWuFTMlA5mSphumVkgHpz1XRHPfJFRurLrhZ0%2F0ZqE3POnv07a672jr0czKaPtG9He5jlxXqF03CNjatwQa0uZtyihzvKAcYvBWU%2BnG75bLOPGO2TrFFK%2FYquUy6eSXUGsOiiwY1olQAe6BJgFasK8yODlRR9R%2BffU0C7jkn5S%2BS4OTYGBcbsh9ktMHW76XeEAxpJnA9qmw%2FOs%2FihO9fUbO%2BcFxR9h51bbe3k3QX53b5c1W%2FsTmS%2BqfZSBJYJDVzHem5DanLDyxWL57nSMAH2SBFnfzQnSj3tD%2F2brlwAxN1PhtPP%2BW5PkB01m31lEbS3BFM7UR3Bvmp%2FCJrujpLt3LlyQOvkDTrVZ5hx3A2kNYCIB3y%2BfR3wwvsGna5ggp60cTRA1pFxhT90OUnKZb4di6P%2F8o1Z4x3I8%2Fx9tzx1by3Lop3VOmDBqXLGN1%2B0kkGzCBtp25ugMLYdZ%2FEdojPdv%2B%2FyVdIDGGoztZQ4NB5640RyLHdMsZbOVRyYDZ3%2FVFHZhcYL0Dx1uPw9met0NkBsj34GQzI8xMJukyY8GOqYB2Mmyy5%2F9dVAm08jgBzp0X3fmkWSmsF5mbhWSHPyl7uOWSXgEzbRRu8n5fGs6nF9X%2FjzU1%2BsC5XjCXizyJMCCFx4ums5EqJYind1E2tD7CtGgwKuDAjtCDVMTJNYxCw0g%2FbVuN6%2FmJLX0LHfiIVZk%2F%2B15LxoiBEEoVhyXjRRtDjayfGKUWri720AwvZQailZw97bxdEXxVGmoejZsW9MAeQ75ArOWgA%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220127T090944Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YJDBVTUSL%2F20220127%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=62a9a7fed4648a324b63eb44b194061fd042fb990070b46a7e2427369d73e1ad"
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-get-viewdata-last-118454ad-46d1-48a1-b424-2e1bbb1869e7?versionId=rEmXkSwFwGV4pjzl.s6V77gIiUl2jS.n&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIhAMwzmbPpMj8XCG5DgbZ5tcEFM6wFDQAeYWKemV42rJ%2FmAiBQcfwaFwu4E9s962C4EArn8k851fcWlo%2BIdmZrJ0%2BjPCqEBAhSEAMaDDI1MTkzMTg5MzYxNiIMUWY99jLbN8txKpv1KuEDW0qJnDwaeX4USd8QlLIllOi5LXPnTkygLwGldEP4eDASkwQuXQIl2Ye7vOhj6%2FsJWW%2FDnxNOtn6As6dr4dLE4owq7B06TPy6sviUsRlegEDASoUzjRPegv0zQ%2BVDXMrUQFqfaqROY1dQcxXXYb2NUizLEOIm1FoXl3nzEJaaTIsS6wg3%2BNKByJW54MoPrDIRBrnVyGJ7DVql9AVf71cnOlGwtyM5XfCOsEoh9j6IXGC1ALZ%2BL%2BRS1E5UU0ElY0bx3jAylDhepr3TCJlYOQRokFOykwpoIBlUEZMq7D0NsXZvpMRy2LAwigoDhpjeleC%2B1kSvLpYbMnEj%2BMEh6Qdrjc%2FTsAUw420hfHeVdAYp71fTN1mo0eGeqzFkctN4vvI9qEnTyRAEfs4mtgVs80pV9g5a0E4zmLUnfFGbgVpSbIjRT8uG6wHgCyJOlRt%2FE4Au64pl8HcGIJ%2BezslXo3QplRhD3P%2FWY58B%2FTpzI9eVcvEFWYyYWF8yZKMhF6oHCvWSdkyc9b%2Fql10vts6fRll2HUSqHuz39KlfuYumWylturD70zGMPw0OQh4uVILIFtiwPF6FJWZSG070iNpXCDV2Xz3RZTW1ShbrU4HHWrCSePOt35YCN96WwZBKXHST7CrpVzCv5dCQBjqlAb7LSXUhRUJVqmOT8QkWzc0CpK0dY8zn8VcH88T%2FOq7tKDxwpG7BWiKglA59%2B6FYCOBSP6IKCAU52QdTojUn6ryNPMb1VsCnkGg0W6OPG3DpnoRYdoM2xAIjMTIFjEc3zcYV3KC4%2FC6PlSpdaJG2LN87YyOZ8%2FZhL9CJLyAWQEfpaHqkbMpQxs%2Fcp9QgtpUPWarojmhMIg9L79VsRDONg45ac4c5gA%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012651Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YGR2KJQ6K%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=57bd12dc65a98b0556a7b5ac10eedf6690ead6f01b301980f719fa3d524cf6a2"
         },
-        "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-get-viewdata-last.zip"
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-get-viewdata-last.zip"
       },
       "v2pc-manage-scanscope": {
         "FunctionName": "v2pc-manage-scanscope",
@@ -470,7 +474,7 @@
             },
             "RevisionId": "cfa5da29-d98f-47c3-8d59-4ff98d250976",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-scanscope%3A%24LATEST.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-scanscope%3A%24LATEST.zip"
           },
           {
             "FunctionName": "v2pc-manage-scanscope",
@@ -497,7 +501,7 @@
             },
             "RevisionId": "3e7bebdf-c73a-47f1-ae26-42992ef13f38",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-scanscope%3A1.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-scanscope%3A1.zip"
           },
           {
             "FunctionName": "v2pc-manage-scanscope",
@@ -524,7 +528,7 @@
             },
             "RevisionId": "958793a8-f50c-46a6-8757-d5769633190f",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-scanscope%3A2.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-scanscope%3A2.zip"
           },
           {
             "FunctionName": "v2pc-manage-scanscope",
@@ -551,7 +555,7 @@
             },
             "RevisionId": "87ffd92c-2b03-441a-816e-af48164b4a24",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-scanscope%3A3.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-scanscope%3A3.zip"
           }
         ],
         "Configuration": {
@@ -592,9 +596,9 @@
         },
         "Code": {
           "RepositoryType": "S3",
-          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-manage-scanscope-16b563d4-0c3b-47a7-8939-6015c8e2c801?versionId=etIBmq5EQDj2kHoJOMl2HzUDmHFKJWp8&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkgwRgIhAJXR8FQzxLidwupbFjjbB9tO6Yucq8JEo8wx9ZBWnLBPAiEA6lMYcPU6kiTKWzyD2Ji%2FqjMClficB1rfExRvierJs%2FoqjQQIuf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwyNTE5MzE4OTM2MTYiDNEUA5Wv1tz4aD9B1irhA%2Brh0GGADVp%2BIKhNMggnM0R539OHNRtmJMmuJWr6L%2F5FpiD2eUom4Xn5EPuh2jvzcc2vGv2%2BvN58Ui2ETdiEZHvoUor2ebipt3Fw06vQpfBX0UbWGV34HytcAWS3um6AXffBcuThz9EYzGOrXjZs8PNlPzE%2FcSROjqQCwZV0n9C%2FAEnGpqfOMU4eJRNrrDfi70AKf07QPV2%2B4v1hh9sTJ5fhS2qsXck1GKBrALIUH9HWWgiiOeCbFdNjAnAix8rDG%2BUV4o5%2BzIQUps3lBCV5DPcAGs4AO5B0e61Am1VaqjpisNjOTc%2FMdEYHqBRgY%2FRD5j6%2FuQlAf%2FHECdjcNJW8xTZoJQxNMarNWMZvg0sxxyq8QNc1cs3XC7PUWo6pPOZC3jRuyVgPms%2Fcj8olcSu9FL3Y407AywqIffmSHEP6LvAXrsGYIjRdgpWa0kOL7ArLWQpViv6HGEXVbdRlNRrUG%2FEmhv4wlGhDm%2FcdGAXUIFnbFSCH697REIIhWIzGgfNK11wYR3zzodMNARtc53o3Sk8zcqnD%2FWCzCF9%2F8vR9V%2Fiiuj75buaDKAwhNar0Bi%2BQcP8i%2F4qgU1lscbqIZwyiYfeA8X6rJoQux3R9aOl830uAT6UjOFUHhxAOvr3LJ9G2KVswuZ%2FJjwY6pAHnko2EZUeTDvjSTZdyNCXnrlaAsSkodWnx72qpONi6f1AyM1Nbyt7Q4Q2rPu6FoNXVVPjYh37M%2FxxJsUtk9edCkB1pPiIRb3x9EOsZ%2FVa%2Fgsv3R%2F5iLGahp8HdcZqhO6rIpJifmNuyZa5DnYixavIb820ikv3%2FA63AMxbFhVen9i0DKr6SJm9wKseimVmS6g0kAMqPgXmfrbP5mfj32rcnyl6s5w%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220127T090949Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YBRO7U77R%2F20220127%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=1f62a3178b2b11ae9caf521296ff1819af780eaea300f6a2b08445b1d79c10a4"
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-manage-scanscope-16b563d4-0c3b-47a7-8939-6015c8e2c801?versionId=etIBmq5EQDj2kHoJOMl2HzUDmHFKJWp8&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIhAJTq4VsMqUHr5NTjHeLAWDg3tfzfNhOqb%2B5LAS1oBEVkAiAMfW8DNRclk%2FRAhIQB8VnCJLCSVCEP7N%2BrrvIT2mJU%2FiqEBAhSEAMaDDI1MTkzMTg5MzYxNiIM5Z0dWXa8XJbvylwDKuEDuS0RJzUAN%2FDdXgEXVx6kskwdIyDN3dBGKtSp9IY%2BuNO3vvRGcXjVrv1wI7RnRnH6evqnsvnZaq5WZXEIv5g63mTj5G15zI%2B7IrCjE%2B3%2FMXapeC5OklWC68mJP25Gm1KSqXHwWGeRiHrfjWejAmHiy6g7%2FyvQp3r3OhzdKoA5ioOMoI6XP0yqK7RIcJh3e%2BiiexcAuO0aig6n8UuCcgRtsUsLnhbS1UPe1bHcdbuB2oso60I7r5sJLxEHWblil4NCfWeuNf6PoSxT8Fsaho%2FqASQtRtDvUm6U7wOIuF77JeS0AyXOmMA55W3e6H9vcohd4x1N4G1g%2B7RiLf67FkZhyn32j0%2BZjA18g%2FG%2F2LVeYAjze1vLP9vx8FXuqRoOuZDfRFwPrng8zMdc5HdR%2FLggxttofwtM1DS7Pe%2FtjkhZ0zBOUdc3M%2Fm9MzpKjKY5ZJInvu%2Bzv9MPe3BzwuRFolU7%2BiEaBmpNKUzrjPqbblrzd2WR8OlY7gP5SHfI9KJL7n%2FlK6SIlg1hskfGy2o4gpqUpD7JHxcX69OXnABkw%2FcZD5OF0NPY6hpYyBSNYA7cClvFixBsCt8TeBARakgxSiCUSNrZra6etjLjG9OoGE7H%2Bd%2F1A8YlU8Gpa%2FOINsGAG54Z0DDH4tCQBjqlATttzjkmFXG7RRLmJtQ552X%2FRE6A7t0Dta3nn5In9%2BvkREZUryYoPb2aSRo1P0gpcXNGoEmoi8mtg9d%2BdSC8X3603xTlfXvKQTi9LJOh%2FxXS44w0Lx5g9FIwRYs6u6ayClSt%2FPMVDSBpttsAhlvcK1NE%2FuKBTdhugTREhsnYDubkPfjK1wGTnwRsSICpwp1zR%2FJ1EV1Ux4T35%2FoL8K4HOWWgqVw0DA%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012656Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YAEEPHRXA%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=40b5b20aa04ece30ebb4363bd4561018509707b054bb7e63809e3ce33dbac004"
         },
-        "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-scanscope.zip"
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-scanscope.zip"
       },
       "v2pc-api-set_user_info": {
         "FunctionName": "v2pc-api-set_user_info",
@@ -676,7 +680,7 @@
             },
             "RevisionId": "626d6d7b-5550-4782-92df-9e25eb627fde",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-set_user_info%3A%24LATEST.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-set_user_info%3A%24LATEST.zip"
           },
           {
             "FunctionName": "v2pc-api-set_user_info",
@@ -702,7 +706,7 @@
             },
             "RevisionId": "9b7916b0-cda7-48fd-b8f6-1f84eb35f795",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-set_user_info%3A1.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-set_user_info%3A1.zip"
           },
           {
             "FunctionName": "v2pc-api-set_user_info",
@@ -728,7 +732,7 @@
             },
             "RevisionId": "0b181e12-9ed4-46bc-a2f4-de883b116e9c",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-set_user_info%3A2.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-set_user_info%3A2.zip"
           },
           {
             "FunctionName": "v2pc-api-set_user_info",
@@ -754,7 +758,7 @@
             },
             "RevisionId": "293ebddc-6261-49cf-bd9d-268ea0a24265",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-set_user_info%3A3.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-set_user_info%3A3.zip"
           }
         ],
         "Configuration": {
@@ -791,9 +795,9 @@
         },
         "Code": {
           "RepositoryType": "S3",
-          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-api-set_user_info-e8db121a-b752-41ee-8ede-c8a35abc07bc?versionId=coGi9YkpgHNeV3G82hXsn2FaX8Ia4l._&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIgXTvZHgLIQt5jSOdq%2FdY9ie%2BGRM65piaAM%2BS7pO6D06ICIQDAcIe6b%2BvP0wCzG1WYE9Nr3CirUu61j9ZMTrZhG2YAwiqNBAi5%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDI1MTkzMTg5MzYxNiIMNeuKfM1j1eHvhYgGKuEDbhOmh9%2BgALqdcf0SOfc6FbRyc5yPOd920%2Bkd8tN%2Bi3Eylwktywy0dfMJ2ChtB4L6Flbi%2Bz9tGnEmXCIA4pZarhrqzUpDIVU9dPHPxHTtXtxHt1pZIYfmYQeHbllSaJ0WuHjnY5VhTqUD2CbioFOXcgJj6Ra07fqGwJaOH%2FnruC7pQ36pT1NevR5pa4boG8ndzWXvbyNpWjCdyPr3S3RPIDyv79BzAeHskoRGNL0wUv4viho60vQnacqtYcMuj7cGJ0enIMHcslodPJy2%2BgV3s8I3J%2FcmzLUxgCWCmGD0%2BRSHV3adS2qcgHz%2Fb7sTNinHDzasPNVpXWwlTqZeqGVQJ%2BdKHeNFmiTY3E6GP1Sy9ronc7qb3OVUQlutNf9qje85VDhaSm4CyfpQXBwYTQ07BrKBWw5HBgxgrl9E46Dg9hUdIvWVUmiDj%2B7Le%2FOhmQECsNpz%2BFvI0KLUHSMiSutqloAf0jDSg8ymOGnPthAMdAqzns%2F8EvN%2FCr2yFKPn8ovbFVCXivzb%2Btbb%2FLsObIweZPOhSzUOzDzvkcNyLUzTNQ85c6643hFncL0YL31iGnMDGTXbdBHPhOcQNiVBdrsAz1H2NmptcczI76FlaVO5L%2FsnZM9c7lnLphTqLahq4LGO7DCrssmPBjqlAcDGJI4KTc%2FlIrnFljcFnWGLzxCekGyPKwi1Uno05XxTo0H4skyFR8MnMTDo3aMYspLpiGoz4ihVb7rXC7mD2NUC4tyOEizX96385de%2FfQpGjHGpA93iTKqgFeOhrs5WEvQU64Pkahpl5zF%2Bc%2F2k2xMG14SU67p9I2VOfNkobSBNCL2U%2FhZ7TBRz73aCD1JoQy0aFfBDWrKCO5i9in09s%2BLTeiPjnA%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220127T090951Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YLPMFGY66%2F20220127%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=9cf18b6f8feb06b8be0157a1d56b7d4c9f7d2bed04841d3620630cd3ec4c984c"
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-api-set_user_info-e8db121a-b752-41ee-8ede-c8a35abc07bc?versionId=coGi9YkpgHNeV3G82hXsn2FaX8Ia4l._&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIhALEg9XEw%2Fjqyss3we5Pi9aJQmDP%2FxdfMa%2BfTgfRa3DdcAiAoEr6l1VQNu07imtD87saEehbxM656muVvmBzIlWAUpiqEBAhSEAMaDDI1MTkzMTg5MzYxNiIMrHiP2ngqNl8l2TDCKuEDlap0%2Fq2TOfnOe8lFd9ns7202G%2BE80E4m1P4wuF9UTvFpKqFzIwGbpj9u6TEtm0ZGAmUboDANqvxySIEu2HzaToYeiY8atkwPLR96AspNAn5Rbfwsi77%2BOgK%2BkL6ddrpnka9IEAljRnBQSNirBt5qRhpw0rl8tfvJ8wFc6cOghwqlzvfJ9OOCiFiPhfUXvd4CE%2FvN7sfc%2BSo8skCrm0Agf8TW8vxCoYvUpD%2BssUD%2BNVEuZ50ERbp0eKU6cHAfKci1aoZgxABZjEOuKCZgqEgZNUT61QSix6JXyXPna7d5dghhF5mUIsWwaOY7G1TNFIZH1mC5lR8XESHdaDNhiWvwB01j3PNDj6B60u%2BvnYFNcv3AWyCoceb0ZHsPTkhrlVkc%2Bpazkm%2BqGv2vgyN6ZLLpk8Hbc%2FI3q6AT%2Fa5CYM%2BcnpCIbc0O%2BjeSqSigPLHxw0PmJgMVUVtZhmuQGxHh1cY9yBpuaIFFRY1qpdQnmddXOYJRYQyUhhXLnZHaOWgIBpCjkW%2BiD9jNOCxq7gu%2B2E0XiwsL75woKhaA1vrbS4UwEeKyG3FlWB5mHxIVCdyPKIzfLwcODsrullY7%2Fq4LpEphnYBjCXhRz6CisezYCAyfXLMS3g7kYIGlc1Ete5gzhftq4zC87tCQBjqlAfVbAEu%2FB%2F%2FN8mhqysgp%2Fd1HxvYUxAUgLt9F1eA705E%2FCquo5uX4b%2FX501bNHNK2dgIz4%2FtFYGtvXDaS9fDXmWVbKzCAEBtWFNA2BKyub6vxja%2FaF3qkQ84EBtp%2BMrTh9zx47xm1x1AtXyCEC411WKavQ17a1Zd2EJutogg4M%2B8VkCgsicpXkvkkQb2oKiHH0Uq0fjacvEon4DXP%2FvO0Ft4%2F29aJ3Q%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012658Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YKTDXR7I7%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=3f681528bd3b60f4eb760b1f69933aaee22dc0d484203bc993010e487430a891"
         },
-        "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-set_user_info.zip"
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-set_user_info.zip"
       },
       "v2pc-api-change_password": {
         "FunctionName": "v2pc-api-change_password",
@@ -877,7 +881,7 @@
             },
             "RevisionId": "908048c0-7f3b-4700-afe1-3611e2d8b726",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-change_password%3A%24LATEST.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-change_password%3A%24LATEST.zip"
           },
           {
             "FunctionName": "v2pc-api-change_password",
@@ -904,7 +908,7 @@
             },
             "RevisionId": "9341f598-973f-4ea5-9c5f-b0244054598d",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-change_password%3A1.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-change_password%3A1.zip"
           },
           {
             "FunctionName": "v2pc-api-change_password",
@@ -931,7 +935,7 @@
             },
             "RevisionId": "f43f7c76-3409-464f-b01e-156f028d92c1",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-change_password%3A3.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-change_password%3A3.zip"
           }
         ],
         "Configuration": {
@@ -969,9 +973,9 @@
         },
         "Code": {
           "RepositoryType": "S3",
-          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-api-change_password-63a6f3cb-9d73-4c33-b4cb-f330f2303a4e?versionId=n9lAJIpgX6rfDmSWpVNiutAiHcCZ.pP0&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkgwRgIhAOpgkSUuZigbcqUf4ZRtkkcJx13PWGw2Crj1j7G5JKOfAiEA1c7dO69Zkh5OLr8JLTsbNb2PnZ5wWSWKpQY9up8nzmUqjQQIuf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwyNTE5MzE4OTM2MTYiDL8x3YrlsN8nbmC2BSrhA0ZW%2BSKkWL%2FwLF3N6lsbg7Qw3W0QAk5zp%2Fr2oxTnM38Lu4TcATkpGFlLCfIOtM5N6V4VvacMv46FkVdrf9LI4hRQAeXLmYm42V9W3QdPE3%2F4cytT53f2IcpAX3%2FfE%2F1ZdbShJ%2BZait4X0UloVX9uLWWbENi2tDc04yt87Og7D7B5hnKWPzCoMe%2BBKYUDgE%2FH9oLD7R1aTKBQ1%2BfX0b3CIN0Cvf%2FVPHAV3SdwivMjRoSby5MGaG7NUBJ9DYkk4S7ZmBe1HdAZJ6IEG%2BTmbs1RkdWGfpzl%2B3Uane9Hz0anxOMrCK5DLARp%2FC6Rc%2FT5QOj5P2tCxOZ96gAWHEvCLU31%2Bq7jcmK3%2B2UOSqI9IvuxMksJedksPyrjEceTWofGoMAgAdgXjQHmzlac2kTl%2BnBD%2Ff6k7sPD9lg8YqHE0jZ3yMUWhG0nqs4Iq395jqYgdnwEqrSr24pabdm2%2F0w%2FWA0RdREeEeowuri%2FsXmQkpFrtM45PrFcAEapnTnOgl9BRcsxKZ0Z8gYsQktNk9kpFI3FY1QFbSX%2Bz5ZkQvHa%2BIZ9lOVz1ix%2BgOA41JPdfpWkjhMJzHTzWyMKRsNDs%2FeywxXSRNBQOSvHx9QEWUnzN5PvkvtDRM%2FXj1MAZ6%2F2s%2Fllar4%2FNlIwu53JjwY6pAGPUjZt%2BY5LSdlrzCSaY1nQyZnRPDz9sU9j9H0KCe1Ld8e86g6gy1zzN2rXdIDYQ8%2BdPsiTFNju0n3JoUktAdxmiBFPoWZf992ZzXYTUA6TX96647%2FARPiudzfCWWnaJLsEH%2Fgt68L1vSWqj%2FeTy6oXl1nkvQwaDDuHWA3EljoK2VoRF9DZYR%2BASQ%2BzActWjhgAFRHYY2DxPp7XOGSac%2FPC6fi1mA%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220127T090953Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YOEWCGYWI%2F20220127%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=0bea512d0a89ee475a1d3805d81f617c811d966bae96bee5a5b40954be077eac"
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-api-change_password-63a6f3cb-9d73-4c33-b4cb-f330f2303a4e?versionId=n9lAJIpgX6rfDmSWpVNiutAiHcCZ.pP0&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIhAJK%2BX15mPZgXakdOrcX2BlUV%2BbrHuhum%2BkqIcIe6h%2F7FAiA7tZVTpT5AUgfUV4JZQOwCBCuH2MLizzItFREIQefWjCqEBAhSEAMaDDI1MTkzMTg5MzYxNiIMr2mYaecbfn3ravXNKuEDxhm5cKwLJjPuWm4rasI%2FKWadkrUAt9eWtLv5m%2FUY7dAO6LLkzwkeSxSUVmr3veJ3jLU0oVzTphJgs8ygjrrKGwT6etMR%2FMMDuThoClV0HSDT22FTP4GVwH5CtZs9ANCn8BuPu0slvzhtStgDAnv3X0aC7sgJCSQqLl5vAJP6INLM78%2BfmL94wlnSkH%2FIdI%2BwYI7GHJ%2FmGgeKpsXlX03%2BoLwP8qpdRVMgW7sKTtIlvpwFmGvOjlOCyirUNjmF2KEWKPrj1A8lnex0wV440nJ4Cjz%2BIKUrZ8v5DvlUh0y4Ndw4GM8b0c0Gy4R%2B8RSPjxWXUJnokIgcZBCKzjfI%2BZsr04PLvj3SQqdFmkBoMHGsd0CoMibiCehHCl0bcemSs6KZ8qNiJZUK2bMvJGaj9etCt6wYAZYM%2BCtMfPvycR%2BoSQOzNhen4wOoHnURCO7WDN639slpB4IkbT3%2FGB2YU9V%2FAWM03VnhjbiZfVALSv5t9HokCIGBVWIrQX%2FpdKChFivgsK%2BehX8euVBTRKk%2B6OsjTwEQq7dZ83RZn7hDaQca8zgEQ5pqEF9Ox29QvSPy1A7NRvYBEdM%2BW7w2RpEZ86FnSGNEW4wgK7%2B9MwtZ%2FkR5TeO4KNqmc%2FVz6yEBuPC%2BGh38tTCN39CQBjqlAQyqNjIIlZBVRmDlb48IFTjOzZ3FGed0mmgdIMtSapIe0OeG%2B8VbnRjmu%2F9I56b0TvXaBVL5YrCdpHUqiSx3uLm2KfWdrhHzpOGfJw0uvgJPdb35ED8ddy7vazcSuI7KRuepoB1W5xt%2F%2FpbxhYBU3nUt0%2Be6jsgzBmrufKiYa2C73hWV%2BWgSQhNB%2B40oP53MmDCddA7tOEVUo9mv4Y3AEPofMNnY1g%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012700Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YA7JOGRP5%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=0056d2977ca5836553ec5ea7a2e16113bb4f89d5655e72ba410bd99de507e458"
         },
-        "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-change_password.zip"
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-change_password.zip"
       },
       "v2pc-add-user": {
         "FunctionName": "v2pc-add-user",
@@ -1043,7 +1047,7 @@
             },
             "RevisionId": "533f18fa-3711-4357-aa99-9c0b3921e5c5",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-add-user%3A%24LATEST.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-add-user%3A%24LATEST.zip"
           }
         ],
         "Configuration": {
@@ -1079,9 +1083,9 @@
         },
         "Code": {
           "RepositoryType": "S3",
-          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-add-user-76f8cb8a-a45d-4967-ab17-11b4e636e401?versionId=.JZ8fj_UQ9PrjdgQP8gXrfKAeGLVAKQk&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkYwRAIgXp6RNyx2%2BRe8tlLjwYrv0qXTGD1O8jgU%2BkyZ2shgs4ICICqo%2BnFNYfFu6li1ARxLYJ%2ByE%2FNI55kaQryCyP2jknJZKo0ECLn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMjUxOTMxODkzNjE2IgyELB6FUDbeMIDJOaEq4QMoPWuvQdmrgM3PQElWWQdBSkEyx71W4clHwCHHqbYJJNYgZK9%2BgZ8H4tVqKdPpr6%2Fzu2XJ%2FVBCqpBEgGIHM8a3Nqspg%2FzAf6QEz7ldghf%2BcSCP17JaESpZYzEYpDdu0jZMbBdglsj02eO1wNs%2FSefZxZq7kb%2F%2BJkGea4Ptxj50nZWodHAA%2FkeSJlcSqnblKpNXTItywitYheRCgU8jJt3oBNauG7FgJy%2F%2BgTjsLX3sXcA4HGfgUUp9umOcn0tFejRUYtnz03rNgrd4xtvakPqyKOpLHsJcHp%2ByQZsB%2Ftd1ssCTwXhwzPN6SZpXk7BeStgkkqj5EK%2Fji%2FkyOy3lKm6ejVG153niktsJqTjSouoU1adguohVQ2scP7GAwJ6Ym4t7MGnb%2FwyEui4nHED2Yho9TiNIKYE%2BsZcSZpL3SOahfJlP3FNbyMvZrYprh4gI3vCAojCW1%2FiO9Myl12zKn%2FluhH8uQzkEPeChxwmxFaeEVT7P9ghWJF6fLevZUZWOFTjXi9nxkVn0E%2FNIDqOcX7FqypOqL7Iv7%2F56ZzSr6JVBYmcyhfNSxO0iHCaVC%2BTruoZVupE3UuOJm0KxmC9RvYFTWpfxJffKpvNidv7Lg2W4FmBY4q86SSti5tXMOG6qBk4sMJGfyY8GOqYBriuhl5YvyKHgdk23yTmzbXj3lEfuEv1ljs1GSC2PBDMiP4Jz9IaZML8HcREpblWwvLDAap%2BIkAFsRZ2zlvQ3IlafD%2B8VX2ull51%2BKZHuqZMuy8uAs0LdIdMus12Hg3ru4WbvK%2B9siol%2FqUuaY0hXLuX8iHFchB8dwHgnena1QmY1RkSRkBq1msTedodnc2HdBnOT%2B5%2F1IN4lcD5fWrF8ZNlX1S2oNg%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220127T090955Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YIVTHDBUW%2F20220127%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=ca328f703e33627e3f3eccb7484a03fc92153bcef466959c99fda130a5f3445c"
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-add-user-76f8cb8a-a45d-4967-ab17-11b4e636e401?versionId=.JZ8fj_UQ9PrjdgQP8gXrfKAeGLVAKQk&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIgcasb4hNzQHZbXsQ45mrvHAMd5aiNmYsGmnBMKP2JRzQCIQD5fVvfoUeRAjc8C7%2BnD7OdKr9nvHE1MffWjSeFfhVnTiqEBAhSEAMaDDI1MTkzMTg5MzYxNiIMnldbETMowGgUJBatKuEDFPBV%2Bn5sHh18OXPMErJCdD4iTx74vp1IHjywi9udoUXNYOcI3Kc6X0gS%2BnQ20TZfw8%2BrUJX%2FTk8JP%2FpdBFwb89fqMk1Y9rU3QBq0YuOZMN2ykZR1SnZjVSeaV3tMKexMnlfJHxo8vTDnqfMoMOj8glepXpWbwF4SBN03qmiXGSdgEQUIbR5geZoUI9kCRshazkAlU1ie%2B8N4XMHZTwXjBLHFQMGCFTwWZtPZCOQyYP4z4UUoOEn94LH8QQGEnaXnHMHftmiYdXZSkQuhvoACqOuYnc9FASs%2B8%2FmN2jbEinWv6vWnZWj8gzssFZQ2GqGKtX0cWiaGQ1kKos5j%2FxSknNoB%2FJXtqZjt7CqCHUbJLXQH4mVUqVZGg%2FF0V679E17%2BlTGQ8pbWmBnXD06GFfg12xaoZtzd3SFd%2Bf2uvPvX7CpgXUax%2FLXeP8nx%2FdHPqYGBu00mvFn4i%2F224bV9OaYqAelZeDxFlffYZIvjEXN3W6eAuWKPodjbX0%2FvlCv2%2FVvH9azjkgR%2FS0mKH518E1%2B9UVit2%2FYJDDGqoU7VXUJLQEOwQBttGHXDu%2ByJHcYXsS%2BDep5fVNJUS%2FKqost9Sf9squP8jhgo%2FoIY3WrhoppDMBcjE5oWtPBZi0NSa79omzFQ7zDd6dCQBjqlAVvuVzJlT2TEQ%2BB55FrwWIsErHHUU9V6b1ZLiqdIrrYkmIHDABU1CoXHWBtB2tBiaZacN3PT4CYTeDmMZDsXGpmDenKnC%2FMlinoUHKzMyVgwgeeYf8g%2FCR0Pp2oDW6b1UEuou2g3Mp%2BO7OejqTEoKUR6TtAgtSDTgEMhW%2Fas5GgMDSX0JUV6gsGwREYfzVMSnPkIiHike2qJys7lnwkPt1gdtM1RZA%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012702Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YJOR4OQKT%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=b20d5018df086f7917a4659eb80b65fdc916f62e3309b6e743462c98a7dd4b34"
         },
-        "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-add-user.zip"
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-add-user.zip"
       },
       "v2pc-api-get_user_info": {
         "FunctionName": "v2pc-api-get_user_info",
@@ -1163,7 +1167,7 @@
             },
             "RevisionId": "d22f9ebe-2417-4893-a4b5-3375d40ba8aa",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_user_info%3A%24LATEST.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_user_info%3A%24LATEST.zip"
           },
           {
             "FunctionName": "v2pc-api-get_user_info",
@@ -1189,7 +1193,7 @@
             },
             "RevisionId": "ffa3f3f6-b327-460f-9c75-01a526e92237",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_user_info%3A1.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_user_info%3A1.zip"
           }
         ],
         "Configuration": {
@@ -1226,9 +1230,80 @@
         },
         "Code": {
           "RepositoryType": "S3",
-          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-api-get_user_info-464853a6-f126-4bda-b5bb-e6bb14d65934?versionId=Z9lTBFmOGPHFqLJUh66G4gHciBa0qorS&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkYwRAIgPNAk3%2BqLsHlorTrTtcNQQtbV1HWDgXdpDn6zLmSS8l8CIA5ZtGL0ge8lxysPCIkdsh0IOk3i%2FsbCc%2FRNFNb%2FVoxiKo0ECLj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMjUxOTMxODkzNjE2IgzLPKAxM15%2B9h46JLcq4QPhtOks1h6vt%2B9UfAXYnumNhzBWCM74a84UYn2CWFhU%2FxuQu7LnV%2BASdppcRf4plzL4EP8RS2lqftLFQ6XdKNck0JQr%2BxyWXXd5n3ONPJ5SXV83wejEmGkwaFi9cllZrecoi3rN1IWEfkZiCyAb%2FSniGq1C3CSX4qi895Na0bsHQ7Sqks2GVsnygIDJGybCPWQ%2FMBWJ%2FoUlnTDFiezESibPxlkvjS%2FAXcNIgXUb7ay9y2FMMvTjGDhI2eS3lLxX7lBgFo8WMfccbVowYeJNSW4tos%2FT3CZHc%2B9WEfl1PPNdabYQqBWY6zI%2B46MudNFOQFxmF5ftPEl87UwqxHSXcHFZO%2FYSKTqbo6SMUbh0C9Vvqpzjd0OQFdSxlyZkZUwKd2wapwON316hmFzFI5xpRuTb6W8LRA4e8DxqEm2V%2BFG0NYUgEea6m48mAB5Fu7%2FPuMlJHbfQX7lgnOx3YKB1x1kCLQcnSpKDQu%2BSi6WPSJ5sfXXH8TB6fM0PdbVJlU4RzBI96pFMhdMdDzROQB5GEAZvKHvrpV0b9WHOAlwfZqfPTmLpczK6jpYxsxvTB37vEH2PakmMMpYBXkXjrDGDkjBudiCTusTTR08Uo0fB83AfEhLXRyZ%2FTAhveyKR8g7G66RfMLujyY8GOqYBBvzLpAlgV%2F5sxuNbRNs1F6%2F0BrPrmRmqRdJJcSH%2F6dSyjwaYenPtgWg15Ggte86%2BGUMv3Rvs223T23q2YSRBheiBzxasAAkh1pePuwogrLwSIc3Fy4X669u9wWr%2BNF2x0unF67yvVNCAzsxYswrHFgsJUyAO2dISOZf5tC%2FENCVmNs6iaKfpDu99n8zwQUw0mkRNNkqVO%2F7HJoswSKuXL6MAFh03rQ%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220127T090957Z&X-Amz-SignedHeaders=host&X-Amz-Expires=599&X-Amz-Credential=ASIATVKCPT5YLEA72S3F%2F20220127%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=68bf94f69f6ea3b28912d8239617cebe11dc929b47752a26f1deba0a94685f35"
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-api-get_user_info-464853a6-f126-4bda-b5bb-e6bb14d65934?versionId=Z9lTBFmOGPHFqLJUh66G4gHciBa0qorS&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIhAMASyLjYJVH3LSkjUdOLEZlVEmv1RywVvhbU3RqU5bDyAiBTQcHUDPSnKuyulOtIaUGehma%2FQN9N8ORUIH%2FN7ub%2FXiqEBAhREAMaDDI1MTkzMTg5MzYxNiIMvw%2BWlA0xgMUWIh95KuEDWBCd50qEJa%2B8Ta9bfeM%2B7Yw%2FpF54mpJgx71GjBi6j%2Bxfq517pSLNy%2FOaK5fKzbDOFKf0luOuJMLgTKYOjA4rXWRCIOxsdpmV9qSBIop2S9fdv42RWMHam415gw3Zs23%2BO9Ur%2FZreFNSLGTssWJqUI9lmpDkiZKVZRTXYuYSFfEukrcPYcFeaPpMn1CGuNDHYe3HlkcCn9rH8vOyHXbygdtGdWngwPZ%2B%2B%2BPhC5v%2FCaRpWLJ%2BQnqiwTWZWx4wDgdMy%2Bgc3GR5lGT46nGnMBhi3J5K8dvymPOTWlgDyp60Tm2b0qQNJKG6qKRPgdhL7PErQKAXpld7xdDyC6xrA5pOtIrN73Sdd7MRwNllsHYoF9pwehfKhTl1hqtuG2yJRZC4keSSmPuffprLZ8hKzoT27pzLdDAZqJ6Z19M8FJS9R2u2VI9xNTNlSHUTfFEdalBn%2Ft3guwi3U%2F3f5NQSMrcc4cInqbhl2Xpi82KG6U1aRyBydV13qhtvWxoFjgn8PliEmPlkIACKUEOi0%2Fc9pUpXLYOLWwtwOYJIAttbMsKw1RQS7hzfGW1k4W5caqRO%2Bu8UXE0SJY56MfRIzBSWuBJrEFKKA2Kr%2Bb%2F5AkTPSXryap3VA34EErDvOR4he3cL0c7FNLDCVzdCQBjqlAQWt3MhLRzw0s8u8Yoy8Xex8Ik702NtvlaM6PyFD2oO%2FmfBlKs5CuxaqiIRVgQTzMj%2F7AMcj54FHzCWZt1UCum4Geoo8nLi%2BN2riHBphCTleILX%2F5HTistDU%2F1Rimf6MHABhsMNqLBa4h4hOtKn4zos0CJjGGDlO%2BsRgd3QVFndv7QXPgR6ydkG06uikP2cAtfno9mPlnV6%2FmUbDaa9whyQ1Pf6vJw%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012705Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YDWPNBEVL%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=bb81e241ce1696a072879ed2ab8b2c76614259a202ad781ea0ec848c73d146d2"
         },
-        "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_user_info.zip"
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_user_info.zip"
+      },
+      "awsPriceScannerProcess": {
+        "FunctionName": "awsPriceScannerProcess",
+        "FunctionArn": "arn:aws:lambda:ap-northeast-2:391285059836:function:awsPriceScannerProcess",
+        "Runtime": "nodejs14.x",
+        "Role": "arn:aws:iam::391285059836:role/v2pc-inspector-to-scan-pricing-for-resources",
+        "Handler": "index.handler",
+        "CodeSize": 4859336,
+        "Description": "",
+        "Timeout": 3,
+        "MemorySize": 128,
+        "LastModified": "2022-01-24T08:56:15.000+0000",
+        "CodeSha256": "3DCLjOncyCsRKTpFGUaLi8KS3Yz6PtYgCJs/cMZzSnw=",
+        "Version": "$LATEST",
+        "TracingConfig": {
+          "Mode": "PassThrough"
+        },
+        "RevisionId": "342ea792-aa02-49c6-899a-19fca0e9cd53",
+        "PackageType": "Zip",
+        "ProvisionedConcurrencyConfigs": [],
+        "ReservedConcurrentExecutions": null,
+        "Aliases": [],
+        "Versions": [
+          {
+            "FunctionName": "awsPriceScannerProcess",
+            "FunctionArn": "arn:aws:lambda:ap-northeast-2:391285059836:function:awsPriceScannerProcess:$LATEST",
+            "Runtime": "nodejs14.x",
+            "Role": "arn:aws:iam::391285059836:role/v2pc-inspector-to-scan-pricing-for-resources",
+            "Handler": "index.handler",
+            "CodeSize": 4859336,
+            "Description": "",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "LastModified": "2022-01-24T08:56:15.000+0000",
+            "CodeSha256": "3DCLjOncyCsRKTpFGUaLi8KS3Yz6PtYgCJs/cMZzSnw=",
+            "Version": "$LATEST",
+            "TracingConfig": {
+              "Mode": "PassThrough"
+            },
+            "RevisionId": "342ea792-aa02-49c6-899a-19fca0e9cd53",
+            "PackageType": "Zip",
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3AawsPriceScannerProcess%3A%24LATEST.zip"
+          }
+        ],
+        "Configuration": {
+          "FunctionName": "awsPriceScannerProcess",
+          "FunctionArn": "arn:aws:lambda:ap-northeast-2:391285059836:function:awsPriceScannerProcess",
+          "Runtime": "nodejs14.x",
+          "Role": "arn:aws:iam::391285059836:role/v2pc-inspector-to-scan-pricing-for-resources",
+          "Handler": "index.handler",
+          "CodeSize": 4859336,
+          "Description": "",
+          "Timeout": 3,
+          "MemorySize": 128,
+          "LastModified": "2022-01-24T08:56:15.000+0000",
+          "CodeSha256": "3DCLjOncyCsRKTpFGUaLi8KS3Yz6PtYgCJs/cMZzSnw=",
+          "Version": "$LATEST",
+          "TracingConfig": {
+            "Mode": "PassThrough"
+          },
+          "RevisionId": "342ea792-aa02-49c6-899a-19fca0e9cd53",
+          "State": "Active",
+          "LastUpdateStatus": "Successful",
+          "PackageType": "Zip"
+        },
+        "Tags": null,
+        "Code": {
+          "RepositoryType": "S3",
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/awsPriceScannerProcess-0a31f151-1387-4315-9778-568edaa4795c?versionId=yG.sN5lmt7kEUB2TNLdkrt2Hb9ZaSa_T&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIgNjK1wvRPB9H8krY7eI76JqTt9TFqmD5lUXqXqgi3PBcCIQDs8VHX4irDN322LdUavSYV9DKEr%2FkSTrOFTf17VklaJSqEBAhSEAMaDDI1MTkzMTg5MzYxNiIM7BVVECZUOxdVi%2BA5KuEDenvbOPeTCaTcaLFUS3rVcpL5gjKRoJtxD1LXVMrLXtJfMGLwy%2BPgw3Bez0t%2BIrvspoPfJz6wgtn5waIIjPjPA3H3n4Kxhsa3si7xcfP0EwG5Fzd988Tx0McdFw8pPIBmU5V3UXMR96cFKEWYcN3nPNQGP%2Bl%2FkVZQ8gwa5FYFVei2mt6XFDIPstgmirDj%2BhyyeLOQ36%2FFdAw38rHAPmYOrCluOQYgU4VCjdeW54prU4RouJMwv757HQt1SeWWhxqK1F%2FeiNB2jI6zQHXEcsHSwkftKaboz5OJ1tRne3G15GA%2FYN7dC2hv5Rx98w2FstarL0546rLlm1PZrlYwPthSIFxZtun6mnJktHRDu8T6Sbn1biSHd55g2xHUGv5aWnna1wEMemnce3zFBCK5KB0bQtiFiDCg69fTe8qlEWGOV0XGaJLMwpX8P3%2BsB3tlnA3LKw8DbbmFCVsUR8ajJnsjH5rPoJno3kjbeESMK3W1K422ZwzC25S%2Bn6xkXct%2BMEngcUJpSIzE77W8VU5y0O9BFeFF7cPWotOsgP%2FMqo2okQkJ84h673q8JKyjf2YM8UyQ2zyr%2BIpNZDZR7V%2B1wQxfVLXjVNxE0sXtJjLrkKFXSNEjTXMkvoeLcXt7BHRXm0f3OzCk6tCQBjqlAV20m5hYyovvuBtJeViITV7KVCXDYGx3ojGAaL7VioSlTHGGCtVivkkJAaM39rNklZYxrFpG0CYu0NUgsfBHj5Z8kDPedgj4184cbhSRhJqoFGksjjoVQfmoelrIbrOMOLC1nnup1Jr8UAotVQn05cLmG5OT0%2FRnKB0Se%2FnfJffg35U7qn3YMXzCn4ullevyf2Xk8ShtfCoMYay9pACYP6Eu4PNO1w%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012708Z&X-Amz-SignedHeaders=host&X-Amz-Expires=599&X-Amz-Credential=ASIATVKCPT5YDYVQKJCP%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=0d67d08964f05c742af5c69ad460c1994d3c8266c7b1c4d2749bbdbfc951617a"
+        },
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3AawsPriceScannerProcess.zip"
       },
       "v2pc-perform-scan-vpc": {
         "FunctionName": "v2pc-perform-scan-vpc",
@@ -1288,7 +1363,7 @@
             },
             "RevisionId": "c9ea6db3-d1e7-493b-9d4b-accfdb4b38e8",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-perform-scan-vpc%3A%24LATEST.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-perform-scan-vpc%3A%24LATEST.zip"
           },
           {
             "FunctionName": "v2pc-perform-scan-vpc",
@@ -1313,7 +1388,7 @@
             },
             "RevisionId": "aee02a6d-4d2f-49c5-a492-f450c5eb4975",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-perform-scan-vpc%3A1.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-perform-scan-vpc%3A1.zip"
           },
           {
             "FunctionName": "v2pc-perform-scan-vpc",
@@ -1338,7 +1413,7 @@
             },
             "RevisionId": "7dc5030d-cbb7-49da-9b90-da11e40e891c",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-perform-scan-vpc%3A2.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-perform-scan-vpc%3A2.zip"
           }
         ],
         "Configuration": {
@@ -1377,9 +1452,9 @@
         },
         "Code": {
           "RepositoryType": "S3",
-          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-perform-scan-vpc-a8c95569-86aa-481c-b859-c33e142cb0f6?versionId=KVdharBoJkIx9X.kk0nmOPOqy8nzfi_B&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIgAja4EaK7dDh9ZR1KAetf%2BbyxXeGkQnSag3M4PqaP2CoCIQCsuW%2FUWegKU7bDr%2Fp6nAQLmzEHYXsmVOHGYKYllNS4aiqNBAi5%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDI1MTkzMTg5MzYxNiIMzkS%2FHT8AUUg3AwcXKuEDY3hhtmIrmuU%2FV1ncWu3TuwJkWb6akEuWt8rRdgG2MZI3vE54vwTh8cMggxogeoMffKs4wI3636YLSiJbaqjRBh%2FKl7oklsnHj09mNoPI2yxxvardiFNXopnmQlA39tMM1Yd65jjlEX2SC7%2B6L%2BcsEg44cnQ8KXDPCIzi%2B1Br7l2%2BAKFkjvhpDq4vLK%2B3sFl6EZ2V6G%2Fv0jQkvoxW%2FNW7zWlxxNFIjKy7N5xU9uOAROrFlUIq5W34xuY4202YWktUHEbI5ZmTP41ZjT1zzdCt%2FpWeAaYpCAwMnxEjZQCmNx5AxaUdHZ%2Fs2Z4q8gNea5wEGsFZnjrpv%2BcdD8CTyeZusTlVzbKOqQe6s%2Ff5CKFeWltAQQpcOt%2FOBJqu1UWqioO2UhH3tIijAEab7FI7wSNhM%2FPINjfmUjcGnJl04WwCiOGLvRjqgeDjvUuq6tZy4RBuyRMJuBnEfZjLVoQ%2BveuaxcFGy928YQSofQ2ekQr6dKLrjHflc7bxpXXduEmXRkdfM%2Fgf%2B3%2BsdITz99lW6ovTUwJNwJUnRHBFYMIyC4gs67mKVm%2Bqwm1VHGOLyfA4ax%2BH11lyDu2BLGKZnvw5ZzN0%2BARkqQYM4XB53QyYNVWUdY7euwfnQAwYZs7toA%2BANnmDxjDqtMmPBjqlARQlR%2B2etNYlBnFFttBu9kvdm3BMp4jXSiSe5ZCKtDLQZ9KWVa1wUp4NXEO4LysUhhIfQSW5774S2qHD%2B9%2FXeKRaojvHQSGSLDTdU6NcJekOPSb%2BZridkvsRSGN1U6AjB4k0QviVcnyNLqs1sKntlMhxQeAzGKVkbUy5d%2BSgZAuMHJcgbJ59etVltHpGdt22VK3WwHACbosSk3Wz%2FjXsSRsUAbXu5g%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220127T091003Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YN7LCR2XB%2F20220127%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=8f506349fd900149bb8e5e5d16611bec185041d655f172ac7ae81f60bce13137"
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-perform-scan-vpc-a8c95569-86aa-481c-b859-c33e142cb0f6?versionId=KVdharBoJkIx9X.kk0nmOPOqy8nzfi_B&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIhAOHZh90MjTZkL3aaWiO9WnYbBsg%2B8iYYT%2FAWsGRUgxYhAiAeWP%2FEoHraDNHGEeIS7IwxMqFIPxt0dWq%2BhJJlrIabqCqEBAhSEAMaDDI1MTkzMTg5MzYxNiIMR09H%2BSym9iajiwnyKuEDfs1LVEamjiDEw0mRxxtGq0bG%2FsS5vB%2FqOqYZVWd9kjAbmr6Zx1MDZjkgFQ0u2NnKqmGzbiXCLeuTKm0YpF2KnwjrPriN59yD2arSWBupyIqDBz9L1ASeL5fUqFMGr%2BOad5M53p4i%2FfHZQxsoIl4DsrsAxr1lKGkFku6AQq7%2Bq2EenZerKT8kIpoKaA7pb9Quyxgp%2FOM9CRMgWXMDdggQ8SJSEeUYIhUpM1b%2Bz9BisejnfdKBRO3JA2nBTDXDxcS8jREPwdm%2BcD8oECrZNu10%2BombTXNCYc2YiApm%2B%2BLa0Y3pDhuusaGsqw1SNUIMUpZ0chZ2G%2Bj%2FWB932TDfSeziiwWMkakoYV%2FV%2FAiXyXGX3p2LvF1b8z%2BZxKVOXxl9E5k4dDEzim8PQQ1pVLV7t2nkNzmS%2BSvJHeY3wQctdiB9WArS6gmzP9aGuGBcNNBMHtI2iEYRC1P8Fr06HeBSwfebKHCAm7czizbGfmRkKqqRRXpMrbiFEipPxcv0EBbyj7aIbV0XPXkQvOdiVoR%2BI0DRCCRRGozcGKHssKopgyFgK3DHWpx0Gl1ANw%2FMcvGn7S1tQYbexm7qpfq9vqq2iJGxzdZo%2FXbnzMcP%2BTWiPdhrvQBb9D5TNIz4lkRKWccMYx94GzDc8tCQBjqlAQqCQ5JWyv%2BcQzGEE25k%2FVNXg5hW%2BQ6Yqar3kTskrehRW88piejH3Nwa1iWhZQu2VH6lZqzLlKR88IifATbEgXgyPfthpNGN9VTes047ljUYqg%2B5ujR6z8eXN2TX5dGdyWRNMO9ZnVKUcMSPLn5G94MqeFCaiRwHtgQFxr5cpcF2qLkSVzXRoXEqmW68dslk0IlWf3GFKm99KjYBdGBm5lNVjNXyDA%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012713Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YAYDZAU3P%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=3c5dea6984d7838e2acbf831e6d865e4716eae9f66e55355e528c7ce534ba000"
         },
-        "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-perform-scan-vpc.zip"
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-perform-scan-vpc.zip"
       },
       "v2pc-api-get_auth_tokens": {
         "FunctionName": "v2pc-api-get_auth_tokens",
@@ -1467,7 +1542,7 @@
             },
             "RevisionId": "15730460-395e-41f0-b5b8-4a113b56cb9f",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_auth_tokens%3A%24LATEST.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_auth_tokens%3A%24LATEST.zip"
           },
           {
             "FunctionName": "v2pc-api-get_auth_tokens",
@@ -1496,7 +1571,7 @@
             },
             "RevisionId": "6268db20-0167-4ca9-bc35-2e02b5f2cffe",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_auth_tokens%3A1.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_auth_tokens%3A1.zip"
           },
           {
             "FunctionName": "v2pc-api-get_auth_tokens",
@@ -1525,7 +1600,7 @@
             },
             "RevisionId": "5c7b3cc2-5b3b-4ce3-84ef-be98e7ec6236",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_auth_tokens%3A3.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_auth_tokens%3A3.zip"
           },
           {
             "FunctionName": "v2pc-api-get_auth_tokens",
@@ -1554,7 +1629,7 @@
             },
             "RevisionId": "3b64dc32-11a6-4f09-9a8b-a5cfc6311ade",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_auth_tokens%3A4.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_auth_tokens%3A4.zip"
           },
           {
             "FunctionName": "v2pc-api-get_auth_tokens",
@@ -1583,7 +1658,7 @@
             },
             "RevisionId": "d95041c8-677d-4000-b14c-9757aa6e826c",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_auth_tokens%3A5.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_auth_tokens%3A5.zip"
           }
         ],
         "Configuration": {
@@ -1623,9 +1698,9 @@
         },
         "Code": {
           "RepositoryType": "S3",
-          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-api-get_auth_tokens-98364cff-78b5-42ee-96b1-2fa8457c5d6b?versionId=lH3wf7Q1rJDTtlGN.hogCAAqHFx8SzSM&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkYwRAIgUXoNk9fSNu6Zf3LKATv6EXddvhJlhTT0joW%2F3MZbsp4CIGBivX0QP%2Bax3i6oEJ4hrxrNpUTcg2OLBdN3%2Bl4oxmaYKo0ECLj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMjUxOTMxODkzNjE2Igzl62jU9AZSZJZsnaUq4QOB%2BtpmFqCn8RmMQmahp60QV92bVgT%2FpBekvoVr71UES6DT4xbtJu%2BfRsIC6cTYqiDAgwcLLuFkA%2B35pigiWtVOXYioKmrbkzY%2BVpthhcxhSiD6rmpuDNeXePIZKUN7eY6bHV16FH7%2BH%2Bcn%2Bu6XjkSQuylZtpZQ%2F8ajhq3CKaQ2My7yXPWMFkJhVVkW9jIFvavwn51UjD5%2BmHaUAe0c%2FiDWQXNm9KviYwijUJ%2FoupJG7UduOH2BA26mQ%2BlHMvxmUCp72ZWP9lFoWNGONJHOYprR20Xc1BdBU0vLRZqpZFwAw%2FgZgtkxTqpvPbiV4HX112s4LhZGfgP8tFlDOouuLk3qJeXCXZ4p0qlSHT%2BBOD2UMt3YJGM10IlOGQHQHslNChiG7%2FrzbVu%2BCrUBOyWNh1cDDVHrvzD5UBU7tsvJprkvfdBh2%2BAcBhzy2jgUVJYI8rkv8qNTB63GpFNRp5o85L5%2FFZAOZKSpIQ12TdjPiTblpABVcWXQsrc9m6Oc14Xxq7JLoNh195Us10QMjuh314XGyYQJRVx1gVLj5bDdKPfQisVdQWY60FdOgR%2FbBcQqnX2T%2BgI60JnBDDWbCvRDq4MHUEsentoGQhmmWxjfR4HhfvVteyfQjOiIe6uU57nYR1PZMLykyY8GOqYBPNfZ1oocnzc5TL2cK9jUgHnz7L2W%2FAf%2F%2Bjdr33ohuJdHOR0S%2FEI7ZyMYNOKRJQ%2ByKk7Zbsqwv3qiRlEXR69TAqKwSyhqliqr%2BNHSLkmg4X2l2vELQ35kIntg2NP7RVqiIDBYJtHU6Brvw6qsPOgVk5Tvaswz%2FB1NVG1x4r71N5o2LfW2HUFhsl%2Ffnyu8%2Fd7h2IpXHptlb1DNCV%2FQY371Os2v3oBYNw%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220127T091005Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YADSU3262%2F20220127%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=31e2be0d644c692da6bcabca13202ce6f3e352da0fb6428385342fd7308b3791"
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-api-get_auth_tokens-98364cff-78b5-42ee-96b1-2fa8457c5d6b?versionId=lH3wf7Q1rJDTtlGN.hogCAAqHFx8SzSM&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIgXumC0BKNyyLpYqmVqaSwGFgFBsSjfsKNJBAWg6mpC9oCIQD8%2BlhHFkjLLh0gQ0Xfxmg0v2f87miVR%2BgsRnslO5uRqSqEBAhREAMaDDI1MTkzMTg5MzYxNiIMY9exvWCv5C2gPkv3KuEDy7SwMiv5ZcKMufjqFCRAzHnxgDGbsFB26h%2FIMPhrggClbHssPbtGhY8EV81d3%2FZP%2FePJT%2FGrA0gkEvfCZA3Rn2vt2nNcdsqnEMdsfjX9SRkz0RCH%2FyjPQUdGObyAGQ9AlYBPTxBR2XSLE7Vvi4QvoapRKEGWNPjssLRqLxM4ELLuUN4TlojJBgKMgeYbKdCwmyGINvpOicwbhmCEgjuhU%2BDLPSMI8MBOyWuvlFPUXqx62BSCWOCUZbEsQAiU8ngoCBupT1TQcNYycl3%2FeiOwd9A6kFRIkJ%2BNbAuPVLTnIL1mUmqaKMHHZFtgUXosCBbAjN%2BOSCrSY%2FfQMbNBHR4BInh7WgrANqHdZLcJPTZ%2BFXz0VV2i8MOoQsWOisGrIQaS65THtyHed1H1vc7YUCgpNvFk8rutkjxjddL3ENYcYwzoqv1rYoMdc94Ea6hf3JI9st1bWhcyOfnN2VaO%2Bc9AYL2FlPl9CRY1spUFYNqNhwy%2FxYviC4kkOru%2FjYlRcqj0lIuiwckJGl8eCZoOGCt8xA202WlUPp8bH48wO76aJfhg5f8x%2FnynGeEGhQp7t%2BUr1Uar7jsdPa96Zsf%2FKKWycR6pdmcuuz5rcF%2FMGdulWYObQ24i6W%2Fzd2c97iAvO56anzDfx9CQBjqlAVOEDbFGgOyTf4M35cPKAgde8Gzt4C2QSEewHINwA80wLFXHb3efKUqHsnJ68A2wN1%2Fy%2BSKwGA47befYM4fd0kAqXor73qa3PXpfY0XVb%2BrHOHQvNUghw%2B%2Bi9nvyFPu4hKGetSK64hyfWy3M09uMi5FX%2B%2BPU0dyniKQz6Qg%2Fa0f35VepoTtvm%2Bilm3G%2B9lWciVVljmQRj5rcd0eoyZOhFjv5lI%2FAuA%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012715Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YEGTWLOVI%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=093b230416435ed93d65d9bd1939bca7be042a2e60f02a57b170acd8d5c6ea95"
         },
-        "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_auth_tokens.zip"
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-get_auth_tokens.zip"
       },
       "v2pc-manage-resourcegroup-info": {
         "FunctionName": "v2pc-manage-resourcegroup-info",
@@ -1711,7 +1786,7 @@
             },
             "RevisionId": "a0a2422b-62ab-4574-83f3-03aed1ac4408",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-resourcegroup-info%3A%24LATEST.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-resourcegroup-info%3A%24LATEST.zip"
           },
           {
             "FunctionName": "v2pc-manage-resourcegroup-info",
@@ -1739,7 +1814,7 @@
             },
             "RevisionId": "470d4da2-3b0e-446a-b454-3673852b5683",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-resourcegroup-info%3A1.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-resourcegroup-info%3A1.zip"
           },
           {
             "FunctionName": "v2pc-manage-resourcegroup-info",
@@ -1767,7 +1842,7 @@
             },
             "RevisionId": "b6b5c720-9be9-4d7d-a495-e2f3a8bf72f2",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-resourcegroup-info%3A2.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-resourcegroup-info%3A2.zip"
           }
         ],
         "Configuration": {
@@ -1809,9 +1884,9 @@
         },
         "Code": {
           "RepositoryType": "S3",
-          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-manage-resourcegroup-info-2d7c366a-69b6-468f-bad4-01b5755fc140?versionId=ODO3Nb0pTxG1ZW6bizPfNCJvsWY8d3vn&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkYwRAIgPNAk3%2BqLsHlorTrTtcNQQtbV1HWDgXdpDn6zLmSS8l8CIA5ZtGL0ge8lxysPCIkdsh0IOk3i%2FsbCc%2FRNFNb%2FVoxiKo0ECLj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMjUxOTMxODkzNjE2IgzLPKAxM15%2B9h46JLcq4QPhtOks1h6vt%2B9UfAXYnumNhzBWCM74a84UYn2CWFhU%2FxuQu7LnV%2BASdppcRf4plzL4EP8RS2lqftLFQ6XdKNck0JQr%2BxyWXXd5n3ONPJ5SXV83wejEmGkwaFi9cllZrecoi3rN1IWEfkZiCyAb%2FSniGq1C3CSX4qi895Na0bsHQ7Sqks2GVsnygIDJGybCPWQ%2FMBWJ%2FoUlnTDFiezESibPxlkvjS%2FAXcNIgXUb7ay9y2FMMvTjGDhI2eS3lLxX7lBgFo8WMfccbVowYeJNSW4tos%2FT3CZHc%2B9WEfl1PPNdabYQqBWY6zI%2B46MudNFOQFxmF5ftPEl87UwqxHSXcHFZO%2FYSKTqbo6SMUbh0C9Vvqpzjd0OQFdSxlyZkZUwKd2wapwON316hmFzFI5xpRuTb6W8LRA4e8DxqEm2V%2BFG0NYUgEea6m48mAB5Fu7%2FPuMlJHbfQX7lgnOx3YKB1x1kCLQcnSpKDQu%2BSi6WPSJ5sfXXH8TB6fM0PdbVJlU4RzBI96pFMhdMdDzROQB5GEAZvKHvrpV0b9WHOAlwfZqfPTmLpczK6jpYxsxvTB37vEH2PakmMMpYBXkXjrDGDkjBudiCTusTTR08Uo0fB83AfEhLXRyZ%2FTAhveyKR8g7G66RfMLujyY8GOqYBBvzLpAlgV%2F5sxuNbRNs1F6%2F0BrPrmRmqRdJJcSH%2F6dSyjwaYenPtgWg15Ggte86%2BGUMv3Rvs223T23q2YSRBheiBzxasAAkh1pePuwogrLwSIc3Fy4X669u9wWr%2BNF2x0unF67yvVNCAzsxYswrHFgsJUyAO2dISOZf5tC%2FENCVmNs6iaKfpDu99n8zwQUw0mkRNNkqVO%2F7HJoswSKuXL6MAFh03rQ%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220127T091008Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YLEA72S3F%2F20220127%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=a75f22c8dbd9545ae9abe0eff88cc2aedde4d80e7840ea8c54761f695173a07e"
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-manage-resourcegroup-info-2d7c366a-69b6-468f-bad4-01b5755fc140?versionId=ODO3Nb0pTxG1ZW6bizPfNCJvsWY8d3vn&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkYwRAIgTIdF33gJVhyKnJdFIhKJnnWtcxz7%2BncrHKD6G8dg5ewCIHNw43gjIdQA4ubTqtrBl5ryQ2cwNLy1ayWRavPuwDTmKoQECFEQAxoMMjUxOTMxODkzNjE2IgxzbFV1GCBEp1oKRaMq4QMjxRPpf5jTXqHooiZzu%2BtzOplSxIgqJBFA3KRthoEs48zv7Pw7taU0X%2BtyrqxLUEg%2BxaYv788K%2FSpTBOv%2FwMgWwEvDthOJT1As8Ll%2BvuuoeSKNarSWwvXDEl2vmxctasejhW%2FNGAOlsNegPbosOEE8OR2BrqgUDD9618AV9a3VrAY1V3n8OQW3rVthC12PkLN6fr%2BD0ojxVNntOzh%2FRI02%2FrUcBexD6Hx6jVV488DOXp7ARpihlPX3yzZ%2BtsyQwdSAhpeHbdprkbOEWXM5202RrVX7M6DbvDwqrYQsbwT1EpCOHdXxXZLZuIgLRNsJyM1mFtsa0BZ6MltcwY0ZNr%2B333AcfaS6Rgr6I3uVRtPwilVKTSiRBs11KYRytocinF43Is5%2B%2B7f7o3WLDt%2FxO6nlPRQQ07hMmO1LKTLmr4WRymaogFwBaJarzqa2AJzRXMaLyh4GOv24ChftqKdyYzUCRSxLnNLBeCwnOKnMzcjgStXl0gxrtXnj3JEB0ZOyq6Sfo05SNsz8iGVSdnzqupeXpWbnDmciV%2Bfnml2ehDX8AvhCjwq0%2FFBOyfrnYLmernbaz3VUTwFkFZ9KleRNZkInyeNwaNCr8rd%2BNcXaDKR%2B4A2RmHp%2F4eOXJ7krvKjn4wU7MOHi0JAGOqYBlzdYH9qqgB0hwHLQKTbdGU0PyGv7Ik%2Fc%2BJgYPuoSq%2FQ8gtGh0BgrbFhOFWZhSPcWrzmq5HAWbyo3V%2FktJm%2F5rebV662eIlC12QE6n7udl1dbcXDJSTTr1e91oXnaAEBfej%2Fs2RDK1%2FqBrgMsbyH4wFPDhnrMYRwghfvOA1isYehHNlbmK1ZNklW9pQ9E%2FqQFh%2BbHwGpz8L2GyzNSzIAdpt%2BrnljfRg%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012719Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YG2OROF7W%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=1f0e50170dbea5004338715ac313e53ed57f1e680d0a922cfde2bf0d9d67e5a3"
         },
-        "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-resourcegroup-info.zip"
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-manage-resourcegroup-info.zip"
       },
       "v2pc-role-manage": {
         "FunctionName": "v2pc-role-manage",
@@ -1819,12 +1894,12 @@
         "Runtime": "python3.9",
         "Role": "arn:aws:iam::391285059836:role/lambda-role/v2pc-inspector-to-read-write-dynamodb-from-lambda",
         "Handler": "lambda_function.lambda_handler",
-        "CodeSize": 2613,
+        "CodeSize": 2621,
         "Description": "Upon user requests, this function retrieves and stores the role ARNs in a DynamoDB table.",
         "Timeout": 3,
         "MemorySize": 128,
-        "LastModified": "2022-01-25T02:52:21.000+0000",
-        "CodeSha256": "40/8o5nEPah4lvddR8+TGPfYltvXrmRMdcYc07GQjWo=",
+        "LastModified": "2022-02-11T02:50:53.000+0000",
+        "CodeSha256": "jcIa7furP8eiis9XAkojXVdc+JllX7qkbYasxnA3t00=",
         "Version": "$LATEST",
         "Environment": {
           "Variables": {
@@ -1835,7 +1910,7 @@
         "TracingConfig": {
           "Mode": "PassThrough"
         },
-        "RevisionId": "ae5f9951-1aff-41e8-94d4-4e453bc46e02",
+        "RevisionId": "7c6618c3-22b9-42df-82c5-049725f24407",
         "PackageType": "Zip",
         "ProvisionedConcurrencyConfigs": [],
         "ReservedConcurrentExecutions": null,
@@ -1843,9 +1918,9 @@
           {
             "AliasArn": "arn:aws:lambda:ap-northeast-2:391285059836:function:v2pc-role-manage:alpha",
             "Name": "alpha",
-            "FunctionVersion": "2",
+            "FunctionVersion": "3",
             "Description": "stage test",
-            "RevisionId": "154a7530-4a19-42f0-8454-ba46360c2d1c",
+            "RevisionId": "906c5f8e-c0b7-4a43-98cb-cc4a2f158f43",
             "ResourceBasePolicy": {
               "Version": "2012-10-17",
               "Id": "default",
@@ -1875,12 +1950,12 @@
             "Runtime": "python3.9",
             "Role": "arn:aws:iam::391285059836:role/lambda-role/v2pc-inspector-to-read-write-dynamodb-from-lambda",
             "Handler": "lambda_function.lambda_handler",
-            "CodeSize": 2613,
+            "CodeSize": 2621,
             "Description": "Upon user requests, this function retrieves and stores the role ARNs in a DynamoDB table.",
             "Timeout": 3,
             "MemorySize": 128,
-            "LastModified": "2022-01-25T02:52:21.000+0000",
-            "CodeSha256": "40/8o5nEPah4lvddR8+TGPfYltvXrmRMdcYc07GQjWo=",
+            "LastModified": "2022-02-11T02:50:53.000+0000",
+            "CodeSha256": "jcIa7furP8eiis9XAkojXVdc+JllX7qkbYasxnA3t00=",
             "Version": "$LATEST",
             "Environment": {
               "Variables": {
@@ -1891,9 +1966,9 @@
             "TracingConfig": {
               "Mode": "PassThrough"
             },
-            "RevisionId": "ae5f9951-1aff-41e8-94d4-4e453bc46e02",
+            "RevisionId": "7c6618c3-22b9-42df-82c5-049725f24407",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-role-manage%3A%24LATEST.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-role-manage%3A%24LATEST.zip"
           },
           {
             "FunctionName": "v2pc-role-manage",
@@ -1919,7 +1994,7 @@
             },
             "RevisionId": "74b03aba-ad30-48da-884d-c1c2d88a5d86",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-role-manage%3A1.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-role-manage%3A1.zip"
           },
           {
             "FunctionName": "v2pc-role-manage",
@@ -1945,7 +2020,33 @@
             },
             "RevisionId": "cc196ef7-176f-4a7d-bf21-3a81488d3673",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-role-manage%3A2.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-role-manage%3A2.zip"
+          },
+          {
+            "FunctionName": "v2pc-role-manage",
+            "FunctionArn": "arn:aws:lambda:ap-northeast-2:391285059836:function:v2pc-role-manage:3",
+            "Runtime": "python3.9",
+            "Role": "arn:aws:iam::391285059836:role/lambda-role/v2pc-inspector-to-read-write-dynamodb-from-lambda",
+            "Handler": "lambda_function.lambda_handler",
+            "CodeSize": 2621,
+            "Description": "delete RoleARNs via setting an emptry string",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "LastModified": "2022-02-11T02:50:53.000+0000",
+            "CodeSha256": "jcIa7furP8eiis9XAkojXVdc+JllX7qkbYasxnA3t00=",
+            "Version": "3",
+            "Environment": {
+              "Variables": {
+                "TABLENAME": "v2pc-user-info",
+                "ORIGINURL": "*"
+              }
+            },
+            "TracingConfig": {
+              "Mode": "PassThrough"
+            },
+            "RevisionId": "551f28ca-2793-4a18-a479-9112a7bd693a",
+            "PackageType": "Zip",
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-role-manage%3A3.zip"
           }
         ],
         "Configuration": {
@@ -1954,12 +2055,12 @@
           "Runtime": "python3.9",
           "Role": "arn:aws:iam::391285059836:role/lambda-role/v2pc-inspector-to-read-write-dynamodb-from-lambda",
           "Handler": "lambda_function.lambda_handler",
-          "CodeSize": 2613,
+          "CodeSize": 2621,
           "Description": "Upon user requests, this function retrieves and stores the role ARNs in a DynamoDB table.",
           "Timeout": 3,
           "MemorySize": 128,
-          "LastModified": "2022-01-25T02:52:21.000+0000",
-          "CodeSha256": "40/8o5nEPah4lvddR8+TGPfYltvXrmRMdcYc07GQjWo=",
+          "LastModified": "2022-02-11T02:50:53.000+0000",
+          "CodeSha256": "jcIa7furP8eiis9XAkojXVdc+JllX7qkbYasxnA3t00=",
           "Version": "$LATEST",
           "Environment": {
             "Variables": {
@@ -1970,7 +2071,7 @@
           "TracingConfig": {
             "Mode": "PassThrough"
           },
-          "RevisionId": "ae5f9951-1aff-41e8-94d4-4e453bc46e02",
+          "RevisionId": "7c6618c3-22b9-42df-82c5-049725f24407",
           "State": "Active",
           "LastUpdateStatus": "Successful",
           "PackageType": "Zip"
@@ -1985,9 +2086,9 @@
         },
         "Code": {
           "RepositoryType": "S3",
-          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-role-manage-7381a7ba-272f-4eca-83b0-3d44288eef75?versionId=TySRl0bpgF6BBBL30R3s9yYFuTBXJKIs&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIhAOXwivT9UUhPMEdLKLLd4EN37vxWV5vKLMLHYqnmS16fAiB8DrK3XbqIoGjBH4YbOi07L%2FTGP4d8G4KlDI%2FIaCFIYyqNBAi5%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDI1MTkzMTg5MzYxNiIMU8aqQqZQZjzPAk2pKuEDyThZ7tL54tnL4qTtGaWFGuq6FgHMZW6bD%2BzjSH27B5rJZJ6%2Fnl9fUZacXAZ57XcBGK8Dnilk9VsMxjzrH248Eni2p3bHkIFK4tdV%2FMgQJcd6aT8sqM7aFWB3koS3vZ5BuTVx%2BWgPk83VreNkrsL8pt4h6Z84iE27NcxzrkUXjwR9pdJp5ZPyqBFYxKINmkocRbf7Yr0czn1sekEluKjRXIpDaG%2FpXZRLZioEpB%2B5%2BQLTX77%2BNO1AHZVTR6%2ByX0jv1HfDAd7pzOlzP60bLAj9stMspBrI8H9evLIzYFWuJRb2k4f51SeyGEAyUtTn%2Bb97r0QSpXi8O1H6Tb3A7kkJcNWfw7VKClpn3htJXUWvwvSt2I9THg0alJTedhXPqmfqR7lT%2BFEQiAd%2Fk2F51mDcZsWqxPt0pzWzoDGCvm7ggzMtrdo4NTfyzELMTAqfpAg1ffTh7auImBpIRc%2Fcj%2FR9Vp%2FkBKQNCYF1MzWtjTMcNaE2UGBFvRS2lrbohV8x2ukCeFWq3g%2Bnn9OHuibRm9A%2Bb7ynmisDdV2gxW8ZF8sE9IUrzmpM77qVdvb4nmPYdBmwOsRRv3iFMo8sH%2BsLv6U7YaeLLsLJ1dAga40J7ctyPK129Po5GpplDhrIygiJe8Te7TCtvsmPBjqlAfB3avWsX28r4NqKpC5YnEx%2F38dYIQ0qSt%2BCmLJfFcx8k03zJ%2BdYLooteIJsK9j65KCBm4hrWUm2BTOUakoqZizRz3IQbdh1PIw6bZEInIBOKPYJyR0eSpPiMC4kBY58eVJ4G6tbJ6XQBmIi1k82%2BDj64pay47uAHEKFAj%2FtI7oY0os0p2DJLSTdiXCDTW3LiZ5JqL8lSaE6vhC1O%2Fm3g%2Ff2GCjZ7g%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220127T091011Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YPJGLHWOM%2F20220127%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=6da24f7099b9d7d6d70960a62edbe047157fc0d72b3107b90f8e8930328d36f1"
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-role-manage-509e1a8b-aa65-4d3c-a40d-1ced3c1a925e?versionId=iOa45fDbZP1SVi2hWFYxiXToNVAArT4q&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkgwRgIhAKo9ox0Gvmn1EgKc1noXGmRm594IM5UiDkMlQF0qMvxZAiEAu0%2FiR61lpYZCQ%2F5XTxg2afRNDwWm7dbDSkp09T2nsGIqhAQIURADGgwyNTE5MzE4OTM2MTYiDFH4mCMxBWZyYrK5YirhA4cmHiSDYrFa%2BUDW%2BIh3jtTY5IZOR1XHiYtIPITcxtdMRlWjAWWZsorcGloqCG1YnfM4amqiuIrl4yzoV6Eh3DTZM1yhbAYsM78dm%2F7CAITPO4oLehsRCuILA4uh1dUVMNws7MzZtWfaZa6ggd%2FC9rVIOOfAKUgKUoNSoMROI0lobkBkhetw3kKtkgeTKf6tEkbCruhpXL%2FyuiLcK%2Fli%2BpRQK5R%2FL7BfdtON%2FfPWhjVwGkIqySKkqbL2Rnsteqgvd1yRA8k5PRD2YsyjEaxwaOvUShjMi5eLK%2BdXGucinXW%2FYK5SrwBksXbdzcruIhvh%2Fh8SwxZ%2BfAr61zfEs0FObzDq1cIyCZh2s48DtsK4I3Ogf%2BvWQJmnolcZJqPu5vXnHyeojExws1%2BRismhqVXbwCB%2BMa8P14LXditq8sQ8c8vCy1gJJ5uR25Dy8OnaWYKMhfEPn33rZxk2MEEkVDWytQxyKc6uvmODHkTjVn0tt3qc3HcY8etUOZ7yrzGv5zk8mIWGbRbxOE%2BJkRRPrqWZdbJtQu%2F3OVg7Uz7E3IPUs0N7dXGgKUZWLyLq1SGqX9sCvejsPemlU4a7RlLXZNf68hjaDVdpD6v8Ffs0DHVpnDfqi%2F1o2i%2BIS6gVp7BtvKVBtN4w%2B9jQkAY6pAHbckRT%2FXm%2BKKPgkdzpLuc0ooIzChzOl%2B%2FaLiDOKyA5n4py3Zmd4fqEI7uQP3nBQex0%2FVUUMgkdkVkUyVydEer3Dz%2FudAh9CmNOZ9jTeDxjc29CGZU7wD4saKbqS7bKy6U9VBQo6xB1ByYBAux4m2mNhxE59LKEgt5GvHD%2FjIWLcNMT%2BQWvgGgY7U6MQ2JF1lE18RreQIpy0titD%2Bdl186O%2FgjgmA%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012722Z&X-Amz-SignedHeaders=host&X-Amz-Expires=599&X-Amz-Credential=ASIATVKCPT5YKPNPYVPC%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=882ed534b80f09d7d0704d2ed2d3eff48687844feebbc032c98fcea8e1289ce4"
         },
-        "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-role-manage.zip"
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-role-manage.zip"
       },
       "v2pc-api-check_password": {
         "FunctionName": "v2pc-api-check_password",
@@ -2071,7 +2172,7 @@
             },
             "RevisionId": "b17770ca-75d6-48c4-a999-a5559bbca380",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-check_password%3A%24LATEST.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-check_password%3A%24LATEST.zip"
           },
           {
             "FunctionName": "v2pc-api-check_password",
@@ -2098,7 +2199,7 @@
             },
             "RevisionId": "90f96f5e-a7da-45e5-86ad-c4cd368bf4db",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-check_password%3A1.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-check_password%3A1.zip"
           },
           {
             "FunctionName": "v2pc-api-check_password",
@@ -2125,7 +2226,7 @@
             },
             "RevisionId": "2ba01e81-0a9c-43b5-b803-1e3d7dcb6477",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-check_password%3A2.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-check_password%3A2.zip"
           }
         ],
         "Configuration": {
@@ -2163,9 +2264,9 @@
         },
         "Code": {
           "RepositoryType": "S3",
-          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-api-check_password-5cacb9e4-60a5-4c47-bebb-0a375edc7c84?versionId=gaLShHPA8VH2TK73aHZX1IIqWEWjBDJJ&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkgwRgIhAK40Hrab51gdU%2FVwNg3R%2BQ4eAbc9%2BGayUktm5rC1ny2MAiEAkCLfWcdGB5wJ13xg%2B4dGLnC0JknZZdiQZTCQ5sPQ%2FasqjQQIuP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwyNTE5MzE4OTM2MTYiDMo%2FZabXvAnH0MgfdSrhA47x5cOOutA7C8%2F3luwKG86H4DLYrNAR0X6hZwICyMnHddcrf1qVNibitcb2dXIYMzFN9bk0GPMmVbk5EACAcVxEK%2BgRI7TKZiMb28gL%2F4gCntSEHX9BhjBxsHAaQ1eJSlZrCINUwTFZ3FhKKcWgInBac0xin3d3LtqZnBUBXUuNv%2BBF6H5en5Ezkj2CB2AvUsebMmOb187xAdRv3nx4Hbk%2FQGpoWaHhpMlXI6A5uSSDSR659oCQjx3ZIiRTfRRslM9ZH3RFif%2BIEa2cSNWbopk3fQXIw5HRPRtLrh79PXPtl3SMULS2IU%2BHmIgqeFz5IIUaqaH%2Fco0WRxuojjcZy9aJ3l2JHFBUiw%2FIB1FYkV0KyUGkeyQ5j1hlDHxcVAx0usERXiaITpCtlw2In3GVIYml5b8VP1lC3COx9zPW1qnWM3WCzgmBsStWvQMTtSiRwkSRQXmf2%2BPA31yaOCHEdkzobE8knM%2BD4wP%2BxpyR4vAQHXLeUcbt3mVJ141seuVqdkuiD3xuBfYAbhUJZxYHISwjstUdaFMqTbkw0Sn4DUPfSP8Dn3wUK0n1%2BSwE5gl%2B9EhmGf3%2B8DzNf1bUDHtwCC2DdFnK9In7rMOch6UG3UtwWIEfJBRDQ5xZpKrwL5ahF7sw1JrJjwY6pAGoLbSmhFTm%2FL284Qt7ijPr5O36ScciBYmaYvbzQyTiWJKC8QA%2BjJlm0SXC%2FnK3QxHSYqqg5C%2FHc3zp%2Fo0ANGMPvC4YkCg8kThLYWxRdhD9kHham7R8UyY0xSHz3ExkKmujjbXqTnRHtTIMazlVbTY0ZrNOkhp%2B96AlKNWXB%2BNCyQTb9FngrqLoblGZZOlQhTgp35ak4knSS6Xlx9k57gIambqb8w%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220127T091013Z&X-Amz-SignedHeaders=host&X-Amz-Expires=599&X-Amz-Credential=ASIATVKCPT5YNYAAENMZ%2F20220127%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=0fa5496ceaf7c123592784815bcae4e679fd2771c05cca9294e580b26d1b0ca5"
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-api-check_password-5cacb9e4-60a5-4c47-bebb-0a375edc7c84?versionId=gaLShHPA8VH2TK73aHZX1IIqWEWjBDJJ&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkYwRAIgWVI%2Fd7nwNuATWHJt7h02plzlWKCavoK6IifX3FF%2FaiACIAfNCJ02HHg21WtixR3SLTdCTDjHhP%2BUtHPMpYe4pxTDKoQECFEQAxoMMjUxOTMxODkzNjE2IgwQiVyn4LkM8q%2FTSioq4QPf9MTHhwycxOuqWE2Hzr0Hmce0C%2Flqbi8BmlxaIeUtkR5HtWMLjjr7lvoyZpZKNnIGvtDKc%2B8V%2BpOp%2FS0I7aCkxPaHZ3omn%2BabfcPS3IPmmUHVIJIAHXdLQlQWGruO43cfib6e9UF1IdAhXskLjOmFWfTrOJer%2FkNuAUOvAVfQhIpYl%2BtPu4s1y2YF8yRGppHuAjGWheh4ws5eol3X%2F4BbJ45%2Fif8KCJFIE9grTztwOod7WNrj3NM8h9Ptz1k1IVoABlns%2FydX2ugRY8IvZLBtUy0kUu01nWv6Vq1IB5%2Ba%2BVoqmbw%2Bxv%2BWLXtTxJGBM23evSLNeTioNXA3Vfr2Dygg%2FMQexj1PopvDT2A6ReuJHNSgJg90niN%2BFAGjPib3isQzLLSXQFsDKp9%2BGj%2BRu%2F2hqa6tR9wwMEBftWBjRxpQaAHhcisTHw09Hmk2H0KuuKv%2FsPEp4z2%2BNHc5xEo4Zv6ybbbXTrqmCwkSu9y3HpZ9bWCvGS7OY0ictOI2BOtb4%2F%2BL1gpS3DnMgeXZshBk2ybj%2BKHx8AOhGxaueiQme5eLTbWsNtXx3P3vDG1pkNX5EibIuUw3TbFokPgbyIoGjKvKjmlfFeA88bg2GwLhgWWXOd0KAq%2FRY8wDpYmYup%2FlHOAHMIPV0JAGOqYBDEep28xkdPJdUZ8HvnI7XPnNSxUgN%2FACHyCBCmcCe0ODlsbZGruCSZgED%2BstaIE4GJxuRKLWGIZL0VKY%2BUrNjPJujUNosIxmhMuj3dqMbpqtxhWI2qAOh%2B8G6xKlgYYL%2BDFFoDEdHdhQoGScJBz%2F%2BYJGPcbvjUC5%2F4XumQKFQERT0zolQCZjB9qpkqtjJ2dNS2p32Nb%2FW7DggZPS3w888y%2BFVU%2BulQ%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012724Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YNF27OLHC%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=22640c4904dcfa11d370daef69a3b900b461030db47377692482461accb0769a"
         },
-        "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-check_password.zip"
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-api-check_password.zip"
       },
       "v2pc-build-initial-view-diagram-from-scanresult": {
         "FunctionName": "v2pc-build-initial-view-diagram-from-scanresult",
@@ -2248,7 +2349,7 @@
             },
             "RevisionId": "b00e007f-6974-4e48-9fbb-fb3e4291533a",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-initial-view-diagram-from-scanresult%3A%24LATEST.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-initial-view-diagram-from-scanresult%3A%24LATEST.zip"
           },
           {
             "FunctionName": "v2pc-build-initial-view-diagram-from-scanresult",
@@ -2273,7 +2374,7 @@
             },
             "RevisionId": "862ce321-aba6-45ef-8f93-0839e6b997c0",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-initial-view-diagram-from-scanresult%3A1.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-initial-view-diagram-from-scanresult%3A1.zip"
           }
         ],
         "Configuration": {
@@ -2312,9 +2413,9 @@
         },
         "Code": {
           "RepositoryType": "S3",
-          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-build-initial-view-diagram-from-scanresult-82f57cb5-fa9b-41e9-aac2-80e65c495dbd?versionId=8lghMJhEg9v9GpsKhvXfo1I10f8kME2I&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkgwRgIhAJmtQ%2FMYr8QcqzMdWjdyGM91cFLELl8xYgtEKrooesXWAiEAzzj5x6S6TGwpAgv4ssWFVt4OU3k7f32FkzkwZslawcQqjQQIuP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwyNTE5MzE4OTM2MTYiDAEVCkcOwB2G0Ois5yrhAy09ADKplumawt6EM%2FEISyQm8DExrRV79o3Ofid2Fc43AG1pIjoogUwpE8%2F7%2BQ0AqMvRdLyaTZc%2F2Y57fblGE3gWp1lM8I3D8NAW18eqsWX92EPrDPhqBpYD%2BlOY4%2B1bCMS2B%2BhiCAPEq1rNVX7LzkewdX3rN%2FQsoAC5AIpAgHMqfWbjTtNenpA7VvQnZOIHU6jIdLjX997emncoaPjIJvjuShFw3YRRVQ%2F%2BQipNUdL9a8IdAz7Lp7hfv%2Bogo5hcDRP9XbG8Nw1deZ5ebmkfY7XlR3BySOtT%2FLajqr1UIqGlcaze1CnrygeZQuK%2F2ZNw5sZ%2BnHLZCHyTf%2FQo5P82gYQiE5BWAWKQ8rSKd4tF2gERQkrUlkZe0N0I7v58X4I%2BAJJ6g2of36cpfatygf4vrzHxyuXK3WjMkBMcqSZA0nEDbpKIDuKspivAReZwNlZY00CPck6nsic0V%2FMcgGzOp1eNCr4O1pH4mSTgrdiAtD6xinvjq%2FvHXQITbQTcgvP8eADvRcFRnlezSJbSbNM8UBTFQeg5ce6KYLlD2%2BFWtuhzlZdxZfjFfh5WmqrxWANnQBsIieKV0J%2BSsdoNPN9CwHRB0KPtVQq6XnM4mlvPUYB67r6JJo11SC%2BWD0FTF%2BhoHDYw1pfJjwY6pAFqvqQ3CU%2FLyRu%2BZPto3J90yyfTcoP1r2rVTKAvX1M%2FODrTNEfelA5Y3ueTTnGEwgxClfe%2BNP6%2BX0SbO6ASuuf5pgEq0%2FuJ4%2FBQIFxzPeflz0Hg7vt7Ae9ZmX3c3G6OEQjOvjPEcJAKiMm1W8ZEjjeJvdYnAnZlPSShp23EMn9xG1SbgQI4ftWbF%2FrS3p2jfqrLsUW3qQOAMEDTz2LVy4th3nIEuQ%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220127T091016Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YLQZNGUX2%2F20220127%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=560d70354f84bf9a431b8d31fbb639a24064baedf57816708c5243b80a5aa03c"
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-build-initial-view-diagram-from-scanresult-82f57cb5-fa9b-41e9-aac2-80e65c495dbd?versionId=8lghMJhEg9v9GpsKhvXfo1I10f8kME2I&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIhALEg9XEw%2Fjqyss3we5Pi9aJQmDP%2FxdfMa%2BfTgfRa3DdcAiAoEr6l1VQNu07imtD87saEehbxM656muVvmBzIlWAUpiqEBAhSEAMaDDI1MTkzMTg5MzYxNiIMrHiP2ngqNl8l2TDCKuEDlap0%2Fq2TOfnOe8lFd9ns7202G%2BE80E4m1P4wuF9UTvFpKqFzIwGbpj9u6TEtm0ZGAmUboDANqvxySIEu2HzaToYeiY8atkwPLR96AspNAn5Rbfwsi77%2BOgK%2BkL6ddrpnka9IEAljRnBQSNirBt5qRhpw0rl8tfvJ8wFc6cOghwqlzvfJ9OOCiFiPhfUXvd4CE%2FvN7sfc%2BSo8skCrm0Agf8TW8vxCoYvUpD%2BssUD%2BNVEuZ50ERbp0eKU6cHAfKci1aoZgxABZjEOuKCZgqEgZNUT61QSix6JXyXPna7d5dghhF5mUIsWwaOY7G1TNFIZH1mC5lR8XESHdaDNhiWvwB01j3PNDj6B60u%2BvnYFNcv3AWyCoceb0ZHsPTkhrlVkc%2Bpazkm%2BqGv2vgyN6ZLLpk8Hbc%2FI3q6AT%2Fa5CYM%2BcnpCIbc0O%2BjeSqSigPLHxw0PmJgMVUVtZhmuQGxHh1cY9yBpuaIFFRY1qpdQnmddXOYJRYQyUhhXLnZHaOWgIBpCjkW%2BiD9jNOCxq7gu%2B2E0XiwsL75woKhaA1vrbS4UwEeKyG3FlWB5mHxIVCdyPKIzfLwcODsrullY7%2Fq4LpEphnYBjCXhRz6CisezYCAyfXLMS3g7kYIGlc1Ete5gzhftq4zC87tCQBjqlAfVbAEu%2FB%2F%2FN8mhqysgp%2Fd1HxvYUxAUgLt9F1eA705E%2FCquo5uX4b%2FX501bNHNK2dgIz4%2FtFYGtvXDaS9fDXmWVbKzCAEBtWFNA2BKyub6vxja%2FaF3qkQ84EBtp%2BMrTh9zx47xm1x1AtXyCEC411WKavQ17a1Zd2EJutogg4M%2B8VkCgsicpXkvkkQb2oKiHH0Uq0fjacvEon4DXP%2FvO0Ft4%2F29aJ3Q%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012728Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YKTDXR7I7%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=e0131a18201a28a6b86cf87cc60c27b2058a549a391944f9ced3c3323aa1d0bb"
         },
-        "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-initial-view-diagram-from-scanresult.zip"
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-initial-view-diagram-from-scanresult.zip"
       },
       "v2pc-build-and-update-viewdata-for-resourcegroups": {
         "FunctionName": "v2pc-build-and-update-viewdata-for-resourcegroups",
@@ -2376,7 +2477,7 @@
             },
             "RevisionId": "54767074-c8e9-41a3-bb45-0a745da3c613",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-and-update-viewdata-for-resourcegroups%3A%24LATEST.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-and-update-viewdata-for-resourcegroups%3A%24LATEST.zip"
           },
           {
             "FunctionName": "v2pc-build-and-update-viewdata-for-resourcegroups",
@@ -2402,7 +2503,7 @@
             },
             "RevisionId": "7e90321f-3a14-421b-872e-e431819edb77",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-and-update-viewdata-for-resourcegroups%3A1.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-and-update-viewdata-for-resourcegroups%3A1.zip"
           },
           {
             "FunctionName": "v2pc-build-and-update-viewdata-for-resourcegroups",
@@ -2428,7 +2529,7 @@
             },
             "RevisionId": "cf65c2f8-5753-440b-9fde-57d1f1655b1e",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-and-update-viewdata-for-resourcegroups%3A2.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-and-update-viewdata-for-resourcegroups%3A2.zip"
           },
           {
             "FunctionName": "v2pc-build-and-update-viewdata-for-resourcegroups",
@@ -2454,7 +2555,7 @@
             },
             "RevisionId": "7fc83861-3b24-4828-a030-43329e5dbfcb",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-and-update-viewdata-for-resourcegroups%3A3.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-and-update-viewdata-for-resourcegroups%3A3.zip"
           },
           {
             "FunctionName": "v2pc-build-and-update-viewdata-for-resourcegroups",
@@ -2480,7 +2581,7 @@
             },
             "RevisionId": "598327e0-0d27-4fc6-92c3-6ab89f6798b0",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-and-update-viewdata-for-resourcegroups%3A4.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-and-update-viewdata-for-resourcegroups%3A4.zip"
           }
         ],
         "Configuration": {
@@ -2520,9 +2621,9 @@
         },
         "Code": {
           "RepositoryType": "S3",
-          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-build-and-update-viewdata-for-resourcegroups-7e21f836-25ff-4fbc-88d0-352e884d2114?versionId=H4cIPySxcLhXXjuszc731aUr9STsFyTk&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIhAMvP2HtHerExwXYA5eZujfMR8abY92DEWQQaaAiR6oa1AiA9Roo2sVKgjr1i32ohbj0sHlxN47FW%2FDZ5RA%2F6dY71RiqNBAi6%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAMaDDI1MTkzMTg5MzYxNiIMvEm7ogUdw5BGjKLpKuED%2FpJ93vRa%2FAx7V1pAUjOIsU%2BVeb07Fn9OOReBptoAGj1MIyBn6D9YeUwVgjY4RRpnV6pujbHU0AujD8GxC3usmnDEi5AFGVhJeoCLDt20Xz0Zj28HQBzx8yocuJBxt%2BpEpqhhZXdVdQt4XMGrZJTH9GlioSRSBOGnEm4PGMBeyaDGLoKAb2u60ASy%2BoZ%2FoIoIPK1nPLqU%2FNBCrXAlEq7sk0a%2FDTuRPrHQlh8PQUoQhGZTe3XGZH02UPPuCo6a06Xf58nRSbqP0CDYfGzWU4m16pmHOIHsnzSgvhoAjQA6k9sJNV%2BaZR57dLfKS2bbpRS0%2Bxm1RiO%2FBaWNmd8a94j9Hn0blTnBMPUru2aECpectBiqn%2BnaX2bfMXskPThNIRYM2dlHOH9cZ3VoGmIVxbjnucDJVlozxUn8QAB909%2BZ6aqxiDsBQZwTg74u4AB2TGn%2BQeuZNKPgL44pTCMC3PdED2Du%2FOsQPxxjrojQkwJ0fmXSU%2FOtP0N%2BcGw7MEZeD%2FiTNeLr%2F9c0QhHmIepqFgCrKuvqKm4uRC70%2Fyu%2BGl3aAOxx1wtqds06I0njO0Uaf8P%2B%2BLNZcraZp2tmqf5inj5NWwI0JMvr%2F%2BhAksxGtUNO74o3pSCkTHqom9hAK56sI02TDjCfwMmPBjqlAWU61iZL11GUGegXSsyI9DCOkyc0lJKf%2F3TjWA2rm85k2ifL57wt4%2Fpn7NrgDcslHSkTFVIAaGZNCEiDzxPF5QsHWX9Iyu1kDarvHGSTm8vkGQTx5NwhnzK1D%2Fh%2FuJW2L%2BuTOza1tWuuG8u3LoOMiDc%2BS2Z8zdBMsnxqODYcEIk1Qfnr1R6W5aw2r3x7wbFvLnN2b0mll8LlC1038h5%2FX8MsSn6TNA%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220127T091020Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YAB6WNFQL%2F20220127%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=065f6c5ef4b3da685dd56041b5fcd45c3d2cb0b43b98f9b9057edae14e36cf56"
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-build-and-update-viewdata-for-resourcegroups-7e21f836-25ff-4fbc-88d0-352e884d2114?versionId=H4cIPySxcLhXXjuszc731aUr9STsFyTk&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIgVQyVsMnDWrA%2Flnb20EK2R8jrOQH0frFrBhm%2FzaEn2SQCIQC4fkUWBjjNQcBFmOw9wHkXWlYSPqnna3K2vz9I1IUm1SqEBAhSEAMaDDI1MTkzMTg5MzYxNiIMySfx88z%2BFPo9bFK3KuEDVZQB58hXNMt9vIhiIZR%2BPcrUxTrWcCJCT7eYppEVGPXF2DJSjWGphMhe2DzQLfg7DOnCA5azVBJhNPdSsjlfeRsAh4dM5soQXaLcdKbC%2B9wqnOxJ7AETNtObsNW3Xe%2F2YQGywzm90EtV%2Be2hydoed9hx2zfezwEq%2BrpwlYs5yzQ3P7isZV%2BgWplHosOWIq9Us8RSMeu0Fj9yl58m8%2Ba6Zsz3TaDKBLwMI%2B0pM1h%2FDb%2F10V7RFaFlHLzDRwyPyIrrMYHfrmJZh6QySEROQ%2BmqB0zz89e6%2B1%2FqmGRSNrjQl8A%2BzMKKtOZtm80r%2FjbmlkvS2u%2F1WsPathgBhuVVd0%2FRVlL7KYMXCF4qliWR1T8BUwp18x6IYIOvnV8J4cMqeSiVAZnXW4DcqGAvmk8PspO1cAzBK9DvqAfbugHqANMS2SZ0wM8s%2B2o2Skh%2BemTsyYfOtKgqi%2BOligm5JYDIQCFURqHWVs3fqGMw36aHQ3kEheUaWmLLwrkZW58ckMognTmVlq%2BQTIkYJxhmPBecYSTsDx9cfNwO3Xz4CKoufs4SwZ%2B3SPLzZFtu4kyDemz3NL1LzkLNLzmWsh8U3Bwly9ZXKCh633SSTjNpOneVcwR%2F%2FRPFK2RLRB0zGjPvZYtPGoas1zCs49CQBjqlAaGSBUBaEwebdgxcWg41f7OOYCX80rlUfiyxN9dMfshmA3h22SwvKessRc0WJ7HvIb5hJvtx%2B%2FqDXx4dWyOGjB0hrBCkX%2FsUORm7LurgRI1oQA7YXGC3nTNCgp8yzH248lMpEXeAU24CYk%2B%2F3VSAb549aRJGL7WEwIYTymXWNRMfy4lFA1O8VWt4xjWeVT%2BIXdoSaJ6r%2FsjESaISS3yfR3vgp07%2Few%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012732Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YJ6ANK4UT%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=41ba0c7a13127df5929c01370c992516463b004933c9774b1a2496db9e0fe982"
         },
-        "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-and-update-viewdata-for-resourcegroups.zip"
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-build-and-update-viewdata-for-resourcegroups.zip"
       },
       "v2pc-backend-deployer": {
         "FunctionName": "v2pc-backend-deployer",
@@ -2576,7 +2677,7 @@
             },
             "RevisionId": "1491ad9f-5963-4e49-855b-d8a9e54a47ed",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-backend-deployer%3A%24LATEST.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-backend-deployer%3A%24LATEST.zip"
           }
         ],
         "Configuration": {
@@ -2613,9 +2714,9 @@
         },
         "Code": {
           "RepositoryType": "S3",
-          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-backend-deployer-022d5082-181e-49c1-830d-49310db71b7d?versionId=Yfq29QLaHk3FFG0UEfEauate4TKJKWMg&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkgwRgIhAMC7GoSMl88T9Ao1WWShiAR9SO6uGwVu%2Fv0QwS3fNgDuAiEA2ZPWx%2Bu920MT3KpBJ6xzRgJFxOKXiK7z%2F2%2BCoimsRE8qjQQIuP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwyNTE5MzE4OTM2MTYiDEvjdoHhbMAMm6bCkSrhAyNxvtAOwSsaE6QDpgUFk2cp27fZ4%2FBL3u5fuu5Qs01NShfNJ2Eqc%2FJpX5ihQPrBjASe8i0uw%2FIPqAoFY6frsOq9lER6JZrSIp32%2Bll8Ey81xaE%2Bl%2F2Oa9tm58hAiLOM%2Bu%2Bm1%2BPdikZ%2FCjK%2F1jvM1ibGvkPFjVIpR1RUBm1AiUhT2%2BOTmzlaLrqki42jisKHx1c8aYAzbjo9vshgcCDby0A8ISo5ZdKZ9fynUMJhJiRQEVnCPjlFqiwOmm0cXS%2BeH7wo8ihMK70Eihz0Q3uoaUMuIOQq4TThyxa66vlLj4cFgZYH%2Bpm%2BwNFv8I5MNY0zOxErj5R2hx2gYFdvwNYAq8WLpR0LHbCrTjSwV%2Bj2BM%2FHOa7fdqG3nhMpxHkRXH8wRvmK60LcWU9qe2kS2pAe7%2FFvfAHI7FlB6igavNvuBsB4q%2BMYDI4m5p0SdQGfdejonqUGT%2F6FwOrLDbX3CZ5NiCUVjbuG6EClDuMYQxjsNQDUkxiuXnUXIcqRs6Uq8xaKNniLcWuBEKM%2FNaECtlTjYoEIvvQ0PZSnyxIWgoMN6UmvcK5eYcPd1ZmT5YzvB%2BPNbLKZytnek7RlgHYCWprx5nj%2B%2BKu1HDrR9rF1pTl0WxG9u81oBHNfmdfS%2Bq20vMg06GAwy5%2FJjwY6pAEFHMQRCAiEVBlyXQzRQxCtRPUlu3WywJcXGCNsdFFpZ4MNedwscpSbzIIw8fFZSUpwTwdIwaH4qkDVuqT1d6NB3rWoQjHfOSPn%2FWCL7V0%2FtJVAiTXTE67GL7qxZx7%2BZedXmNxLyZuf9cZIa1TlVBOMmawZn2PtgWufeb7DhfknYuIYwmCwjHRypWOCYuuij1ztqkZEVXpdzWjcJv0Y1WhesigHfw%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220127T091022Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YNW6PUKYE%2F20220127%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=cfb329fc6b01cf85c925d83a28715e84bd29b26c2f14ea82536f1fc8e9dd6bd6"
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-backend-deployer-022d5082-181e-49c1-830d-49310db71b7d?versionId=Yfq29QLaHk3FFG0UEfEauate4TKJKWMg&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIhAJ1Qo%2BK5ryDSCzEM9GdqjGVezy2HQqKt7stsRJJLMBWlAiACbWmLq3zqkVdjyCnSt1sT%2BJB1nnZlqiWKURx6h%2B9VkiqEBAhSEAMaDDI1MTkzMTg5MzYxNiIM8R7lsSI8r6I0%2FmiOKuEDLCSDfuuGlnRApYa7LkB05N0RBepltUwlLJOZuMHP5kX064mqNQP5S7u79pv5eJyMsa3K%2F0sDE7%2BUfBpjkY08Hy7SUwD7jOLU9V81%2F56fexb30qaCZrrkmIHPti3ouB8husQyUyDp1DdCueC60ZpDHZvREN9tSGpzTBf%2FW0PJgEwRooJcS2YnPEgAOCLzjn35kvfIsBuDdVdjlm3THv0MNcnCH9ctCwxEjWbsABX37RQq%2Fj0QDUELydLubUWl10NF5hqmSyZH4RGZN8XnDT7iOJvoMdErs1bKPofEewPA6TY5k4jf6662FmMEzmya9mXQLKpbjiB20Y2u9CC9fb5oLpeeASKsLUNcPFypnPFrY9o2uKufZ%2B9Pz4ptFT2OwOjvvvx9SvXAPyb5Z0OdjxUPBo7wFtgYyVDPV5K2xIMrhdMK8OLu43%2FO%2BDsdLS8%2BXt%2BrgAxVPdb4euk%2BWYlhrvPfbQqdCwh48s4XUKeqxMbPLgB6H2uZLsn7uPdueAKRBu92gPGoMPgHNATwzJEPAUOdQXGor7Qgu1QON%2BPn%2B2nALzE2C1NhaFGzjA1G7ny3%2FmX7SRWWACU7IHt8e8eMca4TAky5PMr%2BcfnYcCV5nWmw7Bvk3P1ie3QYhPjFexsk7kW1QjDS79CQBjqlAQh6QWoLP%2FsI06QtU6u%2FUS9z6T8PJ9WSSQzVdW7CEiQI6oRvHr4tpiGSZmfw1dg5%2FiLaBOBmaeYqt%2F53MU89%2BFIYYBxGsS79FaCcr92%2F7zARvDGnSKr1v0nvo3oi%2FSnN5%2B6xPnC4TuTxO4F8yM7jRGd7ZSD7BiIvsnRO4s96r9168NpH99NyIIIHxqlmKtLu%2BVMx%2BmarfMMMeaOygjJjXcxCr%2B1xtw%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012733Z&X-Amz-SignedHeaders=host&X-Amz-Expires=599&X-Amz-Credential=ASIATVKCPT5YM3EVUSYJ%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=e4018a614b5bf80a6200993426a8c1d5b6d9157cb71617397fd5a2d136290a4a"
         },
-        "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-backend-deployer.zip"
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-backend-deployer.zip"
       },
       "v2pc-request-scan": {
         "FunctionName": "v2pc-request-scan",
@@ -2699,7 +2800,7 @@
             },
             "RevisionId": "ae71fdb3-c08d-48bd-b7da-be8004b5e6d4",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-request-scan%3A%24LATEST.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-request-scan%3A%24LATEST.zip"
           },
           {
             "FunctionName": "v2pc-request-scan",
@@ -2726,7 +2827,7 @@
             },
             "RevisionId": "64ed6d3f-db54-4ae0-9a2c-7f495240d0bf",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-request-scan%3A1.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-request-scan%3A1.zip"
           },
           {
             "FunctionName": "v2pc-request-scan",
@@ -2753,7 +2854,7 @@
             },
             "RevisionId": "b92bca5d-982a-4dd6-91ad-f7e2749d5278",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-request-scan%3A2.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-request-scan%3A2.zip"
           }
         ],
         "Configuration": {
@@ -2794,9 +2895,9 @@
         },
         "Code": {
           "RepositoryType": "S3",
-          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-request-scan-70d599de-f7c2-4864-a909-0385e7aa5679?versionId=Ir.j2UMpiEf7W5g5efAsaIxUog0QmkCU&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkgwRgIhAJXR8FQzxLidwupbFjjbB9tO6Yucq8JEo8wx9ZBWnLBPAiEA6lMYcPU6kiTKWzyD2Ji%2FqjMClficB1rfExRvierJs%2FoqjQQIuf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARADGgwyNTE5MzE4OTM2MTYiDNEUA5Wv1tz4aD9B1irhA%2Brh0GGADVp%2BIKhNMggnM0R539OHNRtmJMmuJWr6L%2F5FpiD2eUom4Xn5EPuh2jvzcc2vGv2%2BvN58Ui2ETdiEZHvoUor2ebipt3Fw06vQpfBX0UbWGV34HytcAWS3um6AXffBcuThz9EYzGOrXjZs8PNlPzE%2FcSROjqQCwZV0n9C%2FAEnGpqfOMU4eJRNrrDfi70AKf07QPV2%2B4v1hh9sTJ5fhS2qsXck1GKBrALIUH9HWWgiiOeCbFdNjAnAix8rDG%2BUV4o5%2BzIQUps3lBCV5DPcAGs4AO5B0e61Am1VaqjpisNjOTc%2FMdEYHqBRgY%2FRD5j6%2FuQlAf%2FHECdjcNJW8xTZoJQxNMarNWMZvg0sxxyq8QNc1cs3XC7PUWo6pPOZC3jRuyVgPms%2Fcj8olcSu9FL3Y407AywqIffmSHEP6LvAXrsGYIjRdgpWa0kOL7ArLWQpViv6HGEXVbdRlNRrUG%2FEmhv4wlGhDm%2FcdGAXUIFnbFSCH697REIIhWIzGgfNK11wYR3zzodMNARtc53o3Sk8zcqnD%2FWCzCF9%2F8vR9V%2Fiiuj75buaDKAwhNar0Bi%2BQcP8i%2F4qgU1lscbqIZwyiYfeA8X6rJoQux3R9aOl830uAT6UjOFUHhxAOvr3LJ9G2KVswuZ%2FJjwY6pAHnko2EZUeTDvjSTZdyNCXnrlaAsSkodWnx72qpONi6f1AyM1Nbyt7Q4Q2rPu6FoNXVVPjYh37M%2FxxJsUtk9edCkB1pPiIRb3x9EOsZ%2FVa%2Fgsv3R%2F5iLGahp8HdcZqhO6rIpJifmNuyZa5DnYixavIb820ikv3%2FA63AMxbFhVen9i0DKr6SJm9wKseimVmS6g0kAMqPgXmfrbP5mfj32rcnyl6s5w%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220127T091025Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YBRO7U77R%2F20220127%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=fcee274e9e4a35d3af75d10b74beb151dd1f00d7e78c246ba9169cbc59d80568"
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-request-scan-70d599de-f7c2-4864-a909-0385e7aa5679?versionId=Ir.j2UMpiEf7W5g5efAsaIxUog0QmkCU&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIgc7CUwZ85NEjttp3LkGjXC2xpA5tkqiHXA0R9wRetCbMCIQCEnWit7DjZS9SuvrxvVdvDnadboJzFSTvl7YlwdJJFWyqEBAhREAMaDDI1MTkzMTg5MzYxNiIMXd9uIRXnOdAUBBliKuEDuOeXjaunZRMdqjBE24C2unQqnVRcBtTjgmymGZ2uIjNmyz%2BHeST8Ki0D1lJBbYLlGNAF3TiGMYwYYttGEb%2BcpHPBsycUNAHj6RZNkQlKZIEC4P8DImVQmKP3NsFK8JJr4ayMFI3Labf0cn4TypgU5AZFeXh2OK6Vf6AaeXtFvAX2ucQ2TNO2iZB85fZO0e%2BF1i1BRwmKhVlt0jK6a9i3XcAv02JbKq5Ujc40UAYV%2FGOnHFinsFvr7%2BFhC9%2BudKuFIfxdxgVl5oncC9MNEAxL8XcUtT3MgSxevBRIF%2F03gVQC2IwdhCQo7MOv11N4x4lCO5e7o%2F4kXtSyFtD%2BJZ9y34IBlHmTFv94t%2Fc2GariH4GYEX2G6wf84RQKHSDwk4JuXjq7XXl5kWNR6MPVKvfedpoGyBx%2FiPLq30BP28UDoxEc5huGr8EZ139iFTVstezzLEejkQKCv13EcZ8iyqG7d1GgSZh8hLHF3PU%2FvYug3Cjm2avGiOB%2B4mMMOS9NWT1BQsIUSDtgNK%2B2JwlTxfiVCYigWE9exjIwdqBRiD%2FZHDTS4SzdeQPKhp9ChiilIrC6xlmC3FAoE5Q6k3oFU43WExtYqixxW%2B4MH7YM%2FR94mIQdkDZk8wwTVELEg1R5Q9Rm3TDk3dCQBjqlAdE6Mu70TfBM0grKTgKd%2FUZug1hiFy4%2B%2FKTmKzM9SyTwAEnKHwt3f5ZiCD2VR06631%2F3zgbKSHUpSvAWzd2NfsnaluJtF89S8XROxI7MwnmsEjLtVoyTwDMNcOs3vgJl3rffEI%2Bn%2Fm1rIAVzl3VSm2BGRrkCIzZnqPSeq%2F%2Fms570J%2F3xnP%2BuRwKu4nX0Xvm1rBQ1ayZPdFVIXziDLH3dkVnboW%2BjRg%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012737Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YNKE4TYWK%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=ed51c41210ba4474afc088fcfc1cee203c867d4d0acda568de67e0085d104246"
         },
-        "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-request-scan.zip"
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-request-scan.zip"
       },
       "v2pc-store-viewdata-last": {
         "FunctionName": "v2pc-store-viewdata-last",
@@ -2878,7 +2979,7 @@
             },
             "RevisionId": "8f8ed96f-5746-4d4e-8091-7692968f31e9",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-store-viewdata-last%3A%24LATEST.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-store-viewdata-last%3A%24LATEST.zip"
           },
           {
             "FunctionName": "v2pc-store-viewdata-last",
@@ -2904,7 +3005,7 @@
             },
             "RevisionId": "11d5e2f5-050b-4349-96ac-8038c47d815a",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-store-viewdata-last%3A1.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-store-viewdata-last%3A1.zip"
           },
           {
             "FunctionName": "v2pc-store-viewdata-last",
@@ -2930,7 +3031,7 @@
             },
             "RevisionId": "efca644a-7f39-4ef7-bd59-402a4c300bcd",
             "PackageType": "Zip",
-            "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-store-viewdata-last%3A2.zip"
+            "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-store-viewdata-last%3A2.zip"
           }
         ],
         "Configuration": {
@@ -2970,9 +3071,9 @@
         },
         "Code": {
           "RepositoryType": "S3",
-          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-store-viewdata-last-25980ead-2218-4d83-8f65-b53c9392e1e0?versionId=VVmqwlllWFuYG1cgdSrTHATYMWrb9qcO&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkYwRAIgJBMRiVF04Gy%2B%2BA0qtwNoKbFKXiPRH0Dvthl4pUqmKNACIHAnpd1zKk6qhDKj%2Bvb3WLNww3WNExOsqz5CbI5NEInaKo0ECLj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQAxoMMjUxOTMxODkzNjE2IgzlqkudYHghgjyswdkq4QOd8OqDuCNwkUEwuHr%2FUAO1kRZeku6tA1iEJiKgDVCGLi6kispOf9qtLGasYunhWEPOWglD5lR8B363W6NJaY1tsLOQnlU37sRToFIXfU2CHehBLSb3RUwjLt28D8BWuOihUUWjeg4pbf1iy38NKvxfjl3I6SRNFa8HCdLiSHkOSCs%2B1u10JYvAFb95mGw0aUljkXWSRDbchjCO519AP%2Be2b4DHKiDfmQd0VisCqNwvZrwHmZuR1K93UZavU6%2BDlp7gcshQTXhKEdQr%2FTLIrVgL67oS6MeRHEoNVYDSux8%2BH6e8%2Ftt6IEEkNMlFhnYeWTielIcKxc749V5HgMa2zuiKnqcFXVQ9gzTILguIA3qUQMghYj2MMF3MCjZUOU2sXZfh3gFk4yJ6dCCzwJN06DCxqrnYP1TH%2FyHObrMe0Lq2bAbQfTrbExeQXbZnYum%2FkMUELsjb071wKPHXhHCYRBGgh6YiCEIWZ1vItrWQDX8NIB08iZ8Z7%2FKW7BHdFzl02yzTLTqhmL3KEFwQy%2FaHrXbWr2IU6z%2FCKCg4pTwY5pykXgIKoQNwXyL9hh4gIHrOE9viCvZxplOek7HwjQRCCFtfFqyGnAQUpz9ACSu2Dbl%2BoGPdl%2Bwp5dg6LRmLcRbb%2BVCFMLWjyY8GOqYBaqga3BgXmw0uFFMZ%2BGC39Phv7lOTW2ZP3qQ4Z6FZRjPLMyuoLHOz3DiBIIMVLCAy4MXwfWr60s8TymYpJ05FTD0itC6NNPMHOy39czLuVrtVnWNyoTLIyCzKD2mDexJn0hE%2B6BuHYomeAOqlK0pgz%2BfRNpcySkdo2l8rFEvoHPN7Rue7odmyXrN1bjBGyegbH3bRens0oK6M3hGbwNqS8beevw9%2BQQ%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220127T091027Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YNZPZUODV%2F20220127%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=11181abb3dd134300cf3769d26f468f52fc4c1b8df17ce464dc04a0ff120883d"
+          "Location": "https://awslambda-ap-ne-2-tasks.s3.ap-northeast-2.amazonaws.com/snapshots/391285059836/v2pc-store-viewdata-last-25980ead-2218-4d83-8f65-b53c9392e1e0?versionId=VVmqwlllWFuYG1cgdSrTHATYMWrb9qcO&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkcwRQIgVQyVsMnDWrA%2Flnb20EK2R8jrOQH0frFrBhm%2FzaEn2SQCIQC4fkUWBjjNQcBFmOw9wHkXWlYSPqnna3K2vz9I1IUm1SqEBAhSEAMaDDI1MTkzMTg5MzYxNiIMySfx88z%2BFPo9bFK3KuEDVZQB58hXNMt9vIhiIZR%2BPcrUxTrWcCJCT7eYppEVGPXF2DJSjWGphMhe2DzQLfg7DOnCA5azVBJhNPdSsjlfeRsAh4dM5soQXaLcdKbC%2B9wqnOxJ7AETNtObsNW3Xe%2F2YQGywzm90EtV%2Be2hydoed9hx2zfezwEq%2BrpwlYs5yzQ3P7isZV%2BgWplHosOWIq9Us8RSMeu0Fj9yl58m8%2Ba6Zsz3TaDKBLwMI%2B0pM1h%2FDb%2F10V7RFaFlHLzDRwyPyIrrMYHfrmJZh6QySEROQ%2BmqB0zz89e6%2B1%2FqmGRSNrjQl8A%2BzMKKtOZtm80r%2FjbmlkvS2u%2F1WsPathgBhuVVd0%2FRVlL7KYMXCF4qliWR1T8BUwp18x6IYIOvnV8J4cMqeSiVAZnXW4DcqGAvmk8PspO1cAzBK9DvqAfbugHqANMS2SZ0wM8s%2B2o2Skh%2BemTsyYfOtKgqi%2BOligm5JYDIQCFURqHWVs3fqGMw36aHQ3kEheUaWmLLwrkZW58ckMognTmVlq%2BQTIkYJxhmPBecYSTsDx9cfNwO3Xz4CKoufs4SwZ%2B3SPLzZFtu4kyDemz3NL1LzkLNLzmWsh8U3Bwly9ZXKCh633SSTjNpOneVcwR%2F%2FRPFK2RLRB0zGjPvZYtPGoas1zCs49CQBjqlAaGSBUBaEwebdgxcWg41f7OOYCX80rlUfiyxN9dMfshmA3h22SwvKessRc0WJ7HvIb5hJvtx%2B%2FqDXx4dWyOGjB0hrBCkX%2FsUORm7LurgRI1oQA7YXGC3nTNCgp8yzH248lMpEXeAU24CYk%2B%2F3VSAb549aRJGL7WEwIYTymXWNRMfy4lFA1O8VWt4xjWeVT%2BIXdoSaJ6r%2FsjESaISS3yfR3vgp07%2Few%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220222T012739Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIATVKCPT5YJ6ANK4UT%2F20220222%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Signature=9e3f3e8dfc080dea8622e13bbf23a63f0ae50e5da91fc4bcf30219f9c90889b3"
         },
-        "StoredLocation": "s3://v2pc-scanned-data-test/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-store-viewdata-last.zip"
+        "StoredLocation": "s3://v2pc-scanned-data/lambdaCodes/arn%3Aaws%3Alambda%3Aap-northeast-2%3A391285059836%3Afunction%3Av2pc-store-viewdata-last.zip"
       }
     },
     "LambdaLayers": {},
@@ -3023,7 +3124,7 @@
           "Description": "Basic execution permission for lambda",
           "MaxSessionDuration": 3600,
           "RoleLastUsed": {
-            "LastUsedDate": "2022-01-27 07:57:49+00:00",
+            "LastUsedDate": "2022-02-21 10:34:12+00:00",
             "Region": "ap-northeast-2"
           }
         },
@@ -3057,7 +3158,7 @@
           "Description": "Permission to read s3 from lambda",
           "MaxSessionDuration": 3600,
           "RoleLastUsed": {
-            "LastUsedDate": "2022-01-27 08:09:52+00:00",
+            "LastUsedDate": "2022-02-21 10:34:10+00:00",
             "Region": "ap-northeast-2"
           }
         },
@@ -3095,7 +3196,7 @@
           "Description": "Permission to scan target vpc",
           "MaxSessionDuration": 3600,
           "RoleLastUsed": {
-            "LastUsedDate": "2022-01-27 08:45:15+00:00",
+            "LastUsedDate": "2022-02-22 01:10:42+00:00",
             "Region": "ap-northeast-2"
           }
         },
@@ -3153,7 +3254,7 @@
           "Description": "Permission to read and write access for amazon dynamodb from lambda",
           "MaxSessionDuration": 3600,
           "RoleLastUsed": {
-            "LastUsedDate": "2022-01-26 12:02:48+00:00",
+            "LastUsedDate": "2022-02-18 03:17:02+00:00",
             "Region": "ap-northeast-2"
           }
         },
@@ -3191,7 +3292,7 @@
           "Description": "Permission to read only access for amazon dynamodb from lambda",
           "MaxSessionDuration": 3600,
           "RoleLastUsed": {
-            "LastUsedDate": "2022-01-27 07:57:50+00:00",
+            "LastUsedDate": "2022-02-21 10:34:08+00:00",
             "Region": "ap-northeast-2"
           }
         },
@@ -3200,6 +3301,45 @@
           {
             "PolicyName": "AmazonDynamoDBReadOnlyAccess",
             "PolicyArn": "arn:aws:iam::aws:policy/AmazonDynamoDBReadOnlyAccess"
+          },
+          {
+            "PolicyName": "AWSLambdaBasicExecutionRole",
+            "PolicyArn": "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+          }
+        ]
+      },
+      "v2pc-inspector-to-scan-pricing-for-resources": {
+        "Role": {
+          "Path": "/",
+          "RoleName": "v2pc-inspector-to-scan-pricing-for-resources",
+          "RoleId": "AROAVWGTIGD6NQXUH7TBP",
+          "Arn": "arn:aws:iam::391285059836:role/v2pc-inspector-to-scan-pricing-for-resources",
+          "CreateDate": "2022-01-24 08:55:49+00:00",
+          "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Principal": {
+                  "Service": "lambda.amazonaws.com"
+                },
+                "Action": "sts:AssumeRole"
+              }
+            ]
+          },
+          "Description": "Allows Lambda functions to call AWS services on your behalf.",
+          "MaxSessionDuration": 3600,
+          "RoleLastUsed": {}
+        },
+        "Policies": {},
+        "AttachedPolicies": [
+          {
+            "PolicyName": "AWSPriceListServiceFullAccess",
+            "PolicyArn": "arn:aws:iam::aws:policy/AWSPriceListServiceFullAccess"
+          },
+          {
+            "PolicyName": "AmazonS3FullAccess",
+            "PolicyArn": "arn:aws:iam::aws:policy/AmazonS3FullAccess"
           },
           {
             "PolicyName": "AWSLambdaBasicExecutionRole",
@@ -3229,7 +3369,7 @@
           "Description": "Permission to process queue",
           "MaxSessionDuration": 3600,
           "RoleLastUsed": {
-            "LastUsedDate": "2022-01-27 08:40:50+00:00",
+            "LastUsedDate": "2022-02-22 01:11:30+00:00",
             "Region": "ap-northeast-2"
           }
         },
@@ -3279,7 +3419,7 @@
           "Description": "Permission to handle scan request",
           "MaxSessionDuration": 3600,
           "RoleLastUsed": {
-            "LastUsedDate": "2022-01-27 07:57:55+00:00",
+            "LastUsedDate": "2022-02-17 16:09:16+00:00",
             "Region": "ap-northeast-2"
           }
         },
@@ -3575,10 +3715,389 @@
             }
           ]
         }
+      },
+      "arn:aws:iam::aws:policy/AWSPriceListServiceFullAccess": {
+        "PolicyName": "AWSPriceListServiceFullAccess",
+        "PolicyId": "ANPAIADJ4GBYNHKABML3Q",
+        "Arn": "arn:aws:iam::aws:policy/AWSPriceListServiceFullAccess",
+        "Path": "/",
+        "DefaultVersionId": "v1",
+        "AttachmentCount": 1,
+        "PermissionsBoundaryUsageCount": 0,
+        "IsAttachable": true,
+        "Description": "Provides full access to AWS Price List Service.",
+        "CreateDate": "2017-11-22 00:36:27+00:00",
+        "UpdateDate": "2017-11-22 00:36:27+00:00",
+        "Tags": [],
+        "Document": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": [
+                "pricing:*"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ]
+        }
+      },
+      "arn:aws:iam::aws:policy/AmazonS3FullAccess": {
+        "PolicyName": "AmazonS3FullAccess",
+        "PolicyId": "ANPAIFIR6V6BVTRAHWINE",
+        "Arn": "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+        "Path": "/",
+        "DefaultVersionId": "v2",
+        "AttachmentCount": 4,
+        "PermissionsBoundaryUsageCount": 0,
+        "IsAttachable": true,
+        "Description": "Provides full access to all buckets via the AWS Management Console.",
+        "CreateDate": "2015-02-06 18:40:58+00:00",
+        "UpdateDate": "2021-09-27 20:16:37+00:00",
+        "Tags": [],
+        "Document": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:*",
+                "s3-object-lambda:*"
+              ],
+              "Resource": "*"
+            }
+          ]
+        }
       }
     }
   },
-  "S3": {},
+  "S3": {
+    "cdk-hnb659fds-assets-391285059836-ap-northeast-2": {
+      "Name": "cdk-hnb659fds-assets-391285059836-ap-northeast-2",
+      "CreationDate": "2022-01-24 04:53:40+00:00",
+      "ACL": {
+        "Owner": {
+          "ID": "09b9c6494203c7985a01776413c45ec9143a12f24f285a8e867e998d062119e5"
+        },
+        "Grants": [
+          {
+            "Grantee": {
+              "ID": "09b9c6494203c7985a01776413c45ec9143a12f24f285a8e867e998d062119e5",
+              "Type": "CanonicalUser"
+            },
+            "Permission": "FULL_CONTROL"
+          }
+        ]
+      },
+      "ServerSideEncryptionConfiguration": {
+        "Rules": [
+          {
+            "ApplyServerSideEncryptionByDefault": {
+              "SSEAlgorithm": "aws:kms"
+            },
+            "BucketKeyEnabled": false
+          }
+        ]
+      },
+      "LoggingEnabled": null,
+      "Accelerate": null,
+      "LocationConstraint": "ap-northeast-2",
+      "PolicyStatus": {
+        "IsPublic": false
+      },
+      "PublicAccessBlockConfiguration": {
+        "BlockPublicAcls": true,
+        "IgnorePublicAcls": true,
+        "BlockPublicPolicy": true,
+        "RestrictPublicBuckets": true
+      },
+      "Policy": {
+        "Version": "2012-10-17",
+        "Id": "AccessControl",
+        "Statement": [
+          {
+            "Sid": "AllowSSLRequestsOnly",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": "s3:*",
+            "Resource": [
+              "arn:aws:s3:::cdk-hnb659fds-assets-391285059836-ap-northeast-2",
+              "arn:aws:s3:::cdk-hnb659fds-assets-391285059836-ap-northeast-2/*"
+            ],
+            "Condition": {
+              "Bool": {
+                "aws:SecureTransport": "false"
+              }
+            }
+          }
+        ]
+      },
+      "Versioning": {
+        "Status": "Enabled"
+      },
+      "TagSet": [
+        {
+          "Key": "aws:cloudformation:stack-id",
+          "Value": "arn:aws:cloudformation:ap-northeast-2:391285059836:stack/CDKToolkit/813de8d0-7cd1-11ec-848c-06286b699d26"
+        },
+        {
+          "Key": "aws:cloudformation:stack-name",
+          "Value": "CDKToolkit"
+        },
+        {
+          "Key": "aws:cloudformation:logical-id",
+          "Value": "StagingBucket"
+        }
+      ],
+      "NotificationConfiguration": {},
+      "IntelligentTieringConfigurationList": [],
+      "AnalyticsConfigurationList": [],
+      "MetricsConfigurationList": [],
+      "InventoryConfigurationList": []
+    },
+    "cf-templates-1ni8urz5ux2rb-ap-northeast-2": {
+      "Name": "cf-templates-1ni8urz5ux2rb-ap-northeast-2",
+      "CreationDate": "2022-01-17 05:19:51+00:00",
+      "ACL": {
+        "Owner": {
+          "ID": "09b9c6494203c7985a01776413c45ec9143a12f24f285a8e867e998d062119e5"
+        },
+        "Grants": [
+          {
+            "Grantee": {
+              "ID": "09b9c6494203c7985a01776413c45ec9143a12f24f285a8e867e998d062119e5",
+              "Type": "CanonicalUser"
+            },
+            "Permission": "FULL_CONTROL"
+          }
+        ]
+      },
+      "ServerSideEncryptionConfiguration": {
+        "Rules": [
+          {
+            "ApplyServerSideEncryptionByDefault": {
+              "SSEAlgorithm": "AES256"
+            },
+            "BucketKeyEnabled": false
+          }
+        ]
+      },
+      "LoggingEnabled": null,
+      "Accelerate": null,
+      "LocationConstraint": "ap-northeast-2",
+      "Versioning": {},
+      "NotificationConfiguration": {},
+      "IntelligentTieringConfigurationList": [],
+      "AnalyticsConfigurationList": [],
+      "MetricsConfigurationList": [],
+      "InventoryConfigurationList": []
+    },
+    "stage-v2pc-service-storage": {
+      "Name": "stage-v2pc-service-storage",
+      "CreationDate": "2022-01-25 03:49:12+00:00",
+      "ACL": {
+        "Owner": {
+          "ID": "09b9c6494203c7985a01776413c45ec9143a12f24f285a8e867e998d062119e5"
+        },
+        "Grants": [
+          {
+            "Grantee": {
+              "ID": "09b9c6494203c7985a01776413c45ec9143a12f24f285a8e867e998d062119e5",
+              "Type": "CanonicalUser"
+            },
+            "Permission": "FULL_CONTROL"
+          }
+        ]
+      },
+      "ServerSideEncryptionConfiguration": {
+        "Rules": [
+          {
+            "ApplyServerSideEncryptionByDefault": {
+              "SSEAlgorithm": "AES256"
+            },
+            "BucketKeyEnabled": false
+          }
+        ]
+      },
+      "LoggingEnabled": null,
+      "Accelerate": null,
+      "LocationConstraint": "ap-northeast-2",
+      "PublicAccessBlockConfiguration": {
+        "BlockPublicAcls": true,
+        "IgnorePublicAcls": true,
+        "BlockPublicPolicy": true,
+        "RestrictPublicBuckets": true
+      },
+      "Versioning": {},
+      "OwnershipControls": {
+        "Rules": [
+          {
+            "ObjectOwnership": "BucketOwnerEnforced"
+          }
+        ]
+      },
+      "NotificationConfiguration": {
+        "LambdaFunctionConfigurations": [
+          {
+            "Id": "50220e3b-d944-47ce-8170-0ce81106d26f",
+            "LambdaFunctionArn": "arn:aws:lambda:ap-northeast-2:391285059836:function:v2pc-build-initial-view-diagram-from-scanresult:alpha",
+            "Events": [
+              "s3:ObjectCreated:*"
+            ],
+            "Filter": {
+              "Key": {
+                "FilterRules": [
+                  {
+                    "Name": "Prefix",
+                    "Value": "scanResults/"
+                  },
+                  {
+                    "Name": "Suffix",
+                    "Value": ".json"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "IntelligentTieringConfigurationList": [],
+      "AnalyticsConfigurationList": [],
+      "MetricsConfigurationList": [],
+      "InventoryConfigurationList": []
+    },
+    "staging-v2pc.tovdata.com": {
+      "Name": "staging-v2pc.tovdata.com",
+      "CreationDate": "2022-01-26 01:05:42+00:00",
+      "ACL": {
+        "Owner": {
+          "ID": "09b9c6494203c7985a01776413c45ec9143a12f24f285a8e867e998d062119e5"
+        },
+        "Grants": [
+          {
+            "Grantee": {
+              "ID": "09b9c6494203c7985a01776413c45ec9143a12f24f285a8e867e998d062119e5",
+              "Type": "CanonicalUser"
+            },
+            "Permission": "FULL_CONTROL"
+          }
+        ]
+      },
+      "LoggingEnabled": null,
+      "Accelerate": null,
+      "LocationConstraint": "ap-northeast-2",
+      "PolicyStatus": {
+        "IsPublic": false
+      },
+      "PublicAccessBlockConfiguration": {
+        "BlockPublicAcls": false,
+        "IgnorePublicAcls": false,
+        "BlockPublicPolicy": false,
+        "RestrictPublicBuckets": false
+      },
+      "Policy": {
+        "Version": "2008-10-17",
+        "Id": "PolicyForCloudFrontPrivateContent",
+        "Statement": [
+          {
+            "Sid": "2",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E3RU6S0HVHNMOQ"
+            },
+            "Action": [
+              "s3:GetObject",
+              "s3:ListBucket"
+            ],
+            "Resource": [
+              "arn:aws:s3:::staging-v2pc.tovdata.com/*",
+              "arn:aws:s3:::staging-v2pc.tovdata.com"
+            ]
+          }
+        ]
+      },
+      "BucketWebsite": {
+        "IndexDocument": {
+          "Suffix": "index.html"
+        }
+      },
+      "Versioning": {},
+      "OwnershipControls": {
+        "Rules": [
+          {
+            "ObjectOwnership": "BucketOwnerEnforced"
+          }
+        ]
+      },
+      "NotificationConfiguration": {},
+      "CORSRules": [
+        {
+          "AllowedHeaders": [
+            "*"
+          ],
+          "AllowedMethods": [
+            "GET",
+            "PUT",
+            "POST",
+            "HEAD"
+          ],
+          "AllowedOrigins": [
+            "*"
+          ],
+          "ExposeHeaders": [
+            "x-amz-server-side-encryption",
+            "x-amz-request-id",
+            "x-amz-id-2"
+          ],
+          "MaxAgeSeconds": 3000
+        }
+      ],
+      "IntelligentTieringConfigurationList": [],
+      "AnalyticsConfigurationList": [],
+      "MetricsConfigurationList": [],
+      "InventoryConfigurationList": []
+    },
+    "v2pc-resources-pricing": {
+      "Name": "v2pc-resources-pricing",
+      "CreationDate": "2022-01-24 08:20:27+00:00",
+      "ACL": {
+        "Owner": {
+          "ID": "09b9c6494203c7985a01776413c45ec9143a12f24f285a8e867e998d062119e5"
+        },
+        "Grants": [
+          {
+            "Grantee": {
+              "ID": "09b9c6494203c7985a01776413c45ec9143a12f24f285a8e867e998d062119e5",
+              "Type": "CanonicalUser"
+            },
+            "Permission": "FULL_CONTROL"
+          }
+        ]
+      },
+      "LoggingEnabled": null,
+      "Accelerate": null,
+      "LocationConstraint": "ap-northeast-2",
+      "PublicAccessBlockConfiguration": {
+        "BlockPublicAcls": true,
+        "IgnorePublicAcls": true,
+        "BlockPublicPolicy": true,
+        "RestrictPublicBuckets": true
+      },
+      "Versioning": {},
+      "OwnershipControls": {
+        "Rules": [
+          {
+            "ObjectOwnership": "BucketOwnerEnforced"
+          }
+        ]
+      },
+      "NotificationConfiguration": {},
+      "IntelligentTieringConfigurationList": [],
+      "AnalyticsConfigurationList": [],
+      "MetricsConfigurationList": [],
+      "InventoryConfigurationList": []
+    }
+  },
   "SQS": {
     "https://ap-northeast-2.queue.amazonaws.com/391285059836/v2pc-scan-queue.fifo": {
       "Attributes": {
@@ -3690,7 +4209,7 @@
       "TableArn": "arn:aws:dynamodb:ap-northeast-2:391285059836:table/v2pc-user-info",
       "TableId": "cd589dc1-f029-48d0-9fd5-55ae0b3fe6b7",
       "TableName": "v2pc-user-info",
-      "TableSizeBytes": 1311,
+      "TableSizeBytes": 1967,
       "TableStatus": "ACTIVE",
       "Tags": [],
       "TimeToLiveDescription": {
@@ -3705,7 +4224,485 @@
       }
     }
   },
-  "CognitoUserPool": {},
+  "CognitoUserPool": {
+    "ap-northeast-2_Swv7WRXO8": {
+      "Id": "ap-northeast-2_Swv7WRXO8",
+      "Name": "v2pc-signin-staging",
+      "Policies": {
+        "PasswordPolicy": {
+          "MinimumLength": 8,
+          "RequireUppercase": true,
+          "RequireLowercase": true,
+          "RequireNumbers": true,
+          "RequireSymbols": true,
+          "TemporaryPasswordValidityDays": 7
+        }
+      },
+      "LambdaConfig": {
+        "PostConfirmation": "arn:aws:lambda:ap-northeast-2:391285059836:function:v2pc-add-user"
+      },
+      "LastModifiedDate": "2022-01-24 15:28:30.066000+09:00",
+      "CreationDate": "2022-01-21 11:26:53.943000+09:00",
+      "SchemaAttributes": [
+        {
+          "Name": "sub",
+          "AttributeDataType": "String",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": false,
+          "Required": true,
+          "StringAttributeConstraints": {
+            "MinLength": "1",
+            "MaxLength": "2048"
+          }
+        },
+        {
+          "Name": "name",
+          "AttributeDataType": "String",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": true,
+          "StringAttributeConstraints": {
+            "MinLength": "0",
+            "MaxLength": "2048"
+          }
+        },
+        {
+          "Name": "given_name",
+          "AttributeDataType": "String",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false,
+          "StringAttributeConstraints": {
+            "MinLength": "0",
+            "MaxLength": "2048"
+          }
+        },
+        {
+          "Name": "family_name",
+          "AttributeDataType": "String",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false,
+          "StringAttributeConstraints": {
+            "MinLength": "0",
+            "MaxLength": "2048"
+          }
+        },
+        {
+          "Name": "middle_name",
+          "AttributeDataType": "String",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false,
+          "StringAttributeConstraints": {
+            "MinLength": "0",
+            "MaxLength": "2048"
+          }
+        },
+        {
+          "Name": "nickname",
+          "AttributeDataType": "String",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false,
+          "StringAttributeConstraints": {
+            "MinLength": "0",
+            "MaxLength": "2048"
+          }
+        },
+        {
+          "Name": "preferred_username",
+          "AttributeDataType": "String",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false,
+          "StringAttributeConstraints": {
+            "MinLength": "0",
+            "MaxLength": "2048"
+          }
+        },
+        {
+          "Name": "profile",
+          "AttributeDataType": "String",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false,
+          "StringAttributeConstraints": {
+            "MinLength": "0",
+            "MaxLength": "2048"
+          }
+        },
+        {
+          "Name": "picture",
+          "AttributeDataType": "String",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false,
+          "StringAttributeConstraints": {
+            "MinLength": "0",
+            "MaxLength": "2048"
+          }
+        },
+        {
+          "Name": "website",
+          "AttributeDataType": "String",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false,
+          "StringAttributeConstraints": {
+            "MinLength": "0",
+            "MaxLength": "2048"
+          }
+        },
+        {
+          "Name": "email",
+          "AttributeDataType": "String",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false,
+          "StringAttributeConstraints": {
+            "MinLength": "0",
+            "MaxLength": "2048"
+          }
+        },
+        {
+          "Name": "email_verified",
+          "AttributeDataType": "Boolean",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false
+        },
+        {
+          "Name": "gender",
+          "AttributeDataType": "String",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false,
+          "StringAttributeConstraints": {
+            "MinLength": "0",
+            "MaxLength": "2048"
+          }
+        },
+        {
+          "Name": "birthdate",
+          "AttributeDataType": "String",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false,
+          "StringAttributeConstraints": {
+            "MinLength": "10",
+            "MaxLength": "10"
+          }
+        },
+        {
+          "Name": "zoneinfo",
+          "AttributeDataType": "String",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false,
+          "StringAttributeConstraints": {
+            "MinLength": "0",
+            "MaxLength": "2048"
+          }
+        },
+        {
+          "Name": "locale",
+          "AttributeDataType": "String",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false,
+          "StringAttributeConstraints": {
+            "MinLength": "0",
+            "MaxLength": "2048"
+          }
+        },
+        {
+          "Name": "phone_number",
+          "AttributeDataType": "String",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false,
+          "StringAttributeConstraints": {
+            "MinLength": "0",
+            "MaxLength": "2048"
+          }
+        },
+        {
+          "Name": "phone_number_verified",
+          "AttributeDataType": "Boolean",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false
+        },
+        {
+          "Name": "address",
+          "AttributeDataType": "String",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false,
+          "StringAttributeConstraints": {
+            "MinLength": "0",
+            "MaxLength": "2048"
+          }
+        },
+        {
+          "Name": "updated_at",
+          "AttributeDataType": "Number",
+          "DeveloperOnlyAttribute": false,
+          "Mutable": true,
+          "Required": false,
+          "NumberAttributeConstraints": {
+            "MinValue": "0"
+          }
+        }
+      ],
+      "AutoVerifiedAttributes": [
+        "email"
+      ],
+      "UsernameAttributes": [
+        "email"
+      ],
+      "VerificationMessageTemplate": {
+        "DefaultEmailOption": "CONFIRM_WITH_CODE"
+      },
+      "MfaConfiguration": "OFF",
+      "EstimatedNumberOfUsers": 3,
+      "EmailConfiguration": {
+        "EmailSendingAccount": "COGNITO_DEFAULT"
+      },
+      "UserPoolTags": {},
+      "Domain": "staging-v2pc-signin.tovdata.com",
+      "CustomDomain": "staging-v2pc-signin.tovdata.com",
+      "AdminCreateUserConfig": {
+        "AllowAdminCreateUserOnly": false,
+        "UnusedAccountValidityDays": 7
+      },
+      "UsernameConfiguration": {
+        "CaseSensitive": false
+      },
+      "Arn": "arn:aws:cognito-idp:ap-northeast-2:391285059836:userpool/ap-northeast-2_Swv7WRXO8",
+      "AccountRecoverySetting": {
+        "RecoveryMechanisms": [
+          {
+            "Priority": 1,
+            "Name": "verified_email"
+          }
+        ]
+      },
+      "Tags": {},
+      "DomainDescription": {
+        "UserPoolId": "ap-northeast-2_Swv7WRXO8",
+        "AWSAccountId": "391285059836",
+        "Domain": "staging-v2pc-signin.tovdata.com",
+        "S3Bucket": "aws-cognito-prod-icn-assets",
+        "CloudFrontDistribution": "dqyvocp6ovz7v.cloudfront.net",
+        "Version": "20220125021848",
+        "Status": "ACTIVE",
+        "CustomDomainConfig": {
+          "CertificateArn": "arn:aws:acm:us-east-1:391285059836:certificate/b1be9b75-d349-4097-a89b-4c7b7e4b9cc3"
+        }
+      },
+      "CustomDomainDescription": {
+        "UserPoolId": "ap-northeast-2_Swv7WRXO8",
+        "AWSAccountId": "391285059836",
+        "Domain": "staging-v2pc-signin.tovdata.com",
+        "S3Bucket": "aws-cognito-prod-icn-assets",
+        "CloudFrontDistribution": "dqyvocp6ovz7v.cloudfront.net",
+        "Version": "20220125021848",
+        "Status": "ACTIVE",
+        "CustomDomainConfig": {
+          "CertificateArn": "arn:aws:acm:us-east-1:391285059836:certificate/b1be9b75-d349-4097-a89b-4c7b7e4b9cc3"
+        }
+      },
+      "IdentityPrividers": [],
+      "ResourceServers": [
+        {
+          "UserPoolId": "ap-northeast-2_Swv7WRXO8",
+          "Identifier": "v2pc-auth",
+          "Name": "v2pc-auth",
+          "Scopes": [
+            {
+              "ScopeName": "data.insert",
+              "ScopeDescription": "insert data"
+            },
+            {
+              "ScopeName": "data.update",
+              "ScopeDescription": "update data"
+            },
+            {
+              "ScopeName": "data.select",
+              "ScopeDescription": "select data"
+            },
+            {
+              "ScopeName": "data.delete",
+              "ScopeDescription": "delete data"
+            }
+          ]
+        }
+      ],
+      "UserPoolClients": [
+        {
+          "UserPoolId": "ap-northeast-2_Swv7WRXO8",
+          "ClientName": "v2pc-signin-staging-web",
+          "ClientId": "2ongoff6ttape6d3qbasejkvah",
+          "ClientSecret": "175v3p39lrsaj5q5jmpstnq072c48jabj1r516gc7crajbd913fb",
+          "LastModifiedDate": "2022-01-25 16:56:05.709000+09:00",
+          "CreationDate": "2022-01-21 11:26:54.088000+09:00",
+          "RefreshTokenValidity": 30,
+          "AccessTokenValidity": 60,
+          "IdTokenValidity": 60,
+          "TokenValidityUnits": {
+            "AccessToken": "minutes",
+            "IdToken": "minutes",
+            "RefreshToken": "days"
+          },
+          "ReadAttributes": [
+            "address",
+            "birthdate",
+            "email",
+            "email_verified",
+            "family_name",
+            "gender",
+            "given_name",
+            "locale",
+            "middle_name",
+            "name",
+            "nickname",
+            "phone_number",
+            "phone_number_verified",
+            "picture",
+            "preferred_username",
+            "profile",
+            "updated_at",
+            "website",
+            "zoneinfo"
+          ],
+          "WriteAttributes": [
+            "address",
+            "birthdate",
+            "email",
+            "family_name",
+            "gender",
+            "given_name",
+            "locale",
+            "middle_name",
+            "name",
+            "nickname",
+            "phone_number",
+            "picture",
+            "preferred_username",
+            "profile",
+            "updated_at",
+            "website",
+            "zoneinfo"
+          ],
+          "ExplicitAuthFlows": [
+            "ALLOW_REFRESH_TOKEN_AUTH"
+          ],
+          "SupportedIdentityProviders": [
+            "COGNITO"
+          ],
+          "CallbackURLs": [
+            "https://staging-v2pc.tovdata.com/signin-process"
+          ],
+          "AllowedOAuthFlows": [
+            "code"
+          ],
+          "AllowedOAuthScopes": [
+            "email",
+            "openid",
+            "v2pc-auth/data.insert",
+            "v2pc-auth/data.select"
+          ],
+          "AllowedOAuthFlowsUserPoolClient": true,
+          "PreventUserExistenceErrors": "ENABLED",
+          "EnableTokenRevocation": true
+        },
+        {
+          "UserPoolId": "ap-northeast-2_Swv7WRXO8",
+          "ClientName": "v2pc-signin-staging-app",
+          "ClientId": "6incis8shevm3fm19pa1eichhf",
+          "ClientSecret": "sogfsjmickqj81cpr6smrquh768kur9ta6d9k720luki0e4b6bl",
+          "LastModifiedDate": "2022-02-21 18:32:35.407000+09:00",
+          "CreationDate": "2022-01-21 14:03:53.301000+09:00",
+          "RefreshTokenValidity": 30,
+          "AccessTokenValidity": 60,
+          "IdTokenValidity": 60,
+          "TokenValidityUnits": {
+            "AccessToken": "minutes",
+            "IdToken": "minutes",
+            "RefreshToken": "days"
+          },
+          "ReadAttributes": [
+            "address",
+            "birthdate",
+            "email",
+            "email_verified",
+            "family_name",
+            "gender",
+            "given_name",
+            "locale",
+            "middle_name",
+            "name",
+            "nickname",
+            "phone_number",
+            "phone_number_verified",
+            "picture",
+            "preferred_username",
+            "profile",
+            "updated_at",
+            "website",
+            "zoneinfo"
+          ],
+          "WriteAttributes": [
+            "address",
+            "birthdate",
+            "email",
+            "family_name",
+            "gender",
+            "given_name",
+            "locale",
+            "middle_name",
+            "name",
+            "nickname",
+            "phone_number",
+            "picture",
+            "preferred_username",
+            "profile",
+            "updated_at",
+            "website",
+            "zoneinfo"
+          ],
+          "ExplicitAuthFlows": [
+            "ALLOW_REFRESH_TOKEN_AUTH",
+            "ALLOW_USER_PASSWORD_AUTH"
+          ],
+          "SupportedIdentityProviders": [
+            "COGNITO"
+          ],
+          "AllowedOAuthFlows": [
+            "client_credentials"
+          ],
+          "AllowedOAuthScopes": [
+            "v2pc-auth/data.delete",
+            "v2pc-auth/data.insert",
+            "v2pc-auth/data.select",
+            "v2pc-auth/data.update"
+          ],
+          "AllowedOAuthFlowsUserPoolClient": true,
+          "PreventUserExistenceErrors": "ENABLED",
+          "EnableTokenRevocation": true
+        }
+      ],
+      "UICustomizations": [],
+      "UserImportJobs": [],
+      "Groups": [],
+      "SigningCertificate": "MIICxjCCAa6gAwIBAgIIDTMPVLjmB8cwDQYJKoZIhvcNAQELBQAwIzEhMB8GA1UEAwwYYXAtbm9ydGhlYXN0LTJfU3d2N1dSWE84MB4XDTIyMDIxNDA4MTc1MFoXDTMyMDIxNTA4MTc1MFowIzEhMB8GA1UEAwwYYXAtbm9ydGhlYXN0LTJfU3d2N1dSWE84MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxf0CycCBzB8p3y55Y1t9OxMdaynqB6BTUu6g8U5iCPm6Uje1OXjpbD5LaLig0gERfa/AsiYi1No3Alnj3wTfWh/RMslGVUwpzSpJwHeCaw4/1Q22AtLhmpLGLhQgCZ3wwjtPykLfHADUIkXHVlv1AzyJdO/+ZJqg/GHtR8ojRaDSgEyC5jRKAyiW44BunmM5sdO3FhyEMpq65GkqflVmv/th8SWsgb8OsxtnErKPU0DCqLsIrplEbWp/OIfyLdIkebUuqxhKEAsAydeJCUpqieJbRhgNRpsL4VZFw8ih4wmyjS9CIR3l2Yr7WkTFYvSmOzPA14VLTq2ap6rNyKvDqQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQBXGIrKXKrfdRsBecTbHtkuX2GG+SkKZ0rOiP1QGsfEfgdA2jAft0UDf2aEaw+LJD9mQkrqAB4C52pL6wu2mQt2mKeqlE5kiF4tsWbkEkOGFFetkLDGknqnGQAejoNIWuw2SWPV/Z1/5CSgVx92KXqkk+SClHmaMG5FaOhx61UobqWNsNG00NXgjwKARsGQZjNvXOEusRI68mplIeM9xC+V4oUBkyv1TOmUQMWEfOOSwFJY8n4q5SQHYCFtfG28z1SV5+bvaICbcDRKR3KPqskQ2X8P9qSP1oHYfs2A7Xs1BfNxAuTZ5GB2lKZzfV/BkIQGOy/Zk8quTvqDxHL3J3CN",
+      "MFAConfig": {
+        "MfaConfiguration": "OFF"
+      }
+    }
+  },
   "CloudFront": {
     "Policies": {
       "CachePolicy": [
@@ -4135,6 +5132,7 @@
           "PriceClass": "PriceClass_200",
           "Enabled": true,
           "ViewerCertificate": {
+            "CloudFrontDefaultCertificate": false,
             "ACMCertificateArn": "arn:aws:acm:us-east-1:391285059836:certificate/acd323db-c580-4d4a-b200-72b53ba762d6",
             "SSLSupportMethod": "sni-only",
             "MinimumProtocolVersion": "TLSv1.2_2021",
@@ -4391,7 +5389,483 @@
                   }
                 }
               }
-            }
+            },
+            "Documents": [
+              {
+                "id": "q3te56",
+                "location": {
+                  "type": "METHOD",
+                  "path": "/users/change-password",
+                  "method": "POST"
+                },
+                "properties": "{\n  \"description\" : \"Set to new password\"\n}"
+              },
+              {
+                "id": "p37r5j",
+                "location": {
+                  "type": "METHOD",
+                  "path": "/users/check-password",
+                  "method": "POST"
+                },
+                "properties": "{\n  \"description\" : \"Validation check for the username and password.\"\n}"
+              },
+              {
+                "id": "b4s3rs",
+                "location": {
+                  "type": "MODEL",
+                  "name": "Empty"
+                },
+                "properties": "{\n  \"title\" : \"Empty Schema\"\n}"
+              },
+              {
+                "id": "yg6c1n",
+                "location": {
+                  "type": "MODEL",
+                  "name": "GetTokens"
+                },
+                "properties": "{\n  \"description\" : \"get tokens using authorization code OR refresh token\"\n}"
+              },
+              {
+                "id": "d05vr2",
+                "location": {
+                  "type": "MODEL",
+                  "name": "GetTokensUsingRefreshToken"
+                },
+                "properties": "{\n  \"description\" : \"get tokens using refresh token\"\n}"
+              },
+              {
+                "id": "5tx2pp",
+                "location": {
+                  "type": "MODEL",
+                  "name": "passwordchange"
+                },
+                "properties": "{\n  \"title\" : \"PasswordCheck\"\n}"
+              },
+              {
+                "id": "l8wni5",
+                "location": {
+                  "type": "MODEL",
+                  "name": "passwordcheck"
+                },
+                "properties": "{\n  \"title\" : \"PasswordCheck\"\n}"
+              },
+              {
+                "id": "60eat1",
+                "location": {
+                  "type": "MODEL",
+                  "name": "refreshtoken"
+                },
+                "properties": "{\n  \"title\" : \"RefreshToken\"\n}"
+              },
+              {
+                "id": "w8vq1w",
+                "location": {
+                  "type": "REQUEST_BODY",
+                  "path": "/signin",
+                  "method": "POST"
+                },
+                "properties": "{\n  \"description\" : \"Get tokens with authorization code\"\n}"
+              },
+              {
+                "id": "lu55ba",
+                "location": {
+                  "type": "REQUEST_BODY",
+                  "path": "/users/change-password",
+                  "method": "POST"
+                },
+                "properties": "{\n  \"description\" : \"The username and password paired with access token are needed. New password replacing current password is needed as well.\"\n}"
+              },
+              {
+                "id": "6mhb8k",
+                "location": {
+                  "type": "REQUEST_BODY",
+                  "path": "/users/check-password",
+                  "method": "POST"
+                },
+                "properties": "{\n  \"description\" : \"The username and password paired with access token are needed.\"\n}"
+              },
+              {
+                "id": "t7x22y",
+                "location": {
+                  "type": "REQUEST_HEADER",
+                  "path": "/users/change-password",
+                  "method": "POST",
+                  "name": "Authorization"
+                },
+                "properties": "{\n  \"description\" : \"Access token\"\n}"
+              },
+              {
+                "id": "4dafv9",
+                "location": {
+                  "type": "REQUEST_HEADER",
+                  "path": "/users/check-password",
+                  "method": "POST",
+                  "name": "authorization"
+                },
+                "properties": "{\n  \"description\" : \"Access Token is needed\"\n}"
+              },
+              {
+                "id": "b4c8dm",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/config/role",
+                  "method": "OPTIONS",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "9u1i9u",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/config/role",
+                  "method": "POST",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "zfwerd",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/config/scanscope",
+                  "method": "OPTIONS",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "jj459q",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/config/scanscope",
+                  "method": "POST",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "b594zg",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/resourcegroup",
+                  "method": "OPTIONS",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "3d4hdt",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/resourcegroup",
+                  "method": "POST",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "77fwat",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/scan",
+                  "method": "OPTIONS",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "pi6mz3",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/scan",
+                  "method": "POST",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "z402u6",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/service/list",
+                  "method": "GET",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "s9k2al",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/service/list",
+                  "method": "OPTIONS",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "u4izv6",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/service/list",
+                  "method": "PUT",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "uagvfa",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/service/price/{service+}",
+                  "method": "OPTIONS",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "1i1az8",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/service/scan/all",
+                  "method": "PUT",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "yn8c61",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/signin",
+                  "method": "*",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"Successful operation\"\n}"
+              },
+              {
+                "id": "rwvgcc",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/signin",
+                  "method": "*",
+                  "statusCode": "404"
+                },
+                "properties": "{\n  \"description\" : \"Not found or forbidden\"\n}"
+              },
+              {
+                "id": "jjqifx",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/signout",
+                  "method": "OPTIONS",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "e3a8f7",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/signout",
+                  "method": "POST",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "h1uxdp",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/users/change-password",
+                  "method": "POST",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"OK\"\n}"
+              },
+              {
+                "id": "vh8qs0",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/users/change-password",
+                  "method": "POST",
+                  "statusCode": "400"
+                },
+                "properties": "{\n  \"description\" : \"Incorrect username or password\"\n}"
+              },
+              {
+                "id": "ulmv2k",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/users/change-password",
+                  "method": "POST",
+                  "statusCode": "401"
+                },
+                "properties": "{\n  \"description\" : \"Unauthorized. (Mostly, it is a wrong access token issue.)\"\n}"
+              },
+              {
+                "id": "jand3h",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/users/change-password",
+                  "method": "POST",
+                  "statusCode": "403"
+                },
+                "properties": "{\n  \"description\" : \"Access Denied\"\n}"
+              },
+              {
+                "id": "mesu5w",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/users/change-password",
+                  "method": "POST",
+                  "statusCode": "404"
+                },
+                "properties": "{\n  \"description\" : \"Not Found\"\n}"
+              },
+              {
+                "id": "nuymwe",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/users/change-password",
+                  "method": "POST",
+                  "statusCode": "500"
+                },
+                "properties": "{\n  \"description\" : \"Internal Server Error\"\n}"
+              },
+              {
+                "id": "h78ph5",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/users/check-password",
+                  "method": "POST",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "0ejaby",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/users/check-password",
+                  "method": "POST",
+                  "statusCode": "400"
+                },
+                "properties": "{\n  \"description\" : \"Incorrect username or password\"\n}"
+              },
+              {
+                "id": "q4535r",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/users/check-password",
+                  "method": "POST",
+                  "statusCode": "401"
+                },
+                "properties": "{\n  \"description\" : \"Unauthorized. (Mostly, it is a wrong access token issue.)\"\n}"
+              },
+              {
+                "id": "7v7py7",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/users/check-password",
+                  "method": "POST",
+                  "statusCode": "403"
+                },
+                "properties": "{\n  \"description\" : \"Access Denied\"\n}"
+              },
+              {
+                "id": "73m3jt",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/users/check-password",
+                  "method": "POST",
+                  "statusCode": "500"
+                },
+                "properties": "{\n  \"description\" : \"Internal Server Error\"\n}"
+              },
+              {
+                "id": "x9d98b",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/users/check-password",
+                  "method": "POST",
+                  "statusCode": "502"
+                },
+                "properties": "{\n  \"description\" : \"Internal Server Error\"\n}"
+              },
+              {
+                "id": "krr35s",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/users/{userID}",
+                  "method": "GET",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "1ejrq5",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/users/{userID}",
+                  "method": "OPTIONS",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "hvc1kg",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/users/{userID}",
+                  "method": "POST",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "ligalx",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/viewdata/get",
+                  "method": "OPTIONS",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "f3fvm7",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/viewdata/get",
+                  "method": "POST",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "ltwryw",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/viewdata/store",
+                  "method": "OPTIONS",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              },
+              {
+                "id": "3n15cj",
+                "location": {
+                  "type": "RESPONSE",
+                  "path": "/viewdata/store",
+                  "method": "POST",
+                  "statusCode": "200"
+                },
+                "properties": "{\n  \"description\" : \"200 response\"\n}"
+              }
+            ],
+            "StoredLocation": "s3://v2pc-scanned-data/apigateway/restApi-7d1o61m0i7-staging-2022-01-25%2015%3A25%3A17%2B09%3A00.json"
           }
         ],
         "DeploymentHistory": [

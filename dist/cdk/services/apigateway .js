@@ -34,18 +34,6 @@ class RestApi {
      * @param config configuration for authorizer
      */
     createAuthorizer(config) {
-        // Get the providerArns
-        const providerArns = config.providerARNs !== undefined ? config.providerARNs.map((elem) => {
-            const account = (0, util_1.extractDataFromArn)(elem, "account");
-            const region = (0, util_1.extractDataFromArn)(elem, "region");
-            if (account === process.env.ACCOUNT && region === process.env.REGION) {
-                return elem;
-            }
-            else {
-                let tempArn = (0, util_1.changePartaboutArn)(elem, "account", process.env.ACCOUNT);
-                return (0, util_1.changePartaboutArn)(tempArn, "region", process.env.REGION);
-            }
-        }) : undefined;
         // Create the properties for authorizer
         const props = {
             authType: config.authType,

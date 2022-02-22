@@ -339,7 +339,7 @@ export class CognitoSdk {
   public async updateLambdaConfiguration(userPoolId: string, config: any): Promise<boolean> {
     try {
       // Create a sdk object for lambda
-      const lambda: LambdaSdk = new LambdaSdk({ region: process.env.REGION });
+      const lambda: LambdaSdk = new LambdaSdk({ region: process.env.TARGET_REGION });
       // Refactoring a lambda configuration data
       const lambdaConfig: any = {};
       for (const key of Object.keys(config)) {

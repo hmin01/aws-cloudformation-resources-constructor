@@ -48,6 +48,11 @@ export declare function extractPrincipal(principalConfig: any): any;
  */
 export declare function extractTags(tags: unknown): CfnTag[];
 /**
+ * Initial setting
+ * @param envPath environment file path
+ */
+export declare function initialSetting(envPath: string): void;
+/**
  * Load a json data (configuration)
  * @param filePath file path
  * @returns loaded data

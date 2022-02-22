@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
 import { aws_apigateway as apigateway } from "aws-cdk-lib";
 // Util
-import { changePartaboutArn, createId, extractTags, extractDataFromArn } from "../../utils/util";
+import { createId, extractTags } from "../../utils/util";
 
 export class RestApi {
   private _mapping: any;
@@ -38,18 +38,6 @@ export class RestApi {
    * @param config configuration for authorizer
    */
   public createAuthorizer(config: any): void {
-    // Get the providerArns
-    const providerArns: string[]|undefined = config.providerARNs !== undefined ? config.providerARNs.map((elem: string): string => {
-      const account: string = extractDataFromArn(elem, "account");
-      const region: string = extractDataFromArn(elem, "region");
-      
-      if (account === process.env.ACCOUNT && region === process.env.REGION) {
-        return elem;
-      } else {
-        let tempArn: string = changePartaboutArn(elem, "account", process.env.ACCOUNT as string);
-        return changePartaboutArn(tempArn, "region", process.env.REGION as string);
-      }
-    }) : undefined;
     // Create the properties for authorizer
     const props: apigateway.CfnAuthorizerProps = {
       authType: config.authType,

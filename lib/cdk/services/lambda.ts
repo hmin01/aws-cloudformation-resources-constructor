@@ -19,20 +19,13 @@ export class Function {
   constructor(scope: Construct, config: any, storedLocation: string) {
     this._scope = scope;
 
-    // Extract a bucket name and key
-    const s3: any = this.extractStoredLocation(storedLocation);
-    if (s3 === undefined) {
-      console.error("[ERROR] Lambda code must be stored in s3 bucket");
-      process.exit(1);
-    }
     // Get an arn for role
     const role: any = config.Role ? getResource("role", extractDataFromArn(config.Role, "resource")) ? getResource("role", extractDataFromArn(config.Role, "resource")) : config.Role : undefined;
 
     // Set the properties for lambda function
     const props: lambda.CfnFunctionProps = {
       code: {
-        s3Bucket: s3.bucketName,
-        s3Key: s3.key
+        zipFile: " "
       },
       role: role ? role.getArn() : config.Role,
       // Optional
@@ -52,7 +45,7 @@ export class Function {
         mode: config.TracingConfig.Mode
       } : undefined
     };
-    // Create the function
+    // Create a function
     this._function = new lambda.CfnFunction(this._scope, createId(JSON.stringify(props)), props);    
   }
 
@@ -92,25 +85,6 @@ export class Function {
     const version = new lambda.CfnVersion(this._scope, createId(JSON.stringify(props)), props);
     // Return
     return version.attrVersion;
-  }
-
-  /**
-   * Extract the stored location for lambda code
-   * @param location location path (for s3 uri)
-   * @returns s3 bucket name and key or undefined
-   */
-  private extractStoredLocation(location: string): any {
-    const regex: RegExp = new RegExp("^s3://");
-    if (regex.test(location)) {
-      // Extract a bucket name and key
-      const split: string[] = location.replace(/^s3:\/\//g, "").split("/");
-      const bucketName: string = split[0];
-      const key: string = split.slice(1).join("/");
-      // Return
-      return { bucketName, key };
-    } else {
-      return undefined;
-    }
   }
 
   /**

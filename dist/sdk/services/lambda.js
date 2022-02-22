@@ -67,12 +67,12 @@ class LambdaSdk {
             // Send a command to get a list of event source mapping
             const response = await this._client.send(command);
             // Return
-            return response.EventSourceMappings && response.EventSourceMappings.length > 0 ? true : false;
+            return response.EventSourceMappings ? response.EventSourceMappings : [];
         }
         catch (err) {
             (0, response_1.catchError)(response_1.CODE.ERROR.LAMBDA.FUNCTION.GET_EVENT_SOURCE_MAPPINGS, false, eventSourceArn, err);
             // Return
-            return false;
+            return [];
         }
     }
     /**
@@ -121,7 +121,7 @@ class LambdaSdk {
             switch (serviceType) {
                 case "dynamodb":
                     // Create a sdk client for amazon dynamodb
-                    const dynamodb = new dynamodb_1.DynamoDBSdk({ region: process.env.REGION });
+                    const dynamodb = new dynamodb_1.DynamoDBSdk({ region: process.env.TARGET_REGION });
                     // Get a queue arn
                     eventSourceArn = await dynamodb.getTableArn(resourceId);
                     // Destroy a sdk client for amazon dynamodb
@@ -132,7 +132,7 @@ class LambdaSdk {
                     break;
                 case "sqs":
                     // Create a sdk client for amazon sqs
-                    const sqs = new sqs_1.SQSSdk({ region: process.env.REGION });
+                    const sqs = new sqs_1.SQSSdk({ region: process.env.TARGET_REGION });
                     // Get a queue url
                     const queueUrl = await sqs.getQueueUrl(resourceId);
                     // Get a queue arn
@@ -145,9 +145,17 @@ class LambdaSdk {
                     break;
             }
             // Check existence
-            const existence = await this._checkExistingEventSourceMapping(eventSourceArn, functionArn);
-            if (existence) {
+            const eventSourceMappings = await this._checkExistingEventSourceMapping(eventSourceArn, functionArn);
+            if (eventSourceMappings.length > 0) {
                 console.warn(`[WARNING] Mapping for these services already exists`);
+                // Activate the event source mappings
+                for (const elem of eventSourceMappings) {
+                    // Extract a enabled status
+                    const enabled = elem.State === "Disabling" || elem.State === "Disable" || elem.State === "Deleting" ? false : true;
+                    // Update an event source mapping
+                    await this.updateEventSourceMapping(elem.UUID, { Enabled: enabled });
+                }
+                // Return
                 return;
             }
             // Create an input to create the event source mapping
@@ -253,6 +261,34 @@ class LambdaSdk {
         }
         catch (err) {
             (0, response_1.catchError)(response_1.CODE.ERROR.LAMBDA.FUNCTION.UPDATE_CODE, false, functionName, err);
+        }
+    }
+    /**
+     * Update an event source mapping
+     * @param uuid event source mapping uuid
+     * @param config configuration for event source mapping
+     */
+    async updateEventSourceMapping(uuid, config) {
+        try {
+            // Create an input to update an event source mapping
+            const input = {
+                BatchSize: config.BatchSize,
+                BisectBatchOnFunctionError: config.BisectBatchOnFunctionError,
+                Enabled: config.Enabled,
+                MaximumBatchingWindowInSeconds: config.MaximumBatchingWindowInSeconds ? Number(config.MaximumBatchingWindowInSeconds) : undefined,
+                MaximumRecordAgeInSeconds: config.MaximumRecordAgeInSeconds ? Number(config.MaximumRecordAgeInSeconds) : undefined,
+                MaximumRetryAttempts: config.MaximumRetryAttempts ? Number(config.MaximumRetryAttempts) : undefined,
+                ParallelizationFactor: config.ParallelizationFactor ? Number(config.ParallelizationFactor) : undefined,
+                TumblingWindowInSeconds: config.TumblingWindowInSeconds ? Number(config.TumblingWindowInSeconds) : undefined,
+                UUID: uuid,
+            };
+            // Create a command to update an event source mapping
+            const command = new lambda.UpdateEventSourceMappingCommand(input);
+            // Send a command to update an event source mapping
+            await this._client.send(command);
+        }
+        catch (err) {
+            (0, response_1.catchError)(response_1.CODE.ERROR.LAMBDA.FUNCTION.UPDATE_EVENT_SOURCE_MAPPING, false, uuid, err);
         }
     }
 }

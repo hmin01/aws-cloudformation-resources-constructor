@@ -1,11 +1,4 @@
 import { Construct } from "constructs";
-/** For Util */
-/**
- * Load a json data (configuration)
- * @param filePath file path
- * @returns loaded data
- */
-export declare function loadJsonFile(filePath: string): any;
 /** For Amazon APIGateway */
 /**
  * Create the rest api

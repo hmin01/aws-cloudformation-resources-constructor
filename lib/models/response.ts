@@ -52,7 +52,8 @@ export const CODE: any = {
         GET_ARN: 82,
         GET_EVENT_SOURCE_MAPPINGS: 83,
         PUBLISH_VERSION: 84,
-        UPDATE_CODE: 85
+        UPDATE_CODE: 85,
+        UPDATE_EVENT_SOURCE_MAPPING: 86
       }
     },
     // For Amazon S3
@@ -102,6 +103,7 @@ const MESSAGE: any = {
   83: "Failed to get a list of lambda event source mapping",
   84: "Failed to publish a lambda function version",
   85: "Failed to update a lambda function code",
+  86: "Failed to update an event source mapping",
   100: "Failed to get a s3 object",
   120: "Failed to get a sqs queue arn",
   121: "Failed to get a sqs queue url"

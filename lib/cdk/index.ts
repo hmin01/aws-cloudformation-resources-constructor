@@ -13,28 +13,6 @@ import { Queue } from "./services/sqs";
 import { storeResource } from "../utils/cache";
 import { extractDataFromArn } from "../utils/util";
 
-/** For Util */
-/**
- * Load a json data (configuration)
- * @param filePath file path
- * @returns loaded data
- */
- export function loadJsonFile(filePath: string) {
-  try {
-    // Read a file ata
-    const data = readFileSync(filePath).toString();
-    // Transform to json and return data
-    return JSON.parse(data);
-  } catch (err) {
-    // Print error message
-    if (typeof err === "string" || err instanceof Error) {
-      console.error(`[ERROR] ${err}`);
-    }
-    // Exit
-    process.exit(1);
-  }
-}
-
 /** For Amazon APIGateway */
 /**
  * Create the rest api
@@ -47,11 +25,6 @@ export function createRestApi(scope: Construct, config: any) {
     const restApi: RestApi = new RestApi(scope, elem);
     // Store the resource
     storeResource("restApi", elem.name, restApi);
-
-    // // Create the authorizers
-    // for (const data of elem.Authorizers) {
-    //   restApi.createAuthorizer(data);
-    // }
 
     // Create the gateway responses
     for (const data of elem.GatewayResponses) {

@@ -53,4 +53,10 @@ export declare class LambdaSdk {
      * @param location stored location for code
      */
     updateCode(functionName: string, location: string): Promise<void>;
+    /**
+     * Update an event source mapping
+     * @param uuid event source mapping uuid
+     * @param config configuration for event source mapping
+     */
+    updateEventSourceMapping(uuid: string, config: any): Promise<void>;
 }

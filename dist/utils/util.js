@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.streamToBuffer = exports.loadJsonFile = exports.extractTags = exports.extractPrincipal = exports.extractDataFromArn = exports.delay = exports.checkAwsArnPattern = exports.createId = exports.changePartaboutArn = void 0;
+exports.streamToBuffer = exports.loadJsonFile = exports.initialSetting = exports.extractTags = exports.extractPrincipal = exports.extractDataFromArn = exports.delay = exports.checkAwsArnPattern = exports.createId = exports.changePartaboutArn = void 0;
 const crypto_1 = require("crypto");
 const fs_1 = require("fs");
+// Response
+const response_1 = require("../models/response");
 /**
  * Change the part about AWS arn
  * @param arn arn for resource
@@ -220,6 +222,25 @@ function extractTags(tags) {
     }
 }
 exports.extractTags = extractTags;
+/**
+ * Initial setting
+ * @param envPath environment file path
+ */
+function initialSetting(envPath) {
+    // Load a configuration data
+    const env = loadJsonFile(envPath);
+    // Set the environment various
+    process.env.ASSUME_ROLE_ARN = env.ASSUME_ROLE_ARN;
+    process.env.ORIGIN_ACCOUNT = env.ORIGIN_ACCOUNT;
+    process.env.ORIGIN_REGION = env.ORIGIN_REGION;
+    process.env.TARGET_ACCOUNT = env.TARGET_ACCOUNT;
+    process.env.TARGET_REGION = env.TARGET_REGION;
+    // Catch error
+    if (!process.env.ORIGIN_ACCOUNT || !process.env.ORIGIN_REGION || !process.env.TARGET_ACCOUNT || !process.env.TARGET_REGION) {
+        (0, response_1.catchError)(response_1.CODE.ERROR.COMMON.INVALIED_ENV, true);
+    }
+}
+exports.initialSetting = initialSetting;
 /**
  * Load a json data (configuration)
  * @param filePath file path
