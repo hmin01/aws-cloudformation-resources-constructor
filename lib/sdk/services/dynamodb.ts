@@ -1,5 +1,7 @@
 // AWS SDK
 import * as dynamodb from "@aws-sdk/client-dynamodb";
+// Response
+import { CODE, catchError } from "../../models/response";
 
 export class DynamoDBSdk {
   private _client: dynamodb.DynamoDBClient;
@@ -9,8 +11,18 @@ export class DynamoDBSdk {
    * @param config configuration for amazon dynamodb
    */
   constructor(config: any) {
+    // Create the params for client
+    const params: dynamodb.DynamoDBClientConfig = {
+      credentials: config.credentials ? {
+        accessKeyId: config.credentials.AccessKeyId,
+        expiration: config.credentials.Expiration ? new Date(config.credentials.Expiration) : undefined,
+        secretAccessKey: config.credentials.SecretAccessKey,
+        sessionToken: config.credentials.SessionToken
+      } : undefined,
+      region: config.region
+    };
     // Create a client for amazon dynamodb
-    this._client = new dynamodb.DynamoDBClient(config);
+    this._client = new dynamodb.DynamoDBClient(params);
   }
 
   /**
@@ -38,8 +50,7 @@ export class DynamoDBSdk {
       // Return
       return response.Table ? response.Table.TableArn as string : "";
     } catch (err) {
-      console.error(`[ERROR] Failed to get a table arn (target: ${tableName})\n-> ${err}`);
-      process.exit(30);
+      return catchError(CODE.ERROR.DYNAMODB.TABLE.GET_ARN, false, tableName, err as Error);
     }
   }
 }

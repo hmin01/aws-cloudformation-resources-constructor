@@ -19,6 +19,23 @@ export declare class APIGatewaySdk {
      */
     private _reProcessingUri;
     /**
+     * Add an authorizer for method
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/updatemethodcommandinput.html#patchoperations
+     * @param restApiId rest api id
+     * @param resourceId resource id
+     * @param httpMethod http method
+     * @param config configuration for method
+     */
+    addAuthorizerForMethod(restApiId: string, resourceId: string, httpMethod: string, config: any): Promise<void>;
+    /**
+     * Create an authorizer
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/createauthorizercommandinput.html
+     * @param restApiId rest api id
+     * @param config configuration for authorizer
+     * @returns authorizer id
+     */
+    createAuthorizer(restApiId: string, config: any): Promise<string>;
+    /**
      * Create a deployment
      * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/createdeploymentcommandinput.html
      * @param restApiId rest api id
@@ -33,6 +50,13 @@ export declare class APIGatewaySdk {
      * @param config configuration for stage
      */
     createStage(restApiId: string, deploymentId: string, config: any): Promise<void>;
+    /**
+     * Get an authorizer id
+     * @param restApiId rest api id
+     * @param authorizerName authorizer name
+     * @returns authorizer id
+     */
+    getAuthorizerId(restApiId: string, authorizerName: string): Promise<string>;
     /**
      * Get a resource id
      * @param restApiId rest api id

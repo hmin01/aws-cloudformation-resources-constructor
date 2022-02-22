@@ -48,10 +48,10 @@ export function createRestApi(scope: Construct, config: any) {
     // Store the resource
     storeResource("restApi", elem.name, restApi);
 
-    // Create the authorizers
-    for (const data of elem.Authorizers) {
-      restApi.createAuthorizer(data);
-    }
+    // // Create the authorizers
+    // for (const data of elem.Authorizers) {
+    //   restApi.createAuthorizer(data);
+    // }
 
     // Create the gateway responses
     for (const data of elem.GatewayResponses) {

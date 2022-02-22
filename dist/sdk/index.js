@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.publishLambdaVersions = exports.downloadLambdaCodeFromS3 = exports.createLambdaEventSourceMappings = exports.createLambdaAliases = exports.createCognitoUserPoolClients = exports.setCognitoUserPool = exports.deployAPIGatewayStage = exports.configureAPIGatewayMethods = void 0;
+exports.publishLambdaVersions = exports.downloadLambdaCodeFromS3 = exports.createLambdaEventSourceMappings = exports.createLambdaAliases = exports.createCognitoUserPoolClients = exports.setCognitoUserPool = exports.deployAPIGatewayStage = exports.configureAPIGatewayMethods = exports.configeAPIGatewayAuthorizers = void 0;
 const fs_1 = require("fs");
 const path_1 = require("path");
 // Services (SDK) - new
@@ -12,11 +12,40 @@ const s3_1 = require("./services/s3");
 const CODE_DIR = (0, path_1.join)(__dirname, "../../resources/code");
 /** For APIGateway */
 /**
+ * Configure the authorizers
+ * @param restApiName rest api name
+ * @param config configuration for authorizers
+ * @returns mapping data for authorizer
+ */
+async function configeAPIGatewayAuthorizers(restApiName, config) {
+    // Create a sdk object for amazon apigateway
+    const apigateway = new apigateway_1.APIGatewaySdk({ region: process.env.REGION });
+    // Get a rest api id
+    const restApiId = await apigateway.getRestApiId(restApiName);
+    // Catch error
+    if (restApiId === "") {
+        console.error(`[ERROR] Not found rest api id (target: ${restApiName})`);
+        process.exit(47);
+    }
+    // Set a mapping data for authorizer
+    const mapping = {};
+    // Configure the authorizers
+    for (const elem of config) {
+        // Create an authorizer
+        mapping[elem.id] = await apigateway.createAuthorizer(restApiId, config);
+    }
+    // Destroy a sdk object for amazon apigateway
+    apigateway.destroy();
+    // Return
+    return mapping;
+}
+exports.configeAPIGatewayAuthorizers = configeAPIGatewayAuthorizers;
+/**
  * Configure the methods in rest api
  * @param restApiName rest api name
  * @param config configuration for methods
  */
-async function configureAPIGatewayMethods(restApiName, config) {
+async function configureAPIGatewayMethods(restApiName, config, authMapping) {
     // Create a sdk object for amazon apigateway
     const apigateway = new apigateway_1.APIGatewaySdk({ region: process.env.REGION });
     // Get a rest api id
@@ -38,9 +67,18 @@ async function configureAPIGatewayMethods(restApiName, config) {
         // Configure a method
         if (elem.resourceMethods) {
             for (const method of Object.keys(elem.resourceMethods)) {
+                // Extract a configuration for method
+                const methodConfig = elem.resourceMethods[method];
+                // Update a method to add an authorizer
+                if (authMapping[methodConfig.authorizerId]) {
+                    // Set a authorizer id
+                    methodConfig.authorizerId = authMapping[methodConfig.authorizerId];
+                    // Add an authorization options for method
+                    await apigateway.addAuthorizerForMethod(restApiId, resourceId, method, methodConfig);
+                }
                 // Extrac the configurations
-                const configForIntegration = elem.resourceMethods[method].methodIntegration;
-                const configForResponse = elem.resourceMethods[method].methodResponses;
+                const configForIntegration = methodConfig.methodIntegration;
+                const configForResponse = methodConfig.methodResponses;
                 // Put a method integration
                 if (configForIntegration) {
                     await apigateway.putMethodIntegration(restApiId, resourceId, method, configForIntegration);

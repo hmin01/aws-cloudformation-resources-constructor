@@ -122,28 +122,62 @@ class CognitoSdk {
         this._client.destroy();
     }
     /**
+     * Get a user pool arn
+     * @param userPoolId user pool id
+     * @returns user pool arn
+     */
+    async getUserPoolArn(userPoolId) {
+        try {
+            // Create an input to get a user pool arn
+            const input = {
+                UserPoolId: userPoolId
+            };
+            // Create a command to get a user pool arn
+            const command = new cognito.DescribeUserPoolCommand(input);
+            // Send a command to get a user pool arn
+            const response = await this._client.send(command);
+            // Return
+            return response.UserPool && response.UserPool.Arn ? response.UserPool.Arn : "";
+        }
+        catch (err) {
+            console.error(`[ERROR] Failed to get a user pool arn (target: ${userPoolId})\n-> ${err}`);
+            process.exit(55);
+        }
+    }
+    /**
      * Get a user pool id
      * @param userPoolName user pool name
      * @returns user pool id
      */
     async getUserPoolId(userPoolName) {
         try {
-            // Create a input to get a list of user pool
-            const input = {
-                MaxResults: 60
-            };
-            // Create a paginator
-            const paginator = cognito.paginateListUserPools({ client: this._client }, input);
-            // Find a user pool id
-            for await (const page of paginator) {
-                if (page.UserPools) {
-                    for (const userPool of page.UserPools) {
+            let nextToken = undefined;
+            // Get a list of user pool
+            do {
+                // Create a input to get a list of user pool
+                const input = {
+                    MaxResults: 60,
+                    NextToken: nextToken
+                };
+                // Create a command to get a list of user pool
+                const command = new cognito.ListUserPoolsCommand(input);
+                // Send a command to get a list of user pool
+                const response = await this._client.send(command);
+                // Process a result
+                if (response.UserPools) {
+                    // Find a user pool
+                    for (const userPool of response.UserPools) {
                         if (userPool.Name && userPool.Name === userPoolName) {
                             return userPool.Id;
                         }
                     }
                 }
-            }
+                // Escape condition
+                nextToken = response.NextToken;
+                if (!nextToken)
+                    break;
+            } while (true);
+            // Return
             return "";
         }
         catch (err) {

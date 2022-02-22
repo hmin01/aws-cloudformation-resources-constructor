@@ -1,6 +1,8 @@
 import { createReadStream } from "fs";
 // AWS SDK
 import * as lambda from "@aws-sdk/client-lambda";
+// Response
+import { CODE, catchError } from "../../models/response";
 // Services
 import { DynamoDBSdk } from "./dynamodb";
 import { SQSSdk } from "./sqs";
@@ -15,8 +17,18 @@ export class LambdaSdk {
    * @param config 
    */
   constructor(config: any) {
+    // Create the params for client
+    const params: lambda.LambdaClientConfig = {
+      credentials: config.credentials ? {
+        accessKeyId: config.credentials.AccessKeyId,
+        expiration: config.credentials.Expiration ? new Date(config.credentials.Expiration) : undefined,
+        secretAccessKey: config.credentials.SecretAccessKey,
+        sessionToken: config.credentials.SessionToken
+      } : undefined,
+      region: config.region
+    };
     // Create a client for aws lambda
-    this._client = new lambda.LambdaClient(config);
+    this._client = new lambda.LambdaClient(params);
   }
 
   /**
@@ -39,8 +51,9 @@ export class LambdaSdk {
       // Return
       return response.EventSourceMappings && response.EventSourceMappings.length > 0 ? true : false;
     } catch (err) {
-      console.error(`[ERROR] Failed to get a list of event source mapping (target: ${functionArn})\n-> ${err}`);
-      process.exit(12);
+      catchError(CODE.ERROR.LAMBDA.FUNCTION.GET_EVENT_SOURCE_MAPPINGS, false, eventSourceArn, err as Error);
+      // Return
+      return false;
     }
   }
 
@@ -66,8 +79,7 @@ export class LambdaSdk {
       // Send a command to create a function alias
       await this._client.send(command);
     } catch (err) {
-      console.error(`[ERROR] Failed to create a funcition alias (target: ${functionName})\n-> ${err}`);
-      process.exit(10);
+      catchError(CODE.ERROR.LAMBDA.FUNCTION.CREATE_ALIAS, true, functionName, err as Error);
     }
   }
 
@@ -143,8 +155,7 @@ export class LambdaSdk {
       // Send a command to create the event source mapping
       await this._client.send(command);
     } catch (err) {
-      console.error(`[ERROR] Failed to create the event source mapping`);
-      process.exit(13);
+      catchError(CODE.ERROR.LAMBDA.FUNCTION.CREATE_EVENT_SOURCE_MAPPING, false, undefined, err as Error);
     }
   }
 
@@ -177,8 +188,7 @@ export class LambdaSdk {
       // Return
       return response.FunctionArn ? response.FunctionArn : "";
     } catch (err) {
-      console.error(`[ERROR] Failed to get a function arn (target: ${functionName})\n-> ${err}`);
-      process.exit(11);
+      return catchError(CODE.ERROR.LAMBDA.FUNCTION.GET_ARN, false, functionName, err as Error);
     }
   }
 
@@ -202,8 +212,7 @@ export class LambdaSdk {
       // Return
       return response.Version as string;
     } catch (err) {
-      console.error(`[ERROR] Failed to publish the function version (target: ${functionName})\n-> ${err}`);
-      process.exit(15);
+      return catchError(CODE.ERROR.LAMBDA.FUNCTION.PUBLISH_VERSION, false, functionName, err as Error);
     }
   }
 
@@ -228,8 +237,7 @@ export class LambdaSdk {
       // Wait for update
       await lambda.waitUntilFunctionUpdated({ client: this._client, maxWaitTime: 30, maxDelay: 1, minDelay: 1 }, { FunctionName: functionName });
     } catch (err) {
-      console.error(`[ERROR] Failed to update the function code (for ${functionName})\n-> ${err}`);
-      process.exit(14);
+      catchError(CODE.ERROR.LAMBDA.FUNCTION.UPDATE_CODE, false, functionName, err as Error);
     }
   }
 }

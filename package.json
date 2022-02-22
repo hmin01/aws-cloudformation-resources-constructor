@@ -6,6 +6,7 @@
     "@aws-sdk/client-lambda": "^3.49.0",
     "@aws-sdk/client-s3": "^3.51.0",
     "@aws-sdk/client-sqs": "^3.49.0",
+    "@aws-sdk/client-sts": "^3.52.0",
     "aws-cdk-lib": "^2.9.0",
     "constructs": "^10.0.40"
   },
@@ -19,7 +20,7 @@
   },
   "name": "aws-cfn-constructor",
   "description": "Constructor for AWS CloudFormation resources using AWS CDK",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

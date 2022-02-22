@@ -25,6 +25,7 @@ const apigateway = __importStar(require("@aws-sdk/client-api-gateway"));
 const lambda_1 = require("./lambda");
 // Util
 const util_1 = require("../../utils/util");
+const cognito_1 = require("./cognito");
 class APIGatewaySdk {
     /**
      * Create a sdk object for amazon apigateway
@@ -62,7 +63,7 @@ class APIGatewaySdk {
                         const functionName = (0, util_1.extractDataFromArn)(rawArn, "resource");
                         const qualifier = (0, util_1.extractDataFromArn)(rawArn, "qualifier");
                         // Get an arn for lambda function
-                        const lambda = new lambda_1.LambdaSdk({ region: process.env.RESION });
+                        const lambda = new lambda_1.LambdaSdk({ region: process.env.REGION });
                         const lambdaArn = await lambda.getFunctionArn(functionName, qualifier);
                         lambda.destroy();
                         // Reprocessing uri and return
@@ -92,6 +93,137 @@ class APIGatewaySdk {
         catch (err) {
             console.warn(`[WARNING] Failed to re-processing for uri (target: ${uri})\n-> ${err}`);
             return "";
+        }
+    }
+    /**
+     * Add an authorizer for method
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/updatemethodcommandinput.html#patchoperations
+     * @param restApiId rest api id
+     * @param resourceId resource id
+     * @param httpMethod http method
+     * @param config configuration for method
+     */
+    async addAuthorizerForMethod(restApiId, resourceId, httpMethod, config) {
+        try {
+            // Create an array to store the patch operations
+            const patchOperations = [];
+            // Append the options for authorization scope
+            if (config.authorizationScopes) {
+                for (const elem of config.authorizationScopes) {
+                    patchOperations.push({
+                        op: "add",
+                        path: "/authorizationScope",
+                        value: elem
+                    });
+                }
+            }
+            // Append the options for authorization type
+            if (config.authorizationType) {
+                patchOperations.push({
+                    op: "replace",
+                    patch: "/authorizationType",
+                    value: config.authorizationType
+                });
+            }
+            // Append the options for authorizer id
+            if (config.authorizerId) {
+                patchOperations.push({
+                    op: "add",
+                    path: "/authorizerId",
+                    value: config.authorizerId
+                });
+            }
+            // Create an input to add an authorizer for resource
+            const input = {
+                httpMethod: httpMethod,
+                patchOperations: patchOperations.length > 0 ? patchOperations : undefined,
+                resourceId: resourceId,
+                restApiId: restApiId
+            };
+            // Create a command to add an authorizer for resource
+            const command = new apigateway.UpdateMethodCommand(input);
+            // Send a command to add an authorizer for resource
+            await this._client.send(command);
+        }
+        catch (err) {
+            console.warn(`[WARNING] Failed to add an authorizer for resource (target: ${resourceId})\n-> ${err}`);
+        }
+    }
+    /**
+     * Create an authorizer
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/createauthorizercommandinput.html
+     * @param restApiId rest api id
+     * @param config configuration for authorizer
+     * @returns authorizer id
+     */
+    async createAuthorizer(restApiId, config) {
+        try {
+            // Get a authorizer uri or provier arns
+            let authorizerUri = undefined;
+            let providerARNs = [];
+            if (config.type.includes("COGNITO")) {
+                for (const arn of config.providerARNs) {
+                    // Create a sdk object for cognito
+                    const cognito = new cognito_1.CognitoSdk({ region: process.env.REGION });
+                    // Extract a user pool name from arn
+                    const userPoolName = (0, util_1.extractDataFromArn)(arn, "resource");
+                    // Get a user pool id
+                    const userPoolId = await cognito.getUserPoolId(userPoolName);
+                    // Get a user pool arn
+                    let userPoolArn;
+                    if (userPoolId !== "") {
+                        userPoolArn = await cognito.getUserPoolArn(userPoolId);
+                    }
+                    else {
+                        userPoolArn = arn;
+                    }
+                    // Push a user pool arn
+                    providerARNs.push(userPoolArn);
+                    // Destroy a sdk object for cognito
+                    cognito.destroy();
+                }
+            }
+            else {
+                // Create a sdk object for lambda
+                const lambda = new lambda_1.LambdaSdk({ region: process.env.REGION });
+                // Extract a lambda function name and qualifier(version or aliases) from arn
+                const functionName = (0, util_1.extractDataFromArn)(config.authorizerUri, "resource");
+                const qualifier = (0, util_1.extractDataFromArn)(config.authorizerUri, "qualifier");
+                // Get a function arn
+                const functionArn = await lambda.getFunctionArn(functionName, qualifier !== "" ? qualifier : undefined);
+                // Push a function arn
+                if (functionArn !== "") {
+                    authorizerUri = `arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:${process.env.ACCOUNT}:function:${functionArn}/invocations.`;
+                }
+                else {
+                    authorizerUri = config.authorizerUri;
+                }
+                // Destroy a sdk object for lambda
+                lambda.destroy();
+            }
+            // Create an input to create an authorizer
+            const input = {
+                authType: config.authType,
+                authorizerCredentials: config.authorizerCredentials,
+                authorizerResultTtlInSeconds: config.authorizerResultTtlInSeconds,
+                authorizerUri: authorizerUri,
+                identitySource: config.identitySource,
+                identityValidationExpression: config.identityValidationExpression,
+                name: config.name,
+                providerARNs: providerARNs.length > 0 ? providerARNs : undefined,
+                restApiId: restApiId,
+                type: config.type
+            };
+            // Create a command to create an authorizer
+            const command = new apigateway.CreateAuthorizerCommand(input);
+            // Send a command to create an authorizer
+            const response = await this._client.send(command);
+            // Return
+            return response.id;
+        }
+        catch (err) {
+            console.error(`[ERROR] Failed to creaet an authorizer (target: ${restApiId})-> ${err}`);
+            process.exit(46);
         }
     }
     /**
@@ -150,6 +282,39 @@ class APIGatewaySdk {
         catch (err) {
             console.error(`[ERROR] Failed to create a stage (target: ${restApiId})\n-> ${err}`);
             process.exit(41);
+        }
+    }
+    /**
+     * Get an authorizer id
+     * @param restApiId rest api id
+     * @param authorizerName authorizer name
+     * @returns authorizer id
+     */
+    async getAuthorizerId(restApiId, authorizerName) {
+        try {
+            // Create an input to get a list of authorizer 
+            const input = {
+                limit: 500,
+                restApiId: restApiId
+            };
+            // Create a command to get a list of authorizer
+            const command = new apigateway.GetAuthorizersCommand(input);
+            // Send a command to get a list of authorizer
+            const response = await this._client.send(command);
+            // Process a result
+            if (response.items) {
+                for (const elem of response.items) {
+                    if (elem.name === authorizerName) {
+                        return elem.id;
+                    }
+                }
+            }
+            // Return
+            return "";
+        }
+        catch (err) {
+            console.error(`[ERROR] Failed to create a stage (target: ${authorizerName})\n-> ${err}`);
+            process.exit(45);
         }
     }
     /**
@@ -252,8 +417,7 @@ class APIGatewaySdk {
             await this._client.send(command);
         }
         catch (err) {
-            console.error(`[ERROR] Failed to put a method integration (target: ${resourceId}, ${httpMethod})\n-> ${err}`);
-            process.exit(44);
+            console.warn(`[WARNING] Failed to put a method integration (target: ${resourceId}, ${httpMethod})\n-> ${err}`);
         }
     }
     /**
@@ -287,8 +451,7 @@ class APIGatewaySdk {
             }
         }
         catch (err) {
-            console.error(`[ERROR] Failed to put a method integration response (target: ${resourceId}, ${httpMethod})\n-> ${err}`);
-            process.exit(45);
+            console.warn(`[WARNING] Failed to put a method integration response (target: ${resourceId}, ${httpMethod})\n-> ${err}`);
         }
     }
     /**
@@ -319,8 +482,7 @@ class APIGatewaySdk {
             }
         }
         catch (err) {
-            console.error(`[ERROR] Failed to put a method response (target: ${resourceId}, ${httpMethod})\n-> ${err}`);
-            process.exit(46);
+            console.warn(`[WARNING] Failed to put a method response (target: ${resourceId}, ${httpMethod})\n-> ${err}`);
         }
     }
 }

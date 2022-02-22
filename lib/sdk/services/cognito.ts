@@ -1,4 +1,7 @@
+// AWS SDK
 import * as cognito from "@aws-sdk/client-cognito-identity-provider";
+// Response
+import { CODE, catchError } from "../../models/response";
 // Services
 import { LambdaSdk } from "./lambda";
 // Util
@@ -13,8 +16,18 @@ export class CognitoSdk {
    * @param config configuration for client
    */
   constructor(config: any) {
+    // Create the params for client
+    const params: cognito.CognitoIdentityProviderClientConfig = {
+      credentials: config.credentials ? {
+        accessKeyId: config.credentials.AccessKeyId,
+        expiration: config.credentials.Expiration ? new Date(config.credentials.Expiration) : undefined,
+        secretAccessKey: config.credentials.SecretAccessKey,
+        sessionToken: config.credentials.SessionToken
+      } : undefined,
+      region: config.region
+    };
     // Create a client for amazon cognito
-    this._client = new cognito.CognitoIdentityProviderClient(config);
+    this._client = new cognito.CognitoIdentityProviderClient(params);
     // Set a user pool mapping data
     this._mapping = {};
   }
@@ -65,8 +78,7 @@ export class CognitoSdk {
         return "";
       }
     } catch (err) {
-      console.error(`[ERROR] Failed to create a user pool client (target: ${config.ClientName})\n-> ${err}`);
-      process.exit(50);
+      return catchError(CODE.ERROR.COGNITO.USERPOOL.CREATE_CLIENT, false, config.ClientName, err as Error);
     }
   }
 
@@ -92,8 +104,7 @@ export class CognitoSdk {
       // Send a command to create a user pool domain
       await this._client.send(command);
     } catch (err) {
-      console.error(`[ERROR] Failed to create a user pool domain (target: ${userPoolId})\n-> ${err}`);
-      process.exit(51);
+      catchError(CODE.ERROR.COGNITO.USERPOOL.CREATE_DOMAIN, false, userPoolId, err as Error);
     }
   }
 
@@ -105,32 +116,86 @@ export class CognitoSdk {
   }
 
   /**
+   * Get a user pool arn
+   * @param userPoolId user pool id
+   * @returns user pool arn
+   */
+  public async getUserPoolArn(userPoolId: string): Promise<string> {
+    try {
+      // Create an input to get a user pool arn
+      const input: cognito.DescribeUserPoolCommandInput = {
+        UserPoolId: userPoolId
+      };
+      // Create a command to get a user pool arn
+      const command: cognito.DescribeUserPoolCommand = new cognito.DescribeUserPoolCommand(input);
+      // Send a command to get a user pool arn
+      const response: cognito.DescribeUserPoolCommandOutput = await this._client.send(command);
+      // Return
+      return response.UserPool && response.UserPool.Arn ? response.UserPool.Arn as string : "";
+    } catch (err) {
+      return catchError(CODE.ERROR.COGNITO.USERPOOL.GET_ARN, false, userPoolId, err as Error);
+    }
+  }
+
+  /**
+   * Get a user pool name
+   * @param userPoolId user pool id
+   * @returns user pool name
+   */
+  public async getUserPoolName(userPoolId: string): Promise<string> {
+    try {
+      // Create an input to get a user pool name
+      const input: cognito.DescribeUserPoolCommandInput = {
+        UserPoolId: userPoolId
+      };
+      // Create a command to get a user pool name
+      const command: cognito.DescribeUserPoolCommand = new cognito.DescribeUserPoolCommand(input);
+      // Send a command to get a user pool name
+      const response: cognito.DescribeUserPoolCommandOutput = await this._client.send(command);
+      // Return
+      return response.UserPool && response.UserPool.Name ? response.UserPool.Name as string : "";
+    } catch (err) {
+      return catchError(CODE.ERROR.COGNITO.USERPOOL.GET_NAME, false, userPoolId, err as Error);
+    }
+  }
+
+  /**
    * Get a user pool id
    * @param userPoolName user pool name 
    * @returns user pool id
    */
   public async getUserPoolId(userPoolName: string): Promise<string> {
     try {
-      // Create a input to get a list of user pool
-      const input: cognito.ListUserPoolsCommandInput = {
-        MaxResults: 60
-      };
-      // Create a paginator
-      const paginator = cognito.paginateListUserPools({ client: this._client }, input);
-      // Find a user pool id
-      for await (const page of paginator) {
-        if (page.UserPools) {
-          for (const userPool of page.UserPools) {
+      let nextToken: string|undefined = undefined;
+      // Get a list of user pool
+      do {
+        // Create an input to get a list of user pool
+        const input: cognito.ListUserPoolsCommandInput = {
+          MaxResults: 60,
+          NextToken: nextToken
+        };
+        // Create a command to get a list of user pool
+        const command: cognito.ListUserPoolsCommand = new cognito.ListUserPoolsCommand(input);
+        // Send a command to get a list of user pool
+        const response: cognito.ListUserPoolsCommandOutput = await this._client.send(command);
+
+        // Process a result
+        if (response.UserPools) {
+          // Find a user pool
+          for (const userPool of response.UserPools) {
             if (userPool.Name && userPool.Name === userPoolName) {
               return userPool.Id as string;
             }
           }
-        } 
-      }
+        }
+        // Escape condition
+        nextToken = response.NextToken
+        if (!nextToken) break;
+      } while (true);
+      // Return
       return "";
     } catch (err) {
-      console.error(`[ERROR] Failed to get a user pool id (target: ${userPoolName})\n-> ${err}`);
-      process.exit(52);
+      return catchError(CODE.ERROR.COGNITO.USERPOOL.GET_ID, false, userPoolName, err as Error);
     }
   }
 
@@ -169,8 +234,7 @@ export class CognitoSdk {
       }
       return "";
     } catch (err) {
-      console.error(`[ERROR] Failed to get a user pool client id (target: ${qualifier})\n-> ${err}`);
-      process.exit(53);
+      return catchError(CODE.ERROR.COGNITO.USERPOOL.GET_CLIENT_ID, false, qualifier, err as Error);
     }
   }
 
@@ -202,8 +266,7 @@ export class CognitoSdk {
       // Send a command to set MFA
       await this._client.send(command);
     } catch (err) {
-      console.error(`[ERROR] Failed to set a MFA configuration (target: ${userPoolId})\n-> ${err}`);
-      process.exit(54);
+      catchError(CODE.ERROR.COGNITO.USERPOOL.SET_MFA_CONFIG, false, userPoolId, err as Error);
     }
   }
 
@@ -231,7 +294,8 @@ export class CognitoSdk {
       // Return
       return true;
     } catch (err) {
-      console.warn(`[WARNING] Failed to set a UI customization (target: ${clientId})\n-> ${err}`);
+      catchError(CODE.ERROR.COGNITO.USERPOOL.SET_UI_CUSTOM, false, clientId, err as Error);
+      // Return
       return false;
     }
   }
@@ -259,7 +323,8 @@ export class CognitoSdk {
       // Return
       return true;
     } catch (err) {
-      console.warn(`[WARNING] Failed to update an email configuration (target: ${userPoolId})\n-> ${err}`);
+      catchError(CODE.ERROR.COGNITO.USERPOOL.SET_EMAIL_CONFIG, false, userPoolId, err as Error);
+      // Return
       return false;
     }
   }
@@ -305,7 +370,8 @@ export class CognitoSdk {
       // Return
       return true;
     } catch (err) {
-      console.warn(`[WARNING] Failed to update a lambda configuration (target: ${userPoolId})\n-> ${err}`);
+      catchError(CODE.ERROR.COGNITO.USERPOOL.SET_LAMBDA_CONFIG, false, userPoolId, err as Error);
+      // Return
       return false;
     }
   }
