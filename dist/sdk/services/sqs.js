@@ -22,14 +22,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SQSSdk = void 0;
 // AWS SDK
 const sqs = __importStar(require("@aws-sdk/client-sqs"));
+// Response
+const response_1 = require("../../models/response");
 class SQSSdk {
     /**
      * Create a sdk object for amazon sqs
      * @param config configuration for client
      */
     constructor(config) {
+        // Create the params for client
+        const params = {
+            credentials: config.credentials ? {
+                accessKeyId: config.credentials.AccessKeyId,
+                expiration: config.credentials.Expiration ? new Date(config.credentials.Expiration) : undefined,
+                secretAccessKey: config.credentials.SecretAccessKey,
+                sessionToken: config.credentials.SessionToken
+            } : undefined,
+            region: config.region
+        };
         // Create a client for amazon sqs
-        this._client = new sqs.SQSClient(config);
+        this._client = new sqs.SQSClient(params);
     }
     /**
      * Destroy a client for amazon sqs
@@ -58,8 +70,7 @@ class SQSSdk {
             return response.Attributes ? response.Attributes.QueueArn : "";
         }
         catch (err) {
-            console.error(`[ERROR] Failed to get a queue arn (target: ${queueUrl})\n-> ${err}`);
-            process.exit(21);
+            return (0, response_1.catchError)(response_1.CODE.ERROR.SQS.QUEUE.GET_ARN, false, queueUrl, err);
         }
     }
     /**
@@ -84,8 +95,7 @@ class SQSSdk {
             return response.QueueUrl;
         }
         catch (err) {
-            console.error(`[ERROR] Failed to get a queue url (target: ${queueName})\n-> ${err}`);
-            process.exit(20);
+            return (0, response_1.catchError)(response_1.CODE.ERROR.SQS.QUEUE.GET_URL, false, queueName, err);
         }
     }
 }

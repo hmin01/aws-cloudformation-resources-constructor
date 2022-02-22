@@ -20,22 +20,32 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.APIGatewaySdk = void 0;
+// AWS SDK
 const apigateway = __importStar(require("@aws-sdk/client-api-gateway"));
+// Response
+const response_1 = require("../../models/response");
 // Service
 const lambda_1 = require("./lambda");
 // Util
 const util_1 = require("../../utils/util");
-const cognito_1 = require("./cognito");
 class APIGatewaySdk {
     /**
      * Create a sdk object for amazon apigateway
      * @param config configuration for amzon apigateway
      */
     constructor(config) {
+        // Create the params for client
+        const params = {
+            credentials: config.credentials ? {
+                accessKeyId: config.credentials.AccessKeyId,
+                expiration: config.credentials.Expiration ? new Date(config.credentials.Expiration) : undefined,
+                secretAccessKey: config.credentials.SecretAccessKey,
+                sessionToken: config.credentials.SessionToken
+            } : undefined,
+            region: config.region
+        };
         // Create a client for amazon apigateway
-        this._client = new apigateway.APIGatewayClient(config);
-        // Set a mapping data for resources
-        this._resources = {};
+        this._client = new apigateway.APIGatewayClient(params);
     }
     /**
      * Destroy a client for amazon apigateway
@@ -63,7 +73,7 @@ class APIGatewaySdk {
                         const functionName = (0, util_1.extractDataFromArn)(rawArn, "resource");
                         const qualifier = (0, util_1.extractDataFromArn)(rawArn, "qualifier");
                         // Get an arn for lambda function
-                        const lambda = new lambda_1.LambdaSdk({ region: process.env.REGION });
+                        const lambda = new lambda_1.LambdaSdk({ region: process.env.TARGET_REGION });
                         const lambdaArn = await lambda.getFunctionArn(functionName, qualifier);
                         lambda.destroy();
                         // Reprocessing uri and return
@@ -71,12 +81,12 @@ class APIGatewaySdk {
                             return uri;
                         }
                         else {
-                            return `arn:aws:apigateway:${process.env.REGION}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations`;
+                            return `arn:aws:apigateway:${process.env.TARGET_REGION}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations`;
                         }
                     case "s3":
                         const uriPaths = uri.split(":");
                         // Change the region for uri
-                        uriPaths[3] = process.env.REGION;
+                        uriPaths[3] = process.env.TARGET_REGION;
                         // Combine uri path and return
                         return uriPaths.join(":");
                     default:
@@ -106,32 +116,32 @@ class APIGatewaySdk {
     async addAuthorizerForMethod(restApiId, resourceId, httpMethod, config) {
         try {
             // Create an array to store the patch operations
-            const patchOperations = [];
-            // Append the options for authorization scope
-            if (config.authorizationScopes) {
-                for (const elem of config.authorizationScopes) {
-                    patchOperations.push({
-                        op: "add",
-                        path: "/authorizationScope",
-                        value: elem
-                    });
-                }
-            }
-            // Append the options for authorization type
+            let patchOperations = [];
+            // Append the options for authorizer id
             if (config.authorizationType) {
                 patchOperations.push({
                     op: "replace",
-                    patch: "/authorizationType",
+                    path: "/authorizationType",
                     value: config.authorizationType
                 });
             }
             // Append the options for authorizer id
             if (config.authorizerId) {
                 patchOperations.push({
-                    op: "add",
+                    op: "replace",
                     path: "/authorizerId",
                     value: config.authorizerId
                 });
+            }
+            // Append the options for authorization scope
+            if (config.authorizationScopes) {
+                for (const elem of config.authorizationScopes) {
+                    patchOperations.push({
+                        op: "add",
+                        path: "/authorizationScopes",
+                        value: elem
+                    });
+                }
             }
             // Create an input to add an authorizer for resource
             const input = {
@@ -158,59 +168,16 @@ class APIGatewaySdk {
      */
     async createAuthorizer(restApiId, config) {
         try {
-            // Get a authorizer uri or provier arns
-            let authorizerUri = undefined;
-            let providerARNs = [];
-            if (config.type.includes("COGNITO")) {
-                for (const arn of config.providerARNs) {
-                    // Create a sdk object for cognito
-                    const cognito = new cognito_1.CognitoSdk({ region: process.env.REGION });
-                    // Extract a user pool name from arn
-                    const userPoolName = (0, util_1.extractDataFromArn)(arn, "resource");
-                    // Get a user pool id
-                    const userPoolId = await cognito.getUserPoolId(userPoolName);
-                    // Get a user pool arn
-                    let userPoolArn;
-                    if (userPoolId !== "") {
-                        userPoolArn = await cognito.getUserPoolArn(userPoolId);
-                    }
-                    else {
-                        userPoolArn = arn;
-                    }
-                    // Push a user pool arn
-                    providerARNs.push(userPoolArn);
-                    // Destroy a sdk object for cognito
-                    cognito.destroy();
-                }
-            }
-            else {
-                // Create a sdk object for lambda
-                const lambda = new lambda_1.LambdaSdk({ region: process.env.REGION });
-                // Extract a lambda function name and qualifier(version or aliases) from arn
-                const functionName = (0, util_1.extractDataFromArn)(config.authorizerUri, "resource");
-                const qualifier = (0, util_1.extractDataFromArn)(config.authorizerUri, "qualifier");
-                // Get a function arn
-                const functionArn = await lambda.getFunctionArn(functionName, qualifier !== "" ? qualifier : undefined);
-                // Push a function arn
-                if (functionArn !== "") {
-                    authorizerUri = `arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:${process.env.ACCOUNT}:function:${functionArn}/invocations.`;
-                }
-                else {
-                    authorizerUri = config.authorizerUri;
-                }
-                // Destroy a sdk object for lambda
-                lambda.destroy();
-            }
             // Create an input to create an authorizer
             const input = {
                 authType: config.authType,
                 authorizerCredentials: config.authorizerCredentials,
                 authorizerResultTtlInSeconds: config.authorizerResultTtlInSeconds,
-                authorizerUri: authorizerUri,
+                authorizerUri: config.authorizerUri,
                 identitySource: config.identitySource,
                 identityValidationExpression: config.identityValidationExpression,
                 name: config.name,
-                providerARNs: providerARNs.length > 0 ? providerARNs : undefined,
+                providerARNs: config.providerARNs,
                 restApiId: restApiId,
                 type: config.type
             };
@@ -222,8 +189,7 @@ class APIGatewaySdk {
             return response.id;
         }
         catch (err) {
-            console.error(`[ERROR] Failed to creaet an authorizer (target: ${restApiId})-> ${err}`);
-            process.exit(46);
+            return (0, response_1.catchError)(response_1.CODE.ERROR.APIGATEWAY.CREATE_AUTHORIZER, true, restApiId, err);
         }
     }
     /**
@@ -246,8 +212,7 @@ class APIGatewaySdk {
             return response.id;
         }
         catch (err) {
-            console.error(`[ERROR] Failed to create a deployment (target: ${restApiId})\n-> ${err}`);
-            process.exit(40);
+            return (0, response_1.catchError)(response_1.CODE.ERROR.APIGATEWAY.CREATE_DEPLOYMENT, false, restApiId, err);
         }
     }
     /**
@@ -280,8 +245,7 @@ class APIGatewaySdk {
             await this._client.send(command);
         }
         catch (err) {
-            console.error(`[ERROR] Failed to create a stage (target: ${restApiId})\n-> ${err}`);
-            process.exit(41);
+            (0, response_1.catchError)(response_1.CODE.ERROR.APIGATEWAY.CREATE_STAGE, false, restApiId, err);
         }
     }
     /**
@@ -295,7 +259,7 @@ class APIGatewaySdk {
             // Create an input to get a list of authorizer 
             const input = {
                 limit: 500,
-                restApiId: restApiId
+                restApiId: restApiId,
             };
             // Create a command to get a list of authorizer
             const command = new apigateway.GetAuthorizersCommand(input);
@@ -313,8 +277,7 @@ class APIGatewaySdk {
             return "";
         }
         catch (err) {
-            console.error(`[ERROR] Failed to create a stage (target: ${authorizerName})\n-> ${err}`);
-            process.exit(45);
+            return (0, response_1.catchError)(response_1.CODE.ERROR.APIGATEWAY.GET_AUTHORIZER_ID, false, authorizerName, err);
         }
     }
     /**
@@ -346,8 +309,7 @@ class APIGatewaySdk {
             return "";
         }
         catch (err) {
-            console.error(`[ERROR] Failed to get a resource id (target: ${path})\n-> ${err}`);
-            process.exit(42);
+            return (0, response_1.catchError)(response_1.CODE.ERROR.APIGATEWAY.GET_RESOURCE_ID, false, `${restApiId} ${path}`, err);
         }
     }
     /**
@@ -377,8 +339,7 @@ class APIGatewaySdk {
             return "";
         }
         catch (err) {
-            console.error(`[ERROR] Failed to get a rest api id (target: ${name})\n-> ${err}`);
-            process.exit(43);
+            return (0, response_1.catchError)(response_1.CODE.ERROR.APIGATEWAY.GET_RESTAPI_ID, false, name, err);
         }
     }
     /**
@@ -417,7 +378,7 @@ class APIGatewaySdk {
             await this._client.send(command);
         }
         catch (err) {
-            console.warn(`[WARNING] Failed to put a method integration (target: ${resourceId}, ${httpMethod})\n-> ${err}`);
+            (0, response_1.catchError)(response_1.CODE.ERROR.APIGATEWAY.PUT_METHOD_INTEGRATION, false, `${resourceId} ${httpMethod} in ${restApiId}`, err);
         }
     }
     /**
@@ -451,7 +412,7 @@ class APIGatewaySdk {
             }
         }
         catch (err) {
-            console.warn(`[WARNING] Failed to put a method integration response (target: ${resourceId}, ${httpMethod})\n-> ${err}`);
+            (0, response_1.catchError)(response_1.CODE.ERROR.APIGATEWAY.PUT_METHOD_INTEGRATION_RESPONSES, false, `${resourceId} ${httpMethod} in ${restApiId}`, err);
         }
     }
     /**
@@ -482,7 +443,7 @@ class APIGatewaySdk {
             }
         }
         catch (err) {
-            console.warn(`[WARNING] Failed to put a method response (target: ${resourceId}, ${httpMethod})\n-> ${err}`);
+            (0, response_1.catchError)(response_1.CODE.ERROR.APIGATEWAY.PUT_METHOD_RESPONSES, false, `${resourceId} ${httpMethod} in ${restApiId}`, err);
         }
     }
 }

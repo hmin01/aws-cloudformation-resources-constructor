@@ -1,4 +1,5 @@
-/** For APIGateway */
+/** Initial setting */
+export declare function initialSetting(envPath: string): void;
 /**
  * Configure the authorizers
  * @param restApiName rest api name

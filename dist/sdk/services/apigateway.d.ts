@@ -1,6 +1,5 @@
 export declare class APIGatewaySdk {
     private _client;
-    private _resources;
     /**
      * Create a sdk object for amazon apigateway
      * @param config configuration for amzon apigateway

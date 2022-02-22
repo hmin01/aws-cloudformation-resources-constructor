@@ -22,14 +22,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.S3Sdk = void 0;
 // AWS SDK
 const s3 = __importStar(require("@aws-sdk/client-s3"));
+// Response
+const response_1 = require("../../models/response");
 class S3Sdk {
     /**
      * Create a sdk object for amazon s3
      * @param config configuration for client
      */
     constructor(config) {
+        // Create the params for client
+        const params = {
+            credentials: config.credentials ? {
+                accessKeyId: config.credentials.AccessKeyId,
+                expiration: config.credentials.Expiration ? new Date(config.credentials.Expiration) : undefined,
+                secretAccessKey: config.credentials.SecretAccessKey,
+                sessionToken: config.credentials.SessionToken
+            } : undefined,
+            region: config.region
+        };
         // Create a client for amazon s3
-        this._client = new s3.S3Client(config);
+        this._client = new s3.S3Client(params);
     }
     /**
      * Get a object in amazon s3
@@ -55,8 +67,9 @@ class S3Sdk {
             return response.Body;
         }
         catch (err) {
-            console.error(`[ERROR] Failed to get the object from amazon s3\n-> ${err}`);
-            process.exit(1);
+            (0, response_1.catchError)(response_1.CODE.ERROR.S3.OBJECT.GET_ITEM, true, `${bucket}/${key}`, err);
+            // Return
+            return undefined;
         }
     }
     /**

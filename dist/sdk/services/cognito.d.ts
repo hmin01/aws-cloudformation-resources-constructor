@@ -33,6 +33,12 @@ export declare class CognitoSdk {
      */
     getUserPoolArn(userPoolId: string): Promise<string>;
     /**
+     * Get a user pool name
+     * @param userPoolId user pool id
+     * @returns user pool name
+     */
+    getUserPoolName(userPoolId: string): Promise<string>;
+    /**
      * Get a user pool id
      * @param userPoolName user pool name
      * @returns user pool id
