@@ -64,7 +64,7 @@ class STSSdk {
             return response.Credentials;
         }
         catch (err) {
-            (0, response_1.catchError)(response_1.CODE.STS.ASSUME_ROLE, true, roleArn, err);
+            (0, response_1.catchError)(response_1.CODE.ERROR.STS.ASSUME_ROLE, true, roleArn, err);
             // Return
             return undefined;
         }
