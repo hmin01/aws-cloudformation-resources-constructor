@@ -9,26 +9,10 @@ import { LambdaSdk } from "./services/lambda";
 import { S3Object, S3Sdk } from "./services/s3";
 import { STSSdk } from "./services/sts";
 // Util
-import { extractDataFromArn, loadJsonFile } from "../utils/util";
+import { extractDataFromArn } from "../utils/util";
 
 // Set the directory for stored lambda function codes
 const CODE_DIR: string = join(__dirname, "../../resources/code");
-
-/** Initial setting */
-export function initialSetting(envPath: string): void {
-  // Load a configuration data
-  const env: any = loadJsonFile(envPath);
-  // Set the environment various
-  process.env.ASSUME_ROLE_ARN = env.ASSUME_ROLE_ARN;
-  process.env.ORIGIN_ACCOUNT = env.ORIGIN_ACCOUNT;
-  process.env.ORIGIN_REGION = env.ORIGIN_REGION;
-  process.env.TARGET_ACCOUNT = env.TARGET_ACCOUNT;
-  process.env.TARGET_REGION = env.TARGET_REGION;
-  // Catch error
-  if (!process.env.ORIGIN_ACCOUNT || !process.env.ORIGIN_REGION || !process.env.TARGET_ACCOUNT || !process.env.TARGET_REGION) {
-    catchError(CODE.ERROR.COMMON.INVALIED_ENV, true);
-  }
-}
 
 // /** For APIGateway */
 /**

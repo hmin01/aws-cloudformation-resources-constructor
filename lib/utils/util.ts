@@ -6,13 +6,13 @@ import { CfnTag } from "aws-cdk-lib";
 import { CODE, catchError } from "../models/response";
 
 /**
- * Change the part about AWS arn
+ * Change the part for aws arn
  * @param arn arn for resource
  * @param type part type
  * @param content content
  * @returns changed arn
  */
-export function changePartaboutArn(arn: string, type: string, content: string): string {
+export function changePartForArn(arn: string, type: string, content: string): string {
   // Split the arn
   const split: string[] = arn.split(":");
   // Return by output type
@@ -114,75 +114,6 @@ export function extractDataFromArn(arn: string, type: string): string {
 }
 
 /**
- * Extract the principal from raw scope data
- * @param principalConfig configuration for principal
- * @returns extracted and modified principal
- */
-export function extractPrincipal(principalConfig: any): any {
-  const result: any = {};
-  if (process.env !== undefined && process.env.ACCOUNT !== undefined && process.env.ORIGIN_ACCOUT) {
-    // Set the default pattern for arn and accountId
-    const accountIdPattern = new RegExp("^[0-9]{12}$");
-    // Extract the principal
-    for (const key of Object.keys(principalConfig)) {
-      if (key === "AWS") {
-        if (Object.prototype.toString.call(principalConfig[key]) === "Array") {
-          // Set result
-          result[key] = [];
-          // Extract
-          for (const elem of principalConfig[key]) {
-            if (checkAwsArnPattern(elem)) {
-              const account: string = extractDataFromArn(elem, "account");
-              if (account === process.env.ORIGIN_ACCOUNT) {
-                result[key].push(changePartaboutArn(elem, "account", process.env.ACCOUNT));
-              } else {
-                result[key].push(elem);
-              }
-            } else {
-              if (accountIdPattern.test(elem)) {
-                if (elem === process.env.ORIGIN_ACCOUNT) {
-                  result[key] = process.env.ACCOUNT;
-                } else {
-                  result[key] = elem;
-                }
-              } else {
-                result[key] = elem;
-              }
-            }
-          }
-        } else {
-          if (checkAwsArnPattern(principalConfig[key])) {
-            const account: string = extractDataFromArn(principalConfig[key], "account");
-            if (account === process.env.ORIGIN_ACCOUNT) {
-              result[key] = changePartaboutArn(principalConfig[key], "account", process.env.ACCOUNT);
-            } else {
-              result[key] === principalConfig[key];
-            }
-          } else {
-            if (accountIdPattern.test(principalConfig[key])) {
-              if (principalConfig[key] === process.env.ORIGIN_ACCOUNT) {
-                result[key] = process.env.ACCOUNT;
-              } else {
-                result[key] = principalConfig[key];
-              }
-            } else {
-              result[key] = principalConfig[key];
-            }
-          }
-        }
-      } else {
-        result[key] = principalConfig[key];
-      }
-    }
-  } else {
-    console.error("[ERROR] Environmental variables are not set");
-    process.exit(1);
-  }
-  // Return
-  return result;
-}
-
-/**
  * Extract a list of tag based on input data
  * @param tags content of tags
  * @returns a list of tag
@@ -257,4 +188,69 @@ export async function streamToBuffer(steam: Readable): Promise<Buffer> {
     steam.on("error", err => reject(err));
     steam.on("end", () => resolve(Buffer.concat(chunks)));
   });
+}
+
+/**
+ * Set a principal content in policy
+ * @param value principal content
+ * @returns changed content
+ */
+function _setPrincipal(value: string): string {
+  // Set a default pattern for account number
+  const accountNumberPattern: RegExp = new RegExp("^[0-9]{12}");
+  // Check a value format (if it match a format for aws arn)
+  if (checkAwsArnPattern(value)) {
+    // Extract an account number and service type from arn
+    const account: string = extractDataFromArn(value, "account");
+    // Change an account number in arn
+    if (account === process.env.ORIGIN_ACCOUNT) {
+      return changePartForArn(value, "account", process.env.TARGET_ACCOUNT as string);
+    } else {
+      return value;
+    }
+  } else if (accountNumberPattern.test(value)) {  // if it match a format for aws account number
+    if (value === process.env.ORIGIN_ACCOUNT) {
+      return process.env.TARGET_ACCOUNT as string;
+    } else {
+      return value;
+    }
+  } else {
+    return value;
+  }
+}
+/**
+ * Set a principal content
+ * @param principal principal content
+ * @returns changed content
+ */
+export function setPrincipal(principal: any): any {
+  try {
+    const result: any = {};
+    // Process
+    for (const key of Object.keys(principal)) {
+      // Extract a value by key
+      const value: any = principal[key];
+      // Anaysis a principal
+      if (key === "AWS" || key === "Faderated") {
+        // If value type is array
+        if (Object.prototype.toString.call(value) === "Array") {
+          result[key] = value.map((elem: string): string => _setPrincipal(elem));
+        } else {  // value type is string
+          result[key] = _setPrincipal(value);
+        }
+      } else {  // "CanonicalUser" or "Service"
+        // If value type is array
+        if (Object.prototype.toString.call(value) === "Array") {
+          result[key] = value.map((elem: string): string => elem);
+        } else {  // value type is string
+          result[key] = value;
+        }
+      }
+    }
+    // Return
+    return result;
+  } catch (err) {
+    console.error(`[ERROR] Failed to set the principals in policy\n-> ${err}`);
+    process.exit(1);
+  }
 }
