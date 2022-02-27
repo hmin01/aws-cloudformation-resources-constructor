@@ -1,5 +1,3 @@
-/** Initial setting */
-export declare function initialSetting(envPath: string): void;
 /**
  * Configure the authorizers
  * @param restApiName rest api name
@@ -60,3 +58,10 @@ export declare function downloadLambdaCodeFromS3(region: string, s3Url: string, 
  * @returns mapping data for version
  */
 export declare function publishLambdaVersions(functionName: string, config: any, dirPath?: string): Promise<any>;
+/**
+ * Upload a lambda function code
+ * @param functionName function name
+ * @param location code stored location value
+ * @param dirPath path to the directory where the code is stored (default /resources/code)
+ */
+export declare function uploadLambdaInitCode(functionName: string, location: string, dirPath?: string): Promise<void>;

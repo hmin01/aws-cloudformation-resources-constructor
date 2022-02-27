@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
 import { aws_sqs as sqs } from "aws-cdk-lib";
 // Util
-import { createId, extractDataFromArn, extractPrincipal, extractTags } from "../../utils/util";
+import { createId, extractDataFromArn, extractTags, setPrincipal } from "../../utils/util";
 
 export class Queue {
   private _scope: Construct;
@@ -64,28 +64,22 @@ export class Queue {
    * @param config configuration for policy
    */
   public setPolicy(config: any) {
-    // Set the statement
-    const statement: any[] = config.Statement.map((elem: any): any => {
-      // Extract principal by type
-      const principal: any = elem.Principal !== undefined ? extractPrincipal(elem.Principal) : undefined;
-      // Return
-      return {
-        Effect: elem.Effect,
-        Principal: principal,
-        Action: elem.Action,
-        Resource: this._queue.attrArn
-      };
-    });
-
-    // Create the properties for queue policy
+    // Create a properties for queue policy
     const props: sqs.CfnQueuePolicyProps = {
       policyDocument: {
         Version: config.Version,
-        Statement: statement.length > 0 ? statement : undefined
+        Statement: config.Statement && config.Statement.length > 0 ? config.Statement.map((elem: any) => {
+          return {
+            Effect: elem.Effect,
+            Principal: elem.Principal ? setPrincipal(elem.Principal) : undefined,
+            Action: elem.Action,
+            Resource: this._queue.attrArn
+          };
+        }) : undefined
       },
       queues: [this._queue.ref]
     }
-    // Set the policy for queue
+    // Set a policy for queue
     new sqs.CfnQueuePolicy(this._scope, createId(JSON.stringify(props)), props);
   }
 

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createSQSQueues = exports.createSNSTopics = exports.createLambdaFunctions = exports.createIAMRoles = exports.createIAMPolicies = exports.createDynamoDBTables = exports.createCognitoUserPool = exports.createCloudFrontOAI = exports.createCloudFrontDistributions = exports.createCloudFrontPolicies = exports.createRestApi = void 0;
+exports.createSQSQueues = exports.createSQSQueue = exports.createSNSTopics = exports.createSNSTopic = exports.createLambdaFunctions = exports.createLambdaFunction = exports.createIAMRoles = exports.createIAMRole = exports.createIAMPolicies = exports.createIAMPolicy = exports.createDynamoDBTables = exports.createDynamoDBTable = exports.createCognitoUserPools = exports.createCognitoUserPool = exports.createCloudFrontOAI = exports.createCloudFrontDistributions = exports.createCloudFrontPolicies = exports.createRestApi = exports.createAPIGatewayRestApis = exports.createAPIGatewayRestApi = void 0;
 // Resources (CDK)
 const apigateway_1 = require("./services/apigateway ");
 const cloudFront_1 = require("./services/cloudFront");
@@ -14,6 +14,56 @@ const sqs_1 = require("./services/sqs");
 const cache_1 = require("../utils/cache");
 const util_1 = require("../utils/util");
 /** For Amazon APIGateway */
+/**
+ * Create an amazon apigateway rest api
+ * @param scope scope context
+ * @param config configuration for apigateway rest api
+ */
+function createAPIGatewayRestApi(scope, config) {
+    // Create a cloud formation resource for rest api
+    const restApi = new apigateway_1.RestApi(scope, config);
+    // Create the gateway responses
+    if (config.GatewayResponses) {
+        for (const elem of config.GatewayResponses) {
+            restApi.createGatewayResponse(elem);
+        }
+    }
+    // Create the models
+    if (config.Models) {
+        for (const elem of config.Models) {
+            restApi.createModel(elem);
+        }
+    }
+    // Create the request validators
+    if (config.RequestValidators) {
+        for (const elem of config.RequestValidators) {
+            restApi.createRequestValidator(elem);
+        }
+    }
+    // Create the resources
+    if (config.Resources) {
+        restApi.createResources(config.Resources);
+        // Create the methods
+        for (const elem of config.Resources) {
+            if (elem.resourceMethods !== undefined) {
+                restApi.createMethod(elem.path, elem.resourceMethods);
+            }
+        }
+    }
+}
+exports.createAPIGatewayRestApi = createAPIGatewayRestApi;
+/**
+ * Create the amazon apigateway rest apis
+ * @param scope scope context
+ * @param config configuration for apigateway rest apis
+ */
+function createAPIGatewayRestApis(scope, config) {
+    for (const elem of config) {
+        // Create an apigateway rest api
+        createAPIGatewayRestApi(scope, elem);
+    }
+}
+exports.createAPIGatewayRestApis = createAPIGatewayRestApis;
 /**
  * Create the rest api
  * @param scope scope context
@@ -115,171 +165,202 @@ function createCloudFrontOAI(scope, config) {
 exports.createCloudFrontOAI = createCloudFrontOAI;
 /** For Amazon Cognito */
 /**
- * Create the cognito user pool
+ * Create an amazon cognito user pool
  * @param scope scope context
- * @param config configuration for user pool
+ * @param config configuration for cognito user pool
  */
 function createCognitoUserPool(scope, config) {
-    for (const userPoolId of Object.keys(config)) {
-        // Get a configuration for user pool
-        const elem = config[userPoolId];
-        // Create a user pool
-        const userPool = new cognito_1.UserPool(scope, elem);
-        // Store the resource
-        (0, cache_1.storeResource)("userpool", userPoolId, userPool);
-        // Create the domain (default)
-        if (elem.Domain) {
-            userPool.createDefaultDomain(elem.Domain);
-        }
-        // Create the user pool resource servers
-        if (elem.ResourceServers) {
-            for (const server of elem.ResourceServers) {
-                userPool.createResourceServer(server);
-            }
+    // Create a cloud formation resource for cognito user pool
+    const userPool = new cognito_1.UserPool(scope, config);
+    // Create a default domain
+    if (config.Domain) {
+        userPool.createDefaultDomain(config.Domain);
+    }
+    // Create the resource servers for user pool
+    if (config.ResourceServers) {
+        for (const server of config.ResourceServers) {
+            userPool.createResourceServer(server);
         }
     }
 }
 exports.createCognitoUserPool = createCognitoUserPool;
+/**
+ * Create the amazon cognito user pools
+ * @param scope scope context
+ * @param config configuration for cognito user pools {"userPoolId": data}
+ */
+function createCognitoUserPools(scope, config) {
+    for (const userPoolId of Object.keys(config)) {
+        // Create a cognito user pool
+        createCognitoUserPool(scope, config[userPoolId]);
+    }
+}
+exports.createCognitoUserPools = createCognitoUserPools;
 /** For Amazon DynamoDB */
 /**
- * Create the dynamodb tables
+ * Create an amazon dynamodb table
  * @param scope scope context
- * @param config configuration for tables
+ * @param config configuration for dynamodb table
+ */
+function createDynamoDBTable(scope, config) {
+    // Create a cloud formation resource for dynamodb table
+    new dynamodb_1.Table(scope, config);
+}
+exports.createDynamoDBTable = createDynamoDBTable;
+/**
+ * Create the amazon dynamodb tables
+ * @param scope scope context
+ * @param config configuration for dynamodb tables {"tableName": data}
  */
 function createDynamoDBTables(scope, config) {
     for (const tableName of Object.keys(config)) {
-        // Get a configuration for table
-        const elem = config[tableName];
         // Create a table
-        const table = new dynamodb_1.Table(scope, elem);
-        // Store the resource
-        (0, cache_1.storeResource)("dynamodb", tableName, table);
+        createDynamoDBTable(scope, config[tableName]);
     }
 }
 exports.createDynamoDBTables = createDynamoDBTables;
 /** For Amazon IAM */
 /**
- * Create the policies
+ * Create an amazon iam policy
  * @param scope scope context
- * @param config configuration for policies
+ * @param config configuration for iam policy
+ */
+function createIAMPolicy(scope, config) {
+    // Create a cloud formation resource for iam policy
+    const policy = new iam_1.Policy(scope, config);
+    // Store a resource for iam policy
+    (0, cache_1.storeResource)("policy", config.PolicyName, policy);
+}
+exports.createIAMPolicy = createIAMPolicy;
+/**
+ * Create the amazon iam policies
+ * @param scope scope context
+ * @param config configuration for iam policies {"policyArn": data}
  */
 function createIAMPolicies(scope, config) {
     for (const policyArn of Object.keys(config)) {
-        // Get an account id from arn
+        // Extract an account id from arn
         const accountId = (0, util_1.extractDataFromArn)(policyArn, "account");
-        // Create policies that are not managed by aws.
-        if (accountId !== "aws") {
-            // Get a configuration for policy
-            const elem = config[policyArn];
-            // Create a policy
-            const policy = new iam_1.Policy(scope, elem);
-            // Store the resource
-            (0, cache_1.storeResource)("policy", elem.PolicyName, policy);
+        // Create the policies that are not managed by aws
+        if (accountId === process.env.ORIGIN_ACCOUNT) {
+            // Create an iam policy
+            createIAMPolicy(scope, config[policyArn]);
         }
     }
 }
 exports.createIAMPolicies = createIAMPolicies;
 /**
- * Create the roles
+ * Create an amazon iam role
  * @param scope scope context
- * @param config configuration for roles
+ * @param config configuration for iam role {AttachedPolicies: data, Policies: data, Role: data}
+ */
+function createIAMRole(scope, config) {
+    // Create a cloud formation resource for iam role
+    const role = new iam_1.Role(scope, config.Role);
+    // Store a resource for iam role
+    (0, cache_1.storeResource)("role", config.Role.RoleName, role);
+    // Associate the managed policies
+    role.associateManagedPolicies(config.AttachedPolicies);
+    // Set the inline policies
+    if (config.Policies) {
+        for (const policyName of Object.keys(config.Policies)) {
+            role.setInlinePolicy(policyName, config.Policies[policyName]);
+        }
+    }
+}
+exports.createIAMRole = createIAMRole;
+/**
+ * Create the amazon iam roles
+ * @param scope scope context
+ * @param config configuration for iam roles {"roleId": data}
  */
 function createIAMRoles(scope, config) {
     for (const roleId of Object.keys(config)) {
-        // Get a configuration for role
-        const elem = config[roleId];
-        // Create a role
-        const role = new iam_1.Role(scope, elem.Role);
-        // Store the resource
-        (0, cache_1.storeResource)("role", elem.Role.RoleName, role);
-        // Associate the managed policies
-        role.associateManagedPolicies(elem.AttachedPolicies);
-        // Set the inline policies
-        for (const policyName of Object.keys(elem.Policies)) {
-            role.setInlinePolicy(policyName, elem.Policies[policyName]);
-        }
+        // Create an iam role
+        createIAMRole(scope, config[roleId]);
     }
 }
 exports.createIAMRoles = createIAMRoles;
 /** For AWS Lambda */
 /**
- * Create the lambda functions
+ * Create an aws lambda function
  * @param scope scope context
- * @param config configuration for functions
+ * @param config configuration for lambda function
+ */
+function createLambdaFunction(scope, config) {
+    // Create a cloud formation resource for lambda function
+    const lambdaFunction = new lambda_1.Function(scope, config);
+    // Store a resource for lambda function
+    (0, cache_1.storeResource)("lambda", config.FunctionName, lambdaFunction);
+}
+exports.createLambdaFunction = createLambdaFunction;
+/**
+ * Create the aws lambda functions
+ * @param scope scope context
+ * @param config configuration for functions {"functionName": data}
  */
 function createLambdaFunctions(scope, config) {
     for (const functionName of Object.keys(config)) {
-        // Get a configuration for function
-        const elem = config[functionName];
-        // Create a function
-        const lambdaFunction = new lambda_1.Function(scope, elem.Configuration, elem.StoredLocation);
-        // Store the resource
-        (0, cache_1.storeResource)("lambda", elem.Configuration.FunctionName, lambdaFunction);
+        // Create a lambda function
+        createLambdaFunction(scope, config[functionName].Configuration);
     }
 }
 exports.createLambdaFunctions = createLambdaFunctions;
-// /**
-//  * Set the event source mappings
-//  * @param config configuration for event source mappings
-//  */
-// export function setLambdaEventSourceMappings(config: any): void {
-//   for (const eventSourceMappingId of Object.keys(config)) {
-//     // Get a configuration for event source mapping
-//     const elem: any = config[eventSourceMappingId];
-//     // Get a function
-//     const lambdaFunction = getResource("lambda", extractDataFromArn(elem.FunctionArn, "resource"));
-//     // Set the event source mapping
-//     lambdaFunction.setEventSourceMapping(elem);
-//   }
-// }
 /** For Amazon SNS */
 /**
- * Create the topics
+ * Create an amazon sns topic
  * @param scope scope context
- * @param config configuration for topics
+ * @param config configuration for topic {Attributes: data, Tags: data}
+ */
+function createSNSTopic(scope, config) {
+    // Create a cloud formation resource for sns topic
+    const topic = new sns_1.Topic(scope, config.Attributes);
+    // Set the tags
+    if (config.Tags && config.Tags !== null && Object.keys(config.Tags).length > 0) {
+        topic.setTags(config.Tags);
+    }
+}
+exports.createSNSTopic = createSNSTopic;
+/**
+ * Create the amazon sns topics
+ * @param scope scope context
+ * @param config configuration for topics {"topicArn": data}
  */
 function createSNSTopics(scope, config) {
     for (const topicArn of Object.keys(config)) {
-        // Extract a name from arn
-        // const topicName: string = extractDataFromArn(topicArn, "resource");
-        // Get a configuration for topic
-        const elem = config[topicArn];
-        // Create a topic
-        const topic = new sns_1.Topic(scope, elem.Attributes);
-        // Store the resource
-        // storeResource("sns", topicName, topic);
-        // Set the tags
-        if (elem.Tags && elem.Tags !== null && Object.keys(elem.Tags).length > 0) {
-            topic.setTags(elem.Tags);
-        }
+        // Create a sns topic
+        createSNSTopic(scope, config[topicArn]);
     }
 }
 exports.createSNSTopics = createSNSTopics;
 /** For Amazonz SQS */
 /**
- * Create the queues
+ * Create an amazon queue
  * @param scope scope context
- * @param config configuration for queues
+ * @param config configuration for queue {Attributes: data, Tags: data}
+ */
+function createSQSQueue(scope, config) {
+    // Create a cloud formation resource for sqs queue
+    const queue = new sqs_1.Queue(scope, config.Attributes);
+    // Set a policy
+    if (config.Attributes.PolicyObject && config.Attributes.PolicyObject !== null) {
+        queue.setPolicy(config.Attributes.PolicyObject);
+    }
+    // Set the tags
+    if (config.Tags && config.Tags !== null && Object.keys(config.Tags).length > 0) {
+        queue.setTags(config.Tags);
+    }
+}
+exports.createSQSQueue = createSQSQueue;
+/**
+ * Create the amazon queues
+ * @param scope scope context
+ * @param config configuration for queues {"queueUrl": data}
  */
 function createSQSQueues(scope, config) {
     for (const queueUrl of Object.keys(config)) {
-        // Extract a name from url
-        // const split: string[] = queueUrl.split("/");
-        // const queueName: string = split[split.length - 1];
-        // Get a configuration for queue
-        const elem = config[queueUrl];
-        // Create a queue
-        const queue = new sqs_1.Queue(scope, elem.Attributes);
-        // Store the resource
-        // storeResource("sqs", queueName, queue);
-        // Set the tags
-        if (elem.Tags && elem.Tags !== null && Object.keys(elem.Tags).length > 0) {
-            queue.setTags(elem.Tags);
-        }
-        // Set a policy
-        if (elem.PolicyObject && elem.PolicyObject !== null && Object.keys(elem.PolicyOjbect).length > 0) {
-            queue.setPolicy(elem.PolicyOjbect);
-        }
+        // Create a sqs queue
+        createSQSQueue(scope, config[queueUrl]);
     }
 }
 exports.createSQSQueues = createSQSQueues;

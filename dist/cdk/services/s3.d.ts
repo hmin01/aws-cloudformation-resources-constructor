@@ -19,7 +19,7 @@ export declare class Bucket {
      * Get an arn for bucket
      * @returns arn for bucket
      */
-    private getArn;
+    getArn(): string;
     /**
      * Get a mapping arn for lambda function
      * @param prevArn previous arn for lambda function

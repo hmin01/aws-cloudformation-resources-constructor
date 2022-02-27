@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.publishLambdaVersions = exports.downloadLambdaCodeFromS3 = exports.createLambdaEventSourceMappings = exports.createLambdaAliases = exports.createCognitoUserPoolClients = exports.setCognitoUserPool = exports.deployAPIGatewayStage = exports.configureAPIGatewayMethods = exports.configeAPIGatewayAuthorizers = exports.initialSetting = void 0;
+exports.uploadLambdaInitCode = exports.publishLambdaVersions = exports.downloadLambdaCodeFromS3 = exports.createLambdaEventSourceMappings = exports.createLambdaAliases = exports.createCognitoUserPoolClients = exports.setCognitoUserPool = exports.deployAPIGatewayStage = exports.configureAPIGatewayMethods = exports.configeAPIGatewayAuthorizers = void 0;
 const fs_1 = require("fs");
 const path_1 = require("path");
 // Responses
@@ -15,22 +15,6 @@ const sts_1 = require("./services/sts");
 const util_1 = require("../utils/util");
 // Set the directory for stored lambda function codes
 const CODE_DIR = (0, path_1.join)(__dirname, "../../resources/code");
-/** Initial setting */
-function initialSetting(envPath) {
-    // Load a configuration data
-    const env = (0, util_1.loadJsonFile)(envPath);
-    // Set the environment various
-    process.env.ASSUME_ROLE_ARN = env.ASSUME_ROLE_ARN;
-    process.env.ORIGIN_ACCOUNT = env.ORIGIN_ACCOUNT;
-    process.env.ORIGIN_REGION = env.ORIGIN_REGION;
-    process.env.TARGET_ACCOUNT = env.TARGET_ACCOUNT;
-    process.env.TARGET_REGION = env.TARGET_REGION;
-    // Catch error
-    if (!process.env.ORIGIN_ACCOUNT || !process.env.ORIGIN_REGION || !process.env.TARGET_ACCOUNT || !process.env.TARGET_REGION) {
-        (0, response_1.catchError)(response_1.CODE.ERROR.COMMON.INVALIED_ENV, true);
-    }
-}
-exports.initialSetting = initialSetting;
 // /** For APIGateway */
 /**
  * Configure the authorizers
@@ -398,3 +382,21 @@ async function publishLambdaVersions(functionName, config, dirPath) {
     return mapVersion;
 }
 exports.publishLambdaVersions = publishLambdaVersions;
+/**
+ * Upload a lambda function code
+ * @param functionName function name
+ * @param location code stored location value
+ * @param dirPath path to the directory where the code is stored (default /resources/code)
+ */
+async function uploadLambdaInitCode(functionName, location, dirPath) {
+    // Create a sdk object for lambda
+    const lambda = new lambda_1.LambdaSdk({ region: process.env.TARGET_REGION });
+    // Extract a file name from s3 url
+    const temp = location.replace(/^s3:\/\//, "").split("/").slice(1).join("/").split("/");
+    const filename = temp[temp.length - 1];
+    // Update a code
+    await lambda.updateCode(functionName, (0, path_1.join)(dirPath ? dirPath : CODE_DIR, filename));
+    // Destroy a sdk object for lambda
+    lambda.destroy();
+}
+exports.uploadLambdaInitCode = uploadLambdaInitCode;

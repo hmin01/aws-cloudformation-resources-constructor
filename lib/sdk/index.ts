@@ -9,26 +9,10 @@ import { LambdaSdk } from "./services/lambda";
 import { S3Object, S3Sdk } from "./services/s3";
 import { STSSdk } from "./services/sts";
 // Util
-import { extractDataFromArn, loadJsonFile } from "../utils/util";
+import { extractDataFromArn } from "../utils/util";
 
 // Set the directory for stored lambda function codes
 const CODE_DIR: string = join(__dirname, "../../resources/code");
-
-/** Initial setting */
-export function initialSetting(envPath: string): void {
-  // Load a configuration data
-  const env: any = loadJsonFile(envPath);
-  // Set the environment various
-  process.env.ASSUME_ROLE_ARN = env.ASSUME_ROLE_ARN;
-  process.env.ORIGIN_ACCOUNT = env.ORIGIN_ACCOUNT;
-  process.env.ORIGIN_REGION = env.ORIGIN_REGION;
-  process.env.TARGET_ACCOUNT = env.TARGET_ACCOUNT;
-  process.env.TARGET_REGION = env.TARGET_REGION;
-  // Catch error
-  if (!process.env.ORIGIN_ACCOUNT || !process.env.ORIGIN_REGION || !process.env.TARGET_ACCOUNT || !process.env.TARGET_REGION) {
-    catchError(CODE.ERROR.COMMON.INVALIED_ENV, true);
-  }
-}
 
 // /** For APIGateway */
 /**
@@ -398,7 +382,7 @@ export async function publishLambdaVersions(functionName: string, config: any, d
   for (const elem of config) {
     if (elem.Version !== "$LATEST" && elem.StoredLocation && new RegExp("^s3://").test(elem.StoredLocation)) {
       // Extract a file name from s3 url
-      const temp:string = elem.StoredLocation.replace(/^s3:\/\//, "").split("/").slice(1).join("/").split("/");
+      const temp:string[] = elem.StoredLocation.replace(/^s3:\/\//, "").split("/").slice(1).join("/").split("/");
       const filename: string = temp[temp.length - 1];
       // Update the function code
       await lambda.updateCode(functionName, join(dirPath ? dirPath : CODE_DIR, filename));
@@ -413,4 +397,21 @@ export async function publishLambdaVersions(functionName: string, config: any, d
   lambda.destroy();
   // Return
   return mapVersion;
+}
+/**
+ * Upload a lambda function code
+ * @param functionName function name
+ * @param location code stored location value
+ * @param dirPath path to the directory where the code is stored (default /resources/code)
+ */
+export async function uploadLambdaInitCode(functionName: string, location: string, dirPath?: string): Promise<void> {
+  // Create a sdk object for lambda
+  const lambda: LambdaSdk = new LambdaSdk({ region: process.env.TARGET_REGION });
+  // Extract a file name from s3 url
+  const temp: string[] = location.replace(/^s3:\/\//, "").split("/").slice(1).join("/").split("/");
+  const filename: string = temp[temp.length - 1];
+  // Update a code
+  await lambda.updateCode(functionName, join(dirPath ? dirPath : CODE_DIR, filename));
+  // Destroy a sdk object for lambda
+  lambda.destroy();
 }

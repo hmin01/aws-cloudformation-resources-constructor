@@ -16,7 +16,6 @@ class Bucket {
         this._scope = scope;
         // Set the properties for bucket
         const props = {
-            accelerateConfiguration: config.AccelerateConfiguration !== undefined ? { accelerationStatus: config.AccelerateConfiguration.AccelerationStatus } : undefined,
             bucketName: config.Name,
         };
         // Create the bucket

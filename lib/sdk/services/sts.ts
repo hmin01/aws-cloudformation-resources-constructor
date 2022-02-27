@@ -45,7 +45,7 @@ export class STSSdk {
       // Return
       return response.Credentials;
     } catch (err) {
-      catchError(CODE.STS.ASSUME_ROLE, true, roleArn, err as Error);
+      catchError(CODE.ERROR.STS.ASSUME_ROLE, true, roleArn, err as Error);
       // Return
       return undefined;
     }

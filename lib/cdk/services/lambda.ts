@@ -14,9 +14,8 @@ export class Function {
    * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html
    * @param scope scope context
    * @param config configuration for function
-   * @param storedLocation 
    */
-  constructor(scope: Construct, config: any, storedLocation: string) {
+  constructor(scope: Construct, config: any) {
     this._scope = scope;
 
     // Get an arn for role
@@ -38,10 +37,10 @@ export class Function {
       handler: config.Handler,
       memorySize: config.MemorySize ? Number(config.MemorySize) : undefined,
       packageType: config.PackageType,
-      reservedConcurrentExecutions: config.ReservedConcurrentExecutions !== undefined ? Number(config.ReservedConcurrentExecutions) : undefined,
+      reservedConcurrentExecutions: config.ReservedConcurrentExecutions ? Number(config.ReservedConcurrentExecutions) : undefined,
       runtime: config.Runtime,
       timeout: config.Timeout,
-      tracingConfig: config.TracingConfig !== undefined ? {
+      tracingConfig: config.TracingConfig ? {
         mode: config.TracingConfig.Mode
       } : undefined
     };

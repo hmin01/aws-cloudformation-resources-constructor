@@ -2,13 +2,13 @@
 import { Readable } from "stream";
 import { CfnTag } from "aws-cdk-lib";
 /**
- * Change the part about AWS arn
+ * Change the part for aws arn
  * @param arn arn for resource
  * @param type part type
  * @param content content
  * @returns changed arn
  */
-export declare function changePartaboutArn(arn: string, type: string, content: string): string;
+export declare function changePartForArn(arn: string, type: string, content: string): string;
 /**
  * Create the logical id for resource to be used aws cdk
  * @param content content to create hash value
@@ -36,12 +36,6 @@ export declare function delay(ms: number): Promise<unknown>;
  */
 export declare function extractDataFromArn(arn: string, type: string): string;
 /**
- * Extract the principal from raw scope data
- * @param principalConfig configuration for principal
- * @returns extracted and modified principal
- */
-export declare function extractPrincipal(principalConfig: any): any;
-/**
  * Extract a list of tag based on input data
  * @param tags content of tags
  * @returns a list of tag
@@ -64,3 +58,9 @@ export declare function loadJsonFile(filePath: string): any;
  * @returns converted string
  */
 export declare function streamToBuffer(steam: Readable): Promise<Buffer>;
+/**
+ * Set a principal content
+ * @param principal principal content
+ * @returns changed content
+ */
+export declare function setPrincipal(principal: any): any;

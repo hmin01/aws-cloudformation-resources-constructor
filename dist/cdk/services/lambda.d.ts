@@ -7,9 +7,8 @@ export declare class Function {
      * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html
      * @param scope scope context
      * @param config configuration for function
-     * @param storedLocation
      */
-    constructor(scope: Construct, config: any, storedLocation: string);
+    constructor(scope: Construct, config: any);
     /**
      * Create the alias for lambda function
      * @description https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-alias.html

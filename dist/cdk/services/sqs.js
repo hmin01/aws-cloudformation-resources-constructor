@@ -58,27 +58,22 @@ class Queue {
      * @param config configuration for policy
      */
     setPolicy(config) {
-        // Set the statement
-        const statement = config.Statement.map((elem) => {
-            // Extract principal by type
-            const principal = elem.Principal !== undefined ? (0, util_1.extractPrincipal)(elem.Principal) : undefined;
-            // Return
-            return {
-                Effect: elem.Effect,
-                Principal: principal,
-                Action: elem.Action,
-                Resource: this._queue.attrArn
-            };
-        });
-        // Create the properties for queue policy
+        // Create a properties for queue policy
         const props = {
             policyDocument: {
                 Version: config.Version,
-                Statement: statement.length > 0 ? statement : undefined
+                Statement: config.Statement && config.Statement.length > 0 ? config.Statement.map((elem) => {
+                    return {
+                        Effect: elem.Effect,
+                        Principal: elem.Principal ? (0, util_1.setPrincipal)(elem.Principal) : undefined,
+                        Action: elem.Action,
+                        Resource: this._queue.attrArn
+                    };
+                }) : undefined
             },
             queues: [this._queue.ref]
         };
-        // Set the policy for queue
+        // Set a policy for queue
         new aws_cdk_lib_1.aws_sqs.CfnQueuePolicy(this._scope, (0, util_1.createId)(JSON.stringify(props)), props);
     }
     /**
