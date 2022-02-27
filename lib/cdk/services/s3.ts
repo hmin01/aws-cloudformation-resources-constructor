@@ -19,7 +19,6 @@ export class Bucket {
 
     // Set the properties for bucket
     const props: s3.CfnBucketProps = {
-      accelerateConfiguration: config.AccelerateConfiguration !== undefined ? { accelerationStatus: config.AccelerateConfiguration.AccelerationStatus } : undefined,
       bucketName: config.Name,
     };
     // Create the bucket
@@ -39,7 +38,7 @@ export class Bucket {
    * Get an arn for bucket
    * @returns arn for bucket
    */
-  private getArn(): string {
+  public getArn(): string {
     return this._bucket.attrArn;
   }
 

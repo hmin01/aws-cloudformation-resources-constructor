@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.publishLambdaVersions = exports.downloadLambdaCodeFromS3 = exports.createLambdaEventSourceMappings = exports.createLambdaAliases = exports.createCognitoUserPoolClients = exports.setCognitoUserPool = exports.deployAPIGatewayStage = exports.configureAPIGatewayMethods = exports.configeAPIGatewayAuthorizers = void 0;
+exports.uploadLambdaInitCode = exports.publishLambdaVersions = exports.downloadLambdaCodeFromS3 = exports.createLambdaEventSourceMappings = exports.createLambdaAliases = exports.createCognitoUserPoolClients = exports.setCognitoUserPool = exports.deployAPIGatewayStage = exports.configureAPIGatewayMethods = exports.configeAPIGatewayAuthorizers = void 0;
 const fs_1 = require("fs");
 const path_1 = require("path");
 // Responses
@@ -382,3 +382,21 @@ async function publishLambdaVersions(functionName, config, dirPath) {
     return mapVersion;
 }
 exports.publishLambdaVersions = publishLambdaVersions;
+/**
+ * Upload a lambda function code
+ * @param functionName function name
+ * @param location code stored location value
+ * @param dirPath path to the directory where the code is stored (default /resources/code)
+ */
+async function uploadLambdaInitCode(functionName, location, dirPath) {
+    // Create a sdk object for lambda
+    const lambda = new lambda_1.LambdaSdk({ region: process.env.TARGET_REGION });
+    // Extract a file name from s3 url
+    const temp = location.replace(/^s3:\/\//, "").split("/").slice(1).join("/").split("/");
+    const filename = temp[temp.length - 1];
+    // Update a code
+    await lambda.updateCode(functionName, (0, path_1.join)(dirPath ? dirPath : CODE_DIR, filename));
+    // Destroy a sdk object for lambda
+    lambda.destroy();
+}
+exports.uploadLambdaInitCode = uploadLambdaInitCode;

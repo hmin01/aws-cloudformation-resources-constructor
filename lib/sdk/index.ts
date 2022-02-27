@@ -382,7 +382,7 @@ export async function publishLambdaVersions(functionName: string, config: any, d
   for (const elem of config) {
     if (elem.Version !== "$LATEST" && elem.StoredLocation && new RegExp("^s3://").test(elem.StoredLocation)) {
       // Extract a file name from s3 url
-      const temp:string = elem.StoredLocation.replace(/^s3:\/\//, "").split("/").slice(1).join("/").split("/");
+      const temp:string[] = elem.StoredLocation.replace(/^s3:\/\//, "").split("/").slice(1).join("/").split("/");
       const filename: string = temp[temp.length - 1];
       // Update the function code
       await lambda.updateCode(functionName, join(dirPath ? dirPath : CODE_DIR, filename));
@@ -397,4 +397,21 @@ export async function publishLambdaVersions(functionName: string, config: any, d
   lambda.destroy();
   // Return
   return mapVersion;
+}
+/**
+ * Upload a lambda function code
+ * @param functionName function name
+ * @param location code stored location value
+ * @param dirPath path to the directory where the code is stored (default /resources/code)
+ */
+export async function uploadLambdaInitCode(functionName: string, location: string, dirPath?: string): Promise<void> {
+  // Create a sdk object for lambda
+  const lambda: LambdaSdk = new LambdaSdk({ region: process.env.TARGET_REGION });
+  // Extract a file name from s3 url
+  const temp: string[] = location.replace(/^s3:\/\//, "").split("/").slice(1).join("/").split("/");
+  const filename: string = temp[temp.length - 1];
+  // Update a code
+  await lambda.updateCode(functionName, join(dirPath ? dirPath : CODE_DIR, filename));
+  // Destroy a sdk object for lambda
+  lambda.destroy();
 }

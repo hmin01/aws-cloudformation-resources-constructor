@@ -37,10 +37,10 @@ export class Function {
       handler: config.Handler,
       memorySize: config.MemorySize ? Number(config.MemorySize) : undefined,
       packageType: config.PackageType,
-      reservedConcurrentExecutions: config.ReservedConcurrentExecutions !== undefined ? Number(config.ReservedConcurrentExecutions) : undefined,
+      reservedConcurrentExecutions: config.ReservedConcurrentExecutions ? Number(config.ReservedConcurrentExecutions) : undefined,
       runtime: config.Runtime,
       timeout: config.Timeout,
-      tracingConfig: config.TracingConfig !== undefined ? {
+      tracingConfig: config.TracingConfig ? {
         mode: config.TracingConfig.Mode
       } : undefined
     };
