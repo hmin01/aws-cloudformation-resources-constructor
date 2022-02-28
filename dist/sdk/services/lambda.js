@@ -60,19 +60,22 @@ class LambdaSdk {
             // Create an input to get an alias
             const input = {
                 FunctionName: functionName,
-                Name: name
+                MaxItems: 50
             };
-            // Create a command to get an alias
-            const command = new lambda.GetAliasCommand(input);
-            // Send a command to get an alias
-            const response = await this._client.send(command);
-            // Process a result
-            if (response.AliasArn) {
-                return true;
+            // Create a paginator
+            const paginator = lambda.paginateListAliases({ client: this._client }, input);
+            // Check a existing for alias
+            for await (const page of paginator) {
+                if (page.Aliases) {
+                    for (const alias of page.Aliases) {
+                        if (alias.AliasArn) {
+                            return true;
+                        }
+                    }
+                }
             }
-            else {
-                return false;
-            }
+            // Return
+            return false;
         }
         catch (err) {
             (0, response_1.catchError)(response_1.CODE.ERROR.LAMBDA.FUNCTION.GET_ALIAS, false, functionName, err);
@@ -113,6 +116,7 @@ class LambdaSdk {
      * @param functionVersion function version
      * @param name name for alias
      * @param description description for alias
+     * @returns existence
      */
     async createAlias(functionName, functionVersion, name, description) {
         try {
@@ -130,13 +134,19 @@ class LambdaSdk {
                 const command = new lambda.CreateAliasCommand(input);
                 // Send a command to create a function alias
                 await this._client.send(command);
+                // Return
+                return true;
             }
             else {
                 console.warn(`[WARNING] That alias already exists`);
+                // Return
+                return false;
             }
         }
         catch (err) {
-            (0, response_1.catchError)(response_1.CODE.ERROR.LAMBDA.FUNCTION.CREATE_ALIAS, true, functionName, err);
+            (0, response_1.catchError)(response_1.CODE.ERROR.LAMBDA.FUNCTION.CREATE_ALIAS, false, functionName, err);
+            // Return
+            return false;
         }
     }
     /**
