@@ -35,13 +35,6 @@ export declare class APIGatewaySdk {
      */
     createAuthorizer(restApiId: string, config: any): Promise<string>;
     /**
-     * Create a deployment
-     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/createdeploymentcommandinput.html
-     * @param restApiId rest api id
-     * @returns deployment id
-     */
-    createDeployment(restApiId: string): Promise<string>;
-    /**
      * Creat a stage
      * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/createstagecommandinput.html
      * @param restApiId rest api id
@@ -49,6 +42,13 @@ export declare class APIGatewaySdk {
      * @param config configuration for stage
      */
     createStage(restApiId: string, deploymentId: string, config: any): Promise<void>;
+    /**
+     * Deploy a rest api
+     * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/createstagecommandinput.html
+     * @param restApiId rest api id
+     * @param config configuration for stage
+     */
+    deploy(restApiId: string, config: any): Promise<void>;
     /**
      * Get an authorizer id
      * @param restApiId rest api id
