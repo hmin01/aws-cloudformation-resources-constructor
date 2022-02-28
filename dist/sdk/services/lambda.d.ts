@@ -6,7 +6,14 @@ export declare class LambdaSdk {
      */
     constructor(config: any);
     /**
-     * Check the existing event source mapping
+     * Check the existing alias
+     * @param functionName function name
+     * @param name name for alias
+     * @returns existence
+     */
+    private _checkExistingAlias;
+    /**
+     * Check the existing event source mappings
      * @param eventSourceArn arn for evnet source
      * @param functionArn arn for lambda function
      * @returns existence

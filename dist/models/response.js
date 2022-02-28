@@ -52,11 +52,12 @@ exports.CODE = {
             FUNCTION: {
                 CREATE_ALIAS: 80,
                 CREATE_EVENT_SOURCE_MAPPING: 81,
-                GET_ARN: 82,
-                GET_EVENT_SOURCE_MAPPINGS: 83,
-                PUBLISH_VERSION: 84,
-                UPDATE_CODE: 85,
-                UPDATE_EVENT_SOURCE_MAPPING: 86
+                GET_ALIAS: 82,
+                GET_ARN: 83,
+                GET_EVENT_SOURCE_MAPPINGS: 84,
+                PUBLISH_VERSION: 85,
+                UPDATE_CODE: 86,
+                UPDATE_EVENT_SOURCE_MAPPING: 87
             }
         },
         // For Amazon S3
@@ -101,11 +102,12 @@ const MESSAGE = {
     60: "Failed to get a dynamodb table arn",
     80: "Failed to create a lambda function alias",
     81: "Failed to create a lambda event source mapping",
-    82: "Failed to get a lambda function arn",
-    83: "Failed to get a list of lambda event source mapping",
-    84: "Failed to publish a lambda function version",
-    85: "Failed to update a lambda function code",
-    86: "Failed to update an event source mapping",
+    82: "Failed to get a lambda function alias",
+    83: "Failed to get a lambda function arn",
+    84: "Failed to get a list of lambda event source mapping",
+    85: "Failed to publish a lambda function version",
+    86: "Failed to update a lambda function code",
+    87: "Failed to update an event source mapping",
     100: "Failed to get a s3 object",
     120: "Failed to get a sqs queue arn",
     121: "Failed to get a sqs queue url"

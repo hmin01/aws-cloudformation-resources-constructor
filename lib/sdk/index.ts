@@ -302,6 +302,21 @@ export async function createCognitoUserPoolClients(name: string, clientConfigs: 
 
 /** For Lambda */
 /**
+ * Create a lambda function alias
+ * @param functionName function name
+ * @param functionVersion function version
+ * @param name name for alias
+ * @param description alias description
+ */
+export async function createLambdaAlias(functionName: string, functionVersion: string, name: string, description?: string): Promise<void> {
+  // Create a sdk object for lambda
+  const lambda: LambdaSdk = new LambdaSdk({ region: process.env.TARGET_REGION });
+  // Create the alias for function
+  await lambda.createAlias(functionName, functionVersion, name, description);
+  // Destroy a sdk object for lambda
+  lambda.destroy();
+}
+/**
  * Create the lambda function aliases
  * @param functionName function name
  * @param config configuration for aliases
@@ -310,7 +325,6 @@ export async function createCognitoUserPoolClients(name: string, clientConfigs: 
 export async function createLambdaAliases(functionName: string, config: any, mapVersion?: any): Promise<void> {
   // Create a sdk object for lambda
   const lambda: LambdaSdk = new LambdaSdk({ region: process.env.TARGET_REGION });
-
   // Create the lambda function aliases
   for (const elem of config) {
     // Set a function version
@@ -318,7 +332,19 @@ export async function createLambdaAliases(functionName: string, config: any, map
     // Create the alias for function
     await lambda.createAlias(functionName, functionVersion, elem.Name, elem.Description !== "" ? elem.Description : undefined);
   }
-
+  // Destroy a sdk object for lambda
+  lambda.destroy();
+}
+/**
+ * Create an event source mapping
+ * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-lambda/interfaces/createeventsourcemappingcommandinput.html
+ * @param config configuration for event source mapping
+ */
+export async function createLambdaEventSourceMapping(config: any): Promise<void> {
+  // Create a sdk object for lambda
+  const lambda: LambdaSdk = new LambdaSdk({ region: process.env.TARGET_REGION });
+  // Create the event source mapping
+  await lambda.createEventSourceMapping(config);
   // Destroy a sdk object for lambda
   lambda.destroy();
 }
@@ -329,12 +355,10 @@ export async function createLambdaAliases(functionName: string, config: any, map
 export async function createLambdaEventSourceMappings(config: any): Promise<void> {
   // Create a sdk object for lambda
   const lambda: LambdaSdk = new LambdaSdk({ region: process.env.TARGET_REGION });
-
   // Create the event source mappings
   for (const mappingId of Object.keys(config)) {
     await lambda.createEventSourceMapping(config[mappingId]);
   }
-
   // Destroy a sdk object for lambda
   lambda.destroy();
 }
@@ -366,13 +390,42 @@ export async function downloadLambdaCodeFromS3(region: string, s3Url: string, ou
   return true;
 }
 /**
+ * Publish the lambda function version
+ * @param functionName function name
+ * @param config configuration for version
+ * @param dirPath path to the directory where the code is stored (default /resources/code)
+ * @returns version value
+ */
+export async function publishLambdaVersion(functionName: string, config: any, dirPath?: string): Promise<string> {
+  // Create a sdk object for lambda
+  const lambda: LambdaSdk = new LambdaSdk({ region: process.env.TARGET_REGION });
+  // Set a version value variable
+  let strVersion: string = "";
+
+  // Publish the lambda function version
+  if (config.Version !== "$LATEST" && config.StoredLocation && new RegExp("^s3://").test(config.StoredLocation)) {
+    // Extract a file name from s3 url
+    const temp:string[] = config.StoredLocation.replace(/^s3:\/\//, "").split("/").slice(1).join("/").split("/");
+    const filename: string = temp[temp.length - 1];
+    // Update the function code
+    await lambda.updateCode(functionName, join(dirPath ? dirPath : CODE_DIR, filename));
+    // Publish the version
+    strVersion = await lambda.publishVersion(functionName, config.Description);
+  }
+
+  // Destroy a sdk object for lambda
+  lambda.destroy();
+  // Return
+  return strVersion;
+}
+/**
  * Publish the lambda function versions
  * @param functionName function name
  * @param config configuration for versions
  * @param dirPath path to the directory where the code is stored (default /resources/code)
  * @returns mapping data for version
  */
-export async function publishLambdaVersions(functionName: string, config: any, dirPath?: string): Promise<any> {
+export async function publishLambdaVersions(functionName: string, config: any[], dirPath?: string): Promise<any> {
   // Create a sdk object for lambda
   const lambda: LambdaSdk = new LambdaSdk({ region: process.env.TARGET_REGION });
   // Set a version mapping data

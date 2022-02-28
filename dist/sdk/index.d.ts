@@ -32,12 +32,26 @@ export declare function setCognitoUserPool(name: string, config: any): Promise<v
 export declare function createCognitoUserPoolClients(name: string, clientConfigs: any[], uiConfigs?: any[]): Promise<void>;
 /** For Lambda */
 /**
+ * Create a lambda function alias
+ * @param functionName function name
+ * @param functionVersion function version
+ * @param name name for alias
+ * @param description alias description
+ */
+export declare function createLambdaAlias(functionName: string, functionVersion: string, name: string, description?: string): Promise<void>;
+/**
  * Create the lambda function aliases
  * @param functionName function name
  * @param config configuration for aliases
  * @param mapVersion mapping data for version
  */
 export declare function createLambdaAliases(functionName: string, config: any, mapVersion?: any): Promise<void>;
+/**
+ * Create an event source mapping
+ * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-lambda/interfaces/createeventsourcemappingcommandinput.html
+ * @param config configuration for event source mapping
+ */
+export declare function createLambdaEventSourceMapping(config: any): Promise<void>;
 /**
  * Create the event source mappings
  * @param config configuration for event source mappings
@@ -51,13 +65,21 @@ export declare function createLambdaEventSourceMappings(config: any): Promise<vo
  */
 export declare function downloadLambdaCodeFromS3(region: string, s3Url: string, outputDir?: string): Promise<boolean>;
 /**
+ * Publish the lambda function version
+ * @param functionName function name
+ * @param config configuration for version
+ * @param dirPath path to the directory where the code is stored (default /resources/code)
+ * @returns version value
+ */
+export declare function publishLambdaVersion(functionName: string, config: any, dirPath?: string): Promise<string>;
+/**
  * Publish the lambda function versions
  * @param functionName function name
  * @param config configuration for versions
  * @param dirPath path to the directory where the code is stored (default /resources/code)
  * @returns mapping data for version
  */
-export declare function publishLambdaVersions(functionName: string, config: any, dirPath?: string): Promise<any>;
+export declare function publishLambdaVersions(functionName: string, config: any[], dirPath?: string): Promise<any>;
 /**
  * Upload a lambda function code
  * @param functionName function name
