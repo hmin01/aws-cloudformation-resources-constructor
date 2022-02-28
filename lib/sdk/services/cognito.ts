@@ -320,6 +320,7 @@ export class CognitoSdk {
       const command: cognito.UpdateUserPoolCommand = new cognito.UpdateUserPoolCommand(input);
       // Send a command to update email configuration
       await this._client.send(command);
+
       // Return
       return true;
     } catch (err) {
@@ -373,6 +374,34 @@ export class CognitoSdk {
       catchError(CODE.ERROR.COGNITO.USERPOOL.SET_LAMBDA_CONFIG, false, userPoolId, err as Error);
       // Return
       return false;
+    }
+  }
+
+  /**
+   * Update a verification message template (call a set email configuration)
+   * @param userPoolId user pool id
+   * @param template template
+   */
+   public async updateVerificationMessageTemplate(userPoolId: string, template: any): Promise<void> {
+    try {
+      // Create an input to update a verification message template
+      const input: cognito.UpdateUserPoolCommandInput = {
+        UserPoolId: userPoolId,
+        VerificationMessageTemplate: {
+          DefaultEmailOption: template.DefaultEmailOption,
+          EmailMessage: template.EmailMessage,
+          EmailMessageByLink: template.EmailMessageByLink,
+          EmailSubject: template.EmailSubject,
+          EmailSubjectByLink: template.EmailSubjectByLink,
+          SmsMessage: template.SmsMessage
+        }
+      };
+      // Create a command to update a verification message template
+      const command: cognito.UpdateUserPoolCommand = new cognito.UpdateUserPoolCommand(input);
+      // Send a command to update a verification message template
+      await this._client.send(command);
+    } catch (err) {
+      catchError(CODE.ERROR.COGNITO.USERPOOL.UPDATE_VERIFICATION_MESSAGE_TEMPLATE, false, userPoolId, err as Error);
     }
   }
 }

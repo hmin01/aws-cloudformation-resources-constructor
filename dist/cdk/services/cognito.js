@@ -18,7 +18,7 @@ class UserPool {
         const schema = [];
         if (config.SchemaAttributes) {
             for (const elem of config.SchemaAttributes) {
-                if (!defaultSchema[elem.Name]) {
+                if (!defaultSchema[elem.Name] || elem.Mutable || elem.Required) {
                     schema.push({
                         attributeDataType: elem.AttributeDataType,
                         developerOnlyAttribute: elem.DeveloperOnlyAttribute,
