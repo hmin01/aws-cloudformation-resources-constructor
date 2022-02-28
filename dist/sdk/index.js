@@ -299,7 +299,7 @@ async function createLambdaAlias(functionName, functionVersion, name, descriptio
     // Create a sdk object for lambda
     const lambda = new lambda_1.LambdaSdk({ region: process.env.TARGET_REGION });
     // Create the alias for function
-    await lambda.createAlias(functionName, functionVersion, name, description);
+    const result = await lambda.createAlias(functionName, functionVersion, name, description);
     // Destroy a sdk object for lambda
     lambda.destroy();
 }

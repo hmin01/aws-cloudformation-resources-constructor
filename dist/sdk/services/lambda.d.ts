@@ -26,8 +26,9 @@ export declare class LambdaSdk {
      * @param functionVersion function version
      * @param name name for alias
      * @param description description for alias
+     * @returns existence
      */
-    createAlias(functionName: string, functionVersion: string, name: string, description?: string): Promise<void>;
+    createAlias(functionName: string, functionVersion: string, name: string, description?: string): Promise<boolean>;
     /**
      * Create the event source mapping
      * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-lambda/interfaces/createeventsourcemappingcommandinput.html
