@@ -252,6 +252,10 @@ export async function setCognitoUserPool(name: string, config: any): Promise<voi
     await cognito.updateEmailConfiguration(userPoolId, emailConfig);
     console.info(`[NOTICE] Update the email configuration for user pool (for ${name})`);
   }
+  // Update a verification message template
+  if (config.VerificationMessageTemplate) {
+    await cognito.updateVerificationMessageTemplate(userPoolId, config.VerificationMessageTemplate);
+  }
   // Update a lambda configuration
   if (config.LambdaConfig) {
     await cognito.updateLambdaConfiguration(userPoolId, config.LambdaConfig);

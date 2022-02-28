@@ -393,5 +393,33 @@ class CognitoSdk {
             return false;
         }
     }
+    /**
+     * Update a verification message template (call a set email configuration)
+     * @param userPoolId user pool id
+     * @param template template
+     */
+    async updateVerificationMessageTemplate(userPoolId, template) {
+        try {
+            // Create an input to update a verification message template
+            const input = {
+                UserPoolId: userPoolId,
+                VerificationMessageTemplate: {
+                    DefaultEmailOption: template.DefaultEmailOption,
+                    EmailMessage: template.EmailMessage,
+                    EmailMessageByLink: template.EmailMessageByLink,
+                    EmailSubject: template.EmailSubject,
+                    EmailSubjectByLink: template.EmailSubjectByLink,
+                    SmsMessage: template.SmsMessage
+                }
+            };
+            // Create a command to update a verification message template
+            const command = new cognito.UpdateUserPoolCommand(input);
+            // Send a command to update a verification message template
+            await this._client.send(command);
+        }
+        catch (err) {
+            (0, response_1.catchError)(response_1.CODE.ERROR.COGNITO.USERPOOL.UPDATE_VERIFICATION_MESSAGE_TEMPLATE, false, userPoolId, err);
+        }
+    }
 }
 exports.CognitoSdk = CognitoSdk;

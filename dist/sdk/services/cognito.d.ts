@@ -84,4 +84,10 @@ export declare class CognitoSdk {
      * @returns result
      */
     updateLambdaConfiguration(userPoolId: string, config: any): Promise<boolean>;
+    /**
+     * Update a verification message template (call a set email configuration)
+     * @param userPoolId user pool id
+     * @param template template
+     */
+    updateVerificationMessageTemplate(userPoolId: string, template: any): Promise<void>;
 }
