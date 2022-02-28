@@ -21,7 +21,7 @@ export class UserPool {
     const schema: any[] = [];
     if (config.SchemaAttributes) {
       for (const elem of config.SchemaAttributes) {
-        if (!defaultSchema[elem.Name] || elem.Mutable || elem.Required) {
+        if ((!defaultSchema[elem.Name] || elem.Required) && elem.Name.length <= 20) {
           schema.push({
             attributeDataType: elem.AttributeDataType,
             developerOnlyAttribute: elem.DeveloperOnlyAttribute,
