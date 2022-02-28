@@ -32,7 +32,37 @@ export class LambdaSdk {
   }
 
   /**
-   * Check the existing event source mapping
+   * Check the existing alias
+   * @param functionName function name
+   * @param name name for alias
+   * @returns existence
+   */
+  private async _checkExistingAlias(functionName: string, name: string): Promise<boolean> {
+    try {
+      // Create an input to get an alias
+      const input: lambda.GetAliasCommandInput = {
+        FunctionName: functionName,
+        Name: name
+      };
+      // Create a command to get an alias
+      const command: lambda.GetAliasCommand = new lambda.GetAliasCommand(input);
+      // Send a command to get an alias
+      const response: lambda.GetAliasCommandOutput = await this._client.send(command);
+      // Process a result
+      if (response.AliasArn) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (err) {
+      catchError(CODE.ERROR.LAMBDA.FUNCTION.GET_ALIAS, false, functionName, err as Error);
+      // Return
+      return false
+    }
+  }
+
+  /**
+   * Check the existing event source mappings
    * @param eventSourceArn arn for evnet source
    * @param functionArn arn for lambda function
    * @returns existence
@@ -67,17 +97,23 @@ export class LambdaSdk {
    */
   public async createAlias(functionName: string, functionVersion: string, name: string, description?: string): Promise<void> {
     try {
-      // Create an client to create a function alias
-      const input: lambda.CreateAliasCommandInput = {
-        Description: description,
-        FunctionName: functionName,
-        FunctionVersion: functionVersion,
-        Name: name
-      };
-      // Create a command to create a function alias
-      const command: lambda.CreateAliasCommand = new lambda.CreateAliasCommand(input);
-      // Send a command to create a function alias
-      await this._client.send(command);
+      // Check the existing for alias
+      const existence = await this._checkExistingAlias(functionName, name);
+      if (!existence) {
+        // Create an client to create a function alias
+        const input: lambda.CreateAliasCommandInput = {
+          Description: description,
+          FunctionName: functionName,
+          FunctionVersion: functionVersion,
+          Name: name
+        };
+        // Create a command to create a function alias
+        const command: lambda.CreateAliasCommand = new lambda.CreateAliasCommand(input);
+        // Send a command to create a function alias
+        await this._client.send(command);
+      } else {
+        console.warn(`[WARNING] That alias already exists`);
+      }
     } catch (err) {
       catchError(CODE.ERROR.LAMBDA.FUNCTION.CREATE_ALIAS, true, functionName, err as Error);
     }
