@@ -174,29 +174,6 @@ export class APIGatewaySdk {
   }
 
   /**
-   * Create a deployment
-   * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/createdeploymentcommandinput.html
-   * @param restApiId rest api id
-   * @returns deployment id
-   */
-  public async createDeployment(restApiId: string): Promise<string> {
-    try {
-      // Create an input to create a deployment
-      const input: apigateway.CreateDeploymentCommandInput = {
-        restApiId: restApiId
-      };
-      // Create a command to create a deployment
-      const command: apigateway.CreateDeploymentCommand = new apigateway.CreateDeploymentCommand(input);
-      // Send a command to create a deployment
-      const response: apigateway.CreateDeploymentCommandOutput = await this._client.send(command);
-      // Return
-      return response.id as string;
-    } catch (err) {
-      return catchError(CODE.ERROR.APIGATEWAY.CREATE_DEPLOYMENT, false, restApiId, err as Error);
-    }
-  }
-
-  /**
    * Creat a stage
    * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/createstagecommandinput.html
    * @param restApiId rest api id
@@ -222,6 +199,35 @@ export class APIGatewaySdk {
       };
       // Create a command to create a stage
       const command: apigateway.CreateStageCommand = new apigateway.CreateStageCommand(input);
+      // Send a command to create a stage
+      await this._client.send(command);
+    } catch (err) {
+      catchError(CODE.ERROR.APIGATEWAY.CREATE_STAGE, false, restApiId, err as Error);
+    }
+  }
+
+  /**
+   * Deploy a rest api
+   * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/createstagecommandinput.html
+   * @param restApiId rest api id
+   * @param config configuration for stage
+   */
+  public async deploy(restApiId: string, config: any): Promise<void> {
+    try {
+      // Create an input to create a stage
+      const input: apigateway.CreateDeploymentCommandInput = {
+        restApiId: restApiId,
+        stageName: config.stageName,
+        // Opitonal
+        cacheClusterEnabled: config.cacheClusterEnabled,
+        cacheClusterSize: config.cacheClusterSize,
+        canarySettings: config.canarySettings,
+        description: config.description,
+        tracingEnabled: config.tracingEnabled,
+        variables: config.variables
+      };
+      // Create a command to create a stage
+      const command: apigateway.CreateDeploymentCommand = new apigateway.CreateDeploymentCommand(input);
       // Send a command to create a stage
       await this._client.send(command);
     } catch (err) {

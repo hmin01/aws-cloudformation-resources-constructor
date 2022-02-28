@@ -199,10 +199,8 @@ async function deployAPIGatewayStage(restApiName, config) {
     }
     // Create the deployments and stages
     for (const elem of config) {
-        // Create a deployment
-        const deployment = await apigateway.createDeployment(restApiId);
         // Create a stage
-        await apigateway.createStage(restApiId, deployment, elem);
+        await apigateway.deploy(restApiId, elem);
         // Print message
         console.info(`[NOTICE] Deploy the stage (for ${restApiName})`);
     }
