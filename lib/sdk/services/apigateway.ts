@@ -169,7 +169,32 @@ export class APIGatewaySdk {
       // Return
       return response.id as string;
     } catch (err) {
-      return catchError(CODE.ERROR.APIGATEWAY.CREATE_AUTHORIZER, true, restApiId, err as Error);
+      return catchError(CODE.ERROR.APIGATEWAY.RESTAPI.CREATE_AUTHORIZER, true, restApiId, err as Error);
+    }
+  }
+
+  /**
+   * Create a deployment
+   * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/createstagecommandinput.html
+   * @param restApiId rest api id
+   * @returns deployment id
+   */
+  public async createDeployment(restApiId: string): Promise<string> {
+    try {
+      // Create an input to create a stage
+      const input: apigateway.CreateDeploymentCommandInput = {
+        restApiId: restApiId,
+      };
+      // Create a command to create a stage
+      const command: apigateway.CreateDeploymentCommand = new apigateway.CreateDeploymentCommand(input);
+      // Send a command to create a stage
+      const response = await this._client.send(command);
+      // Return
+      return response.id as string;
+    } catch (err) {
+      catchError(CODE.ERROR.APIGATEWAY.RESTAPI.CREATE_STAGE, false, restApiId, err as Error);
+      // Return
+      return "";
     }
   }
 
@@ -202,36 +227,7 @@ export class APIGatewaySdk {
       // Send a command to create a stage
       await this._client.send(command);
     } catch (err) {
-      catchError(CODE.ERROR.APIGATEWAY.CREATE_STAGE, false, restApiId, err as Error);
-    }
-  }
-
-  /**
-   * Deploy a rest api
-   * @description https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-api-gateway/interfaces/createstagecommandinput.html
-   * @param restApiId rest api id
-   * @param config configuration for stage
-   */
-  public async deploy(restApiId: string, config: any): Promise<void> {
-    try {
-      // Create an input to create a stage
-      const input: apigateway.CreateDeploymentCommandInput = {
-        restApiId: restApiId,
-        stageName: config.stageName,
-        // Opitonal
-        cacheClusterEnabled: config.cacheClusterEnabled,
-        cacheClusterSize: config.cacheClusterSize,
-        canarySettings: config.canarySettings,
-        description: config.description,
-        tracingEnabled: config.tracingEnabled,
-        variables: config.variables
-      };
-      // Create a command to create a stage
-      const command: apigateway.CreateDeploymentCommand = new apigateway.CreateDeploymentCommand(input);
-      // Send a command to create a stage
-      await this._client.send(command);
-    } catch (err) {
-      catchError(CODE.ERROR.APIGATEWAY.CREATE_STAGE, false, restApiId, err as Error);
+      catchError(CODE.ERROR.APIGATEWAY.RESTAPI.CREATE_STAGE, false, restApiId, err as Error);
     }
   }
 
@@ -263,7 +259,7 @@ export class APIGatewaySdk {
       // Return
       return "";
     } catch (err) {
-      return catchError(CODE.ERROR.APIGATEWAY.GET_AUTHORIZER_ID, false, authorizerName, err as Error);
+      return catchError(CODE.ERROR.APIGATEWAY.RESTAPI.GET_AUTHORIZER_ID, false, authorizerName, err as Error);
     }
   }
 
@@ -295,7 +291,7 @@ export class APIGatewaySdk {
       // Return
       return "";
     } catch (err) {
-      return catchError(CODE.ERROR.APIGATEWAY.GET_RESOURCE_ID, false, `${restApiId} ${path}`, err as Error);
+      return catchError(CODE.ERROR.APIGATEWAY.RESTAPI.GET_RESOURCE_ID, false, `${restApiId} ${path}`, err as Error);
     }
   }
 
@@ -325,7 +321,7 @@ export class APIGatewaySdk {
       // Return
       return "";
     } catch (err) {
-      return catchError(CODE.ERROR.APIGATEWAY.GET_RESTAPI_ID, false, name, err as Error);
+      return catchError(CODE.ERROR.APIGATEWAY.RESTAPI.GET_RESTAPI_ID, false, name, err as Error);
     }
   }
 
@@ -364,7 +360,7 @@ export class APIGatewaySdk {
       // Send a command to put a method integration
       await this._client.send(command);
     } catch (err) {
-      catchError(CODE.ERROR.APIGATEWAY.PUT_METHOD_INTEGRATION, false, `${resourceId} ${httpMethod} in ${restApiId}`, err as Error);
+      catchError(CODE.ERROR.APIGATEWAY.RESTAPI.PUT_METHOD_INTEGRATION, false, `${resourceId} ${httpMethod} in ${restApiId}`, err as Error);
     }
   }
 
@@ -398,7 +394,7 @@ export class APIGatewaySdk {
         await this._client.send(command);
       }
     } catch (err) {
-      catchError(CODE.ERROR.APIGATEWAY.PUT_METHOD_INTEGRATION_RESPONSES, false, `${resourceId} ${httpMethod} in ${restApiId}`, err as Error);
+      catchError(CODE.ERROR.APIGATEWAY.RESTAPI.PUT_METHOD_INTEGRATION_RESPONSES, false, `${resourceId} ${httpMethod} in ${restApiId}`, err as Error);
     }
   }
 
@@ -429,7 +425,7 @@ export class APIGatewaySdk {
         await this._client.send(command);
       }
     } catch (err) {
-      catchError(CODE.ERROR.APIGATEWAY.PUT_METHOD_RESPONSES, false, `${resourceId} ${httpMethod} in ${restApiId}`, err as Error);
+      catchError(CODE.ERROR.APIGATEWAY.RESTAPI.PUT_METHOD_RESPONSES, false, `${resourceId} ${httpMethod} in ${restApiId}`, err as Error);
     }
   }
 }

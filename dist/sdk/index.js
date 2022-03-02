@@ -134,8 +134,7 @@ async function configureAPIGatewayMethods(restApiName, config, authMapping) {
     const restApiId = await apigateway.getRestApiId(restApiName);
     // Catch error
     if (restApiId === "") {
-        console.error(`[ERROR] Not found rest api id (target: ${restApiName})`);
-        process.exit(47);
+        (0, response_1.catchError)(response_1.CODE.ERROR.COMMON.NOT_FOUND_ID, true, restApiName);
     }
     // Configure the methods
     for (const elem of config) {
@@ -194,15 +193,16 @@ async function deployAPIGatewayStage(restApiName, config) {
     const restApiId = await apigateway.getRestApiId(restApiName);
     // Catch error
     if (restApiId === "") {
-        console.error(`[ERROR] Not found rest api id (target: ${restApiName})`);
-        process.exit(47);
+        (0, response_1.catchError)(response_1.CODE.ERROR.COMMON.NOT_FOUND_ID, true, restApiName);
     }
     // Create the deployments and stages
     for (const elem of config) {
+        // Create a deployment
+        const deploymentId = await apigateway.createDeployment(restApiId);
         // Create a stage
-        await apigateway.deploy(restApiId, elem);
-        // Print message
-        console.info(`[NOTICE] Deploy the stage (for ${restApiName})`);
+        if (deploymentId !== "") {
+            await apigateway.createStage(restApiId, deploymentId, elem);
+        }
     }
     // Destroy a sdk object for amazon apigateway
     apigateway.destroy();
